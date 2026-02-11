@@ -11,17 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-<<<<<<< HEAD
-  - 
+  - Ground
   - enemy
   - ground
   - obstacles
-=======
-  - Ground
-  - 
-  - 
-  - 
->>>>>>> main
   - 
   - 
   - 
@@ -48,8 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-<<<<<<< HEAD
-=======
   - name: mountain
     uniqueID: 3278281859
     locked: 0
@@ -68,6 +59,5 @@ TagManager:
   - name: forground
     uniqueID: 2182222885
     locked: 0
->>>>>>> main
   m_RenderingLayers:
   - Default
