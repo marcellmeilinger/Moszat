@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - enemy
+  - ground
+  - obstacles
   - 
   - 
   - 
@@ -41,3 +41,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: mountain
+    uniqueID: 3278281859
+    locked: 0
+  - name: forest
+    uniqueID: 1274535827
+    locked: 0
+  - name: forest_2
+    uniqueID: 2452770207
+    locked: 0
+  - name: tree
+    uniqueID: 4247465981
+    locked: 0
+  - name: player
+    uniqueID: 1775429761
+    locked: 0
+  - name: forground
+    uniqueID: 2182222885
+    locked: 0
+  m_RenderingLayers:
+  - Default
