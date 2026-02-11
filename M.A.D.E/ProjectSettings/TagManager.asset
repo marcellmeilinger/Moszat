@@ -11,10 +11,17 @@ TagManager:
   - 
   - Water
   - UI
+<<<<<<< HEAD
   - 
   - enemy
   - ground
   - obstacles
+=======
+  - Ground
+  - 
+  - 
+  - 
+>>>>>>> main
   - 
   - 
   - 
@@ -41,5 +48,26 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+<<<<<<< HEAD
+=======
+  - name: mountain
+    uniqueID: 3278281859
+    locked: 0
+  - name: forest
+    uniqueID: 1274535827
+    locked: 0
+  - name: forest_2
+    uniqueID: 2452770207
+    locked: 0
+  - name: tree
+    uniqueID: 4247465981
+    locked: 0
+  - name: player
+    uniqueID: 1775429761
+    locked: 0
+  - name: forground
+    uniqueID: 2182222885
+    locked: 0
+>>>>>>> main
   m_RenderingLayers:
   - Default
