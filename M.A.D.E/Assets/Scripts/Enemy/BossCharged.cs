@@ -20,13 +20,12 @@ public class BossCharged : MonoBehaviour
 
     public SpriteRenderer[] bodyParts;
 
-    private enum State { Patrol, Preparing, Charging, Stunned }
+    private enum State { Patrol, Preparing, Charging, Stunned, Impact }
     private State currentState = State.Patrol;
 
     private bool isFacingRight = true;
     public bool spriteFacesLeft = false;
 
-    // --- A DUPLA SEBZÉS ELLENSZERE ---
     private bool hasAttacked = false;
 
     private GameObject hitBox;
@@ -58,6 +57,11 @@ public class BossCharged : MonoBehaviour
         {
             float dir = isFacingRight ? 1 : -1;
             rb.linearVelocity = new Vector2(dir * chargeSpeed, rb.linearVelocity.y);
+        }
+     
+        else if (currentState == State.Impact || currentState == State.Stunned || currentState == State.Preparing)
+        {
+            rb.linearVelocity = Vector2.zero;
         }
     }
 
@@ -99,24 +103,20 @@ public class BossCharged : MonoBehaviour
         if (anim) anim.SetBool("isWalking", false);
         SetColor(Color.red);
 
-        // Itt nullázzuk a kapcsolót: Új rohamnál újra üthet EGYET.
         hasAttacked = false;
 
         yield return new WaitForSeconds(chargePrepareTime);
 
         currentState = State.Charging;
         if (hitBox != null) hitBox.SetActive(true);
-        SetColor(Color.white);
     }
 
-    // --- TEST ÜTKÖZÉS ---
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (currentState == State.Charging)
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                // Ha a teste ér oda, akkor is azonnal stop
                 PerformAttack(collision.gameObject);
             }
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -126,15 +126,11 @@ public class BossCharged : MonoBehaviour
         }
     }
 
-    // --- EZ A FÜGGVÉNY FUT LE, HA ELTALÁLT (Hitboxból vagy Testbõl) ---
     public void PerformAttack(GameObject victim)
     {
-        // HA MÁR VOLT TALÁLAT, AZONNAL KILÉPÜNK -> NINCS DUPLA SEBZÉS!
         if (hasAttacked) return;
+        hasAttacked = true;
 
-        hasAttacked = true; // Mostantól le van tiltva a sebzés ebben a körben
-
-        // 1. Sebzés
         PlayerHP php = victim.GetComponent<PlayerHP>();
         if (php == null) php = victim.GetComponentInParent<PlayerHP>();
 
@@ -142,24 +138,32 @@ public class BossCharged : MonoBehaviour
         {
             php.TakeDamage(damageAmount);
 
-            // Lökés (hogy érezd)
             Rigidbody2D prb = victim.GetComponentInParent<Rigidbody2D>();
             if (prb != null)
             {
                 Vector2 dir = (victim.transform.position - transform.position).normalized;
-                prb.AddForce((dir + Vector2.up * 0.5f) * 15f, ForceMode2D.Impulse);
+                prb.AddForce((dir + Vector2.up * 0.2f) * 15f, ForceMode2D.Impulse);
             }
         }
 
-        // 2. AZONNALI VÁLTÁS JÁRÕRÖZÉSRE (Nincs várakozás)
-        currentState = State.Patrol;
+        Vector2 recoilDir = (transform.position - victim.transform.position).normalized;
+        rb.AddForce(recoilDir * 5f, ForceMode2D.Impulse);
 
-        // Kikapcsoljuk a Hitboxot
+        StartCoroutine(ImpactRoutine());
+    }
+
+    IEnumerator ImpactRoutine()
+    {
+        currentState = State.Impact; // Ebben az állapotban a FixedUpdate nullázza a sebességet
+        rb.linearVelocity = Vector2.zero;
         if (hitBox != null) hitBox.SetActive(false);
         SetColor(Color.white);
 
-        // Opcionális: Ha megütött, forduljon meg? (Ha kiemeled, továbbmegy az eredeti irányba)
-        // Flip(); 
+        yield return new WaitForSeconds(1.0f);
+
+        Flip();
+
+        currentState = State.Patrol;
     }
 
     IEnumerator StunRoutine()
@@ -170,7 +174,6 @@ public class BossCharged : MonoBehaviour
 
         if (anim) anim.SetBool("isStunned", true);
         SetColor(Color.white);
-
         yield return new WaitForSeconds(stunDuration);
 
         if (anim) anim.SetBool("isStunned", false);
@@ -180,7 +183,6 @@ public class BossCharged : MonoBehaviour
 
     public bool IsVulnerable()
     {
-        // CSAK AKKOR SEBEZHETÕ, HA SZÉDÜL!
         return currentState == State.Stunned;
     }
 
@@ -226,4 +228,7 @@ public class BossCharged : MonoBehaviour
             }
         }
     }
+
+
+
 }

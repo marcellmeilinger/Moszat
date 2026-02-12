@@ -94,13 +94,23 @@ public class EnemyHealth : MonoBehaviour
 
         if (GetComponent<EnemyAI>() != null) GetComponent<EnemyAI>().enabled = false;
         if (GetComponent<ShieldEnemyAI>() != null) GetComponent<ShieldEnemyAI>().enabled = false;
-
         if (GetComponent<BossCharged>() != null) GetComponent<BossCharged>().enabled = false;
 
-        GetComponent<Collider2D>().enabled = false;
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
+        anim.SetBool("isStunned", false);
+        anim.SetBool("isWalking", false);
+
+        GetComponent<Collider2D>().enabled = false;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic; 
+        }
+
         anim.SetTrigger("die");
+
         this.enabled = false;
         Destroy(gameObject, 2f);
     }
