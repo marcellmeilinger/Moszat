@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; // Ez kell a Slider-hez
+using UnityEngine.UI;
 
 public class WarriorMovement : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class WarriorMovement : MonoBehaviour
     [Header("Harci Beállítások")]
     public int maxHealth = 100;
     public int currentHealth;
-    public Slider healthSlider; // Most már létezik!
+    public Slider healthSlider;
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -28,6 +30,12 @@ public class WarriorMovement : MonoBehaviour
     public LayerMask enemyLayers;
     public int attackDamage = 20;
 
+    [Header("Ground Check")]
+    public Transform groundCheck;
+    public float checkRadius = 0.2f;
+    public LayerMask whatIsGround;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -36,7 +44,6 @@ public class WarriorMovement : MonoBehaviour
 
         currentHealth = maxHealth;
 
-        // Beállítjuk a csúszkát az elején
         if (healthSlider != null)
         {
             healthSlider.maxValue = maxHealth;
@@ -44,16 +51,23 @@ public class WarriorMovement : MonoBehaviour
         }
     }
 
+    // --- INPUT RENDSZER FÜGGVÉNYEK ---
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f)
+        {
+            moveInput = 0; // Ha megáll a játék, ne mozogjon tovább
+            return;
+        }
         Vector2 inputVector = context.ReadValue<Vector2>();
         moveInput = inputVector.x;
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f) return;
+
         if (context.performed && isGrounded && !isAttacking)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -63,18 +77,25 @@ public class WarriorMovement : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f) return;
+
+        // EZZEL VÉDJÜK KI A RESUME GOMBRA KATTINTÁST:
+        // Ha az egér éppen UI elem felett van, ne támadjon
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+
         if (context.performed && isGrounded && !isAttacking)
         {
             isAttacking = true;
-            rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero; // Megállítjuk a csúszást ütés közben
             anim.SetTrigger("attack");
         }
     }
 
+    // --- HARCI LOGIKA ---
+
     public void TakeDamage(int damage)
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f) return;
 
         currentHealth -= damage;
 
@@ -87,13 +108,15 @@ public class WarriorMovement : MonoBehaviour
         if (currentHealth <= 0) Die();
     }
 
+    // Ezt hívja meg az Animation Event a kard suhintásakor
     public void HitEnemy()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            EnemyHealth healthScript = enemy.GetComponent<EnemyHealth>();
+            // Próbáljuk elérni az EnemyHealth szkriptet (győződj meg róla, hogy az ellenségen ez a neve!)
+            var healthScript = enemy.GetComponent<EnemyHealth>();
             if (healthScript != null)
             {
                 healthScript.TakeDamage(attackDamage);
@@ -101,46 +124,91 @@ public class WarriorMovement : MonoBehaviour
         }
     }
 
+    [Header("UI Referenciák")]
+    public GameObject warriorHealthbarCanvas; // Ide húzd majd be a teljes Canvast
+    public GameObject deathScreenUI;         // A Death Screen panelje
+
     void Die()
     {
         if (isDead) return;
         isDead = true;
+
+        // 1. A TELJES HP CANVAS KIKAPCSOLÁSA
+        if (warriorHealthbarCanvas != null)
+        {
+            warriorHealthbarCanvas.SetActive(false);
+        }
+
+        // 2. Animáció és fizika leállítása
         anim.SetTrigger("death");
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
-        Debug.Log("Game Over!");
+
+        // 3. Várakozás a Death Screen megjelenítése előtt
+        StartCoroutine(ShowDeathScreenAfterDelay(2f));
     }
 
-    public void EndAttack() { isAttacking = false; }
+    IEnumerator ShowDeathScreenAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (deathScreenUI != null)
+        {
+            deathScreenUI.SetActive(true);
+            // Itt érdemes megállítani az időt, hogy a gombokra lehessen kattintani
+            // és ne történjen semmi a háttérben
+            Time.timeScale = 0f;
+        }
+    }
+
+    // Ezt is az animáció végén lévő Event hívja meg!
+    public void EndAttack()
+    {
+        isAttacking = false;
+    }
+
+    // --- FIZIKA ÉS UPDATE ---
 
     void FixedUpdate()
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f) return;
+
         if (!isAttacking)
+        {
             rb.linearVelocity = new Vector2(moveInput * speed, rb.linearVelocity.y);
+        }
     }
 
     void Update()
     {
-        if (isDead) return;
+        if (isDead || Time.timeScale == 0f) return;
+
+        // Ground check folyamatos frissítése
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
         if (!isAttacking)
         {
             bool isMoving = Mathf.Abs(moveInput) > 0.01f;
             anim.SetBool("isRunning", isMoving);
 
-            if (moveInput > 0) sprite.flipX = false;
-            else if (moveInput < 0) sprite.flipX = true;
+            // Karakter megfordítása (Hitboxszal együtt)
+            if (moveInput > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else if (moveInput < 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
         }
 
+        // Animátor paraméterek frissítése
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
         anim.SetBool("isGrounded", isGrounded);
 
+        // Teszteléshez (K gomb)
         if (Keyboard.current.kKey.wasPressedThisFrame) TakeDamage(10);
     }
-
-    private void OnCollisionEnter2D(Collision2D collision) { isGrounded = true; }
-    private void OnCollisionExit2D(Collision2D collision) { isGrounded = false; }
 
     private void OnDrawGizmosSelected()
     {
