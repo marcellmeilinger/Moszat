@@ -50,6 +50,15 @@ TagManager:
   - name: forest_2
     uniqueID: 2452770207
     locked: 0
+  - name: cave
+    uniqueID: 3768774105
+    locked: 0
+  - name: cave_2
+    uniqueID: 2140077275
+    locked: 0
+  - name: cave_3
+    uniqueID: 1136649761
+    locked: 0
   - name: tree
     uniqueID: 4247465981
     locked: 0
