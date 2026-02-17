@@ -1,10 +1,15 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class testmovement : MonoBehaviour
 {
-    [Header("Be�ll�t�sok")]
+    [Header("Beállítások")]
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpForce = 14f;
+
+    // ÚJ VÁLTOZÓ: 0 és 1 közötti szám. Minél kisebb, annál jobban levágja az ugrást elengedéskor.
+    // 0.5f = felére csökken a lendület (kisebb ugrás).
+    [Range(0f, 1f)][SerializeField] private float jumpCutoff = 0.5f;
+
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
@@ -19,48 +24,51 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // 1. INPUT KEZEL�S (K�zvetlen WASD figyel�s)
+        // 1. INPUT KEZELÉS
         horizontalInput = 0;
 
-        // Balra (A)
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
             horizontalInput = -1;
-        }
-        // Jobbra (D)
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
             horizontalInput = 1;
-        }
 
-        // Ugr�s (Space vagy W)
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && IsGrounded())
+        // 2. UGRÁS MECHANIKA (Változtatható magasság)
+
+        // A: Ugrás indítása (Space lenyomás)
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            // FONTOS: linearVelocity helyett velocity (kompatibilis minden verzi�val)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
 
-        // 2. FIZIKA ALKALMAZ�SA
-        // A v�zszintes sebess�get be�ll�tjuk, a f�gg�legeset (zuhan�s) b�k�n hagyjuk
+        // B: Ugrás levágása (Space elengedés) - EZ AZ ÚJ RÉSZ
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            // Ha éppen felfelé mozog a karakter (velocity.y > 0)
+            if (rb.linearVelocity.y > 0)
+            {
+                // Megszorozzuk a sebességet pl. 0.5-tel, így hirtelen lelassul
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutoff);
+            }
+        }
+
+        // 3. FIZIKA ALKALMAZÁSA
         rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
 
-        // 3. KARAKTER FORGAT�SA (Sprite t�kr�z�se)
+        // 4. KARAKTER FORGATÁSA
         if (horizontalInput != 0)
         {
-            // Ha jobbra megy (1), akkor 1, ha balra (-1), akkor -1
             transform.localScale = new Vector3(Mathf.Sign(horizontalInput), 1, 1);
         }
     }
 
     private bool IsGrounded()
     {
-        // Kicsit lejjebb sug�roz, mint a collider alja
         RaycastHit2D raycastHit = Physics2D.BoxCast(
             boxCollider.bounds.center,
             boxCollider.bounds.size,
             0f,
             Vector2.down,
-            0.1f, // �rz�kel�si t�vols�g
+            0.1f,
             groundLayer
         );
 

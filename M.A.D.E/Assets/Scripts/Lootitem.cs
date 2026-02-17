@@ -9,17 +9,37 @@ public class LootItem : MonoBehaviour, IInteractable
 
     public Action OnItemPickedUp;
 
+    // --- 1. KÉZI FELVÉTEL (Gombnyomásra - Potionökhöz) ---
     public void Interact()
     {
-        ApplyEffect();
+        PickUpItem();
+    }
 
-        OnItemPickedUp?.Invoke();
+    // --- 2. AUTOMATIKUS FELVÉTEL (Sétálásra - Pénzhez) ---
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // Csak a Coin-t vesszük fel automatikusan!
+        if (itemName == "Coin")
+        {
+            // Megnézzük, hogy a játékos ment-e bele (van-e rajta PlayerWallet)
+            if (other.GetComponent<PlayerWallet>() != null || other.GetComponent<PlayerHealth>() != null)
+            {
+                PickUpItem();
+            }
+        }
+    }
 
-        Destroy(gameObject);
+    // --- KÖZÖS LOGIKA ---
+    private void PickUpItem()
+    {
+        ApplyEffect();               // Hatás kifejtése
+        OnItemPickedUp?.Invoke();    // Esemény jelzése
+        Destroy(gameObject);         // Tárgy eltüntetése
     }
 
     private void ApplyEffect()
     {
+        // GYÓGYÍTÁS
         if (itemName == "Potion")
         {
             var playerHealth = FindObjectOfType<PlayerHealth>();
@@ -29,15 +49,32 @@ public class LootItem : MonoBehaviour, IInteractable
                 Debug.Log("Játékos gyógyítva: " + value);
             }
         }
-       /* else if (itemName == "Coin")
+        // PÉNZ (Itt használjuk a PlayerWalletet!)
+        else if (itemName == "Coin")
         {
-            Debug.Log("Pénz felvéve: " + value);
-            // Ide jöhetne: GameManager.AddScore(value);
-        } Barmi lehet */
+            var wallet = FindObjectOfType<PlayerWallet>();
+            if (wallet != null)
+            {
+                wallet.AddCoin(value); // Hozzáadjuk a pénztárcához
+            }
+            else
+            {
+                Debug.LogWarning("Nincs PlayerWallet a játékoson!");
+            }
+        }
+        // SEBZÉS NÖVELÉS
+        else if (itemName == "DamagePotion")
+        {
+            var powerUpScript = FindObjectOfType<DamagePowerUp>();
+            if (powerUpScript != null)
+            {
+                powerUpScript.ActivatePowerUp(amount: 10, duration: 10f);
+            }
+        }
     }
 
     public string GetDescription()
     {
-        return "Pick up: " + itemName;
+        return "Felvétel: " + itemName;
     }
 }

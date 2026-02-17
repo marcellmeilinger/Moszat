@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1238464043908383396
+--- !u!1 &4178108595895065112
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6672555254478390991}
-  - component: {fileID: 6438938350688933949}
-  - component: {fileID: 3607776275110277723}
-  - component: {fileID: 5763048824848005741}
-  m_Layer: 8
-  m_Name: HP Potion
+  - component: {fileID: 4344475290077310795}
+  - component: {fileID: 5036918211655183571}
+  - component: {fileID: 2967512752124867641}
+  - component: {fileID: 5809036164390545641}
+  m_Layer: 9
+  m_Name: Damage Potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6672555254478390991
+--- !u!4 &4344475290077310795
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1238464043908383396}
+  m_GameObject: {fileID: 4178108595895065112}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.05297, y: -0.69, z: 0}
+  m_LocalPosition: {x: 5.05297, y: -2.92, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6438938350688933949
+--- !u!212 &5036918211655183571
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1238464043908383396}
+  m_GameObject: {fileID: 4178108595895065112}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -79,12 +79,12 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1692135801
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300204, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
-  m_Color: {r: 0.4001094, g: 0.9308176, b: 0.12001101, a: 1}
+  m_Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,13 +93,13 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &3607776275110277723
+--- !u!61 &2967512752124867641
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1238464043908383396}
+  m_GameObject: {fileID: 4178108595895065112}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -139,17 +139,17 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.21875, y: 0.3125}
   m_EdgeRadius: 0
---- !u!114 &5763048824848005741
+--- !u!114 &5809036164390545641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1238464043908383396}
+  m_GameObject: {fileID: 4178108595895065112}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c58ba060a5a7444facbdf67788c07ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
-  itemName: Potion
+  itemName: DamagePotion
   value: 20
