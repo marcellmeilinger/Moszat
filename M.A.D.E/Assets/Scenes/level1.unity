@@ -548,6 +548,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Background_sys_lvl1
       objectReference: {fileID: 0}
+    - target: {fileID: 4169881061952375401, guid: c58f6a8dd4b912544a9d3642774de4d1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -36.76
+      objectReference: {fileID: 0}
     - target: {fileID: 5610633006010603793, guid: c58f6a8dd4b912544a9d3642774de4d1, type: 3}
       propertyPath: cam
       value: 
