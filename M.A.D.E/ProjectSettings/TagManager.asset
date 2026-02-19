@@ -11,10 +11,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground
-  - enemy
   - ground
-  - obstacles
+  - enemy
+  - Ground
+  - interactable
   - 
   - 
   - 
@@ -42,13 +42,13 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: mountain
-    uniqueID: 3278281859
+    uniqueID: 1393924979
     locked: 0
   - name: forest
-    uniqueID: 1274535827
+    uniqueID: 898157995
     locked: 0
   - name: forest_2
-    uniqueID: 2452770207
+    uniqueID: 1590795075
     locked: 0
   - name: cave
     uniqueID: 3768774105
@@ -60,13 +60,16 @@ TagManager:
     uniqueID: 1136649761
     locked: 0
   - name: tree
-    uniqueID: 4247465981
+    uniqueID: 3352858307
+    locked: 0
+  - name: objects
+    uniqueID: 1692135801
     locked: 0
   - name: player
-    uniqueID: 1775429761
+    uniqueID: 3336012073
     locked: 0
   - name: forground
-    uniqueID: 2182222885
+    uniqueID: 2684088331
     locked: 0
   m_RenderingLayers:
   - Default
