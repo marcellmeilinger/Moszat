@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1326102901635362633}
   - component: {fileID: 7274403062250951062}
   - component: {fileID: 479892888493192945}
+  - component: {fileID: 321701666710707227}
   m_Layer: 0
   m_Name: Warrior
   m_TagString: Player
@@ -33,7 +34,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.008, y: -0.096, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5991060357499259340}
   - {fileID: 3454112283685745034}
@@ -161,9 +162,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WarriorMovement
   speed: 2
   jumpForce: 3.5
-  maxHealth: 100
-  currentHealth: 0
-  healthSlider: {fileID: 0}
   attackPoint: {fileID: 5991060357499259340}
   attackRange: 0.3
   enemyLayers:
@@ -354,6 +352,25 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.28, y: 0.45}
   m_Direction: 0
+--- !u!114 &321701666710707227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943437563167410232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6fad39007a0a6c48a8d0908b5a7647b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WarriorHealth
+  maxHealth: 100
+  currentHealth: 0
+  healthSlider: {fileID: 0}
+  warriorHealthbarCanvas: {fileID: 0}
+  deathScreenUI: {fileID: 0}
+  damageColor: {r: 1, g: 0, b: 0, a: 1}
+  flashDuration: 0.15
 --- !u!1 &2727817390687639498
 GameObject:
   m_ObjectHideFlags: 0
