@@ -5,12 +5,12 @@ using UnityEngine.InputSystem;
 public class WarriorMovement : MonoBehaviour
 {
     [Header("Mozgás Beállítások")]
-    public float speed = 5f;
-    public float jumpForce = 12f;
+    public float speed = 4f;
+    public float jumpForce = 6.5f;
 
     private Rigidbody2D rb;
     private Animator anim;
-    private WarriorHealth health; // Referencia a másik szkriptre
+    private WarriorHealth health;
 
     private float moveInput;
     private bool isGrounded;
@@ -21,6 +21,12 @@ public class WarriorMovement : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
     public int attackDamage = 20;
+
+    // --- ÚJ VÁLTOZÓK A SPAM ELLEN ---
+    public float attackCooldown = 0.6f; // Ennyi másodpercet kell várni két ütés között
+    private float nextAttackTime = 0f;  // Belső számláló
+
+    [Header("Föld Érzékelés")]
     public Transform groundCheck;
     public float checkRadius = 0.2f;
     public LayerMask whatIsGround;
@@ -29,7 +35,7 @@ public class WarriorMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        health = GetComponent<WarriorHealth>(); // Megkeressük a Health szkriptet
+        health = GetComponent<WarriorHealth>();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -52,26 +58,28 @@ public class WarriorMovement : MonoBehaviour
     {
         if (health.IsDead() || Time.timeScale == 0f) return;
 
-        // Csak akkor támadjon, ha az egér NEM UI elem felett van (új módszer)
         if (context.performed)
         {
             bool isOverUI = false;
             if (EventSystem.current != null)
             {
-                // Ez a verzió biztosabb az új Input System-mel
                 isOverUI = EventSystem.current.IsPointerOverGameObject();
             }
 
-            if (!isOverUI && isGrounded && !isAttacking)
+            // --- ITT VIZSGÁLJUK A COOLDOWNT IS (Time.time >= nextAttackTime) ---
+            if (!isOverUI && isGrounded && !isAttacking && Time.time >= nextAttackTime)
             {
                 isAttacking = true;
                 rb.linearVelocity = Vector2.zero;
                 anim.SetTrigger("attack");
+
+                // Beállítjuk, mikor üthet legközelebb!
+                nextAttackTime = Time.time + attackCooldown;
             }
         }
     }
 
-    public void HitEnemy() // Ezt hívja az Animation Event
+    public void HitEnemy()
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
@@ -92,19 +100,35 @@ public class WarriorMovement : MonoBehaviour
         if (!isAttacking)
         {
             anim.SetBool("isRunning", Mathf.Abs(moveInput) > 0.01f);
-            if (moveInput != 0) transform.localScale = new Vector3(Mathf.Sign(moveInput), 1, 1);
+            if (moveInput != 0)
+            {
+                float targetScale = 4f;
+                transform.localScale = new Vector3(Mathf.Sign(moveInput) * targetScale, targetScale, 1);
+            }
         }
 
         anim.SetFloat("yVelocity", rb.linearVelocity.y);
         anim.SetBool("isGrounded", isGrounded);
-
-        // Teszteléshez (K gomb)
-        if (Keyboard.current.kKey.wasPressedThisFrame) health.TakeDamage(10);
     }
 
     void FixedUpdate()
     {
         if (health.IsDead() || Time.timeScale == 0f) return;
         if (!isAttacking) rb.linearVelocity = new Vector2(moveInput * speed, rb.linearVelocity.y);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
+        }
+
+        if (attackPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        }
     }
 }

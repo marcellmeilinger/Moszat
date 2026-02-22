@@ -134,16 +134,13 @@ public class ShieldEnemyAI : MonoBehaviour
     {
         if (attackerTransform == null)
         {
-            Debug.LogError("HIBA: A script nem találja a támadót (null)!");
+           
             return false;
         }
 
         float dirToPlayer = attackerTransform.position.x - transform.position.x;
 
-        Debug.Log($"---------------- DIAGNOSZTIKA ----------------");
-        Debug.Log($"Én (Ellenség) erre nézek: {(isFacingRight ? "JOBBRA" : "BALRA")}");
-        Debug.Log($"A Játékos tõlem erre van: {(dirToPlayer > 0 ? "JOBBRA" : "BALRA")} (Érték: {dirToPlayer})");
-
+      
         bool kivedte = false;
 
         if (isFacingRight)
@@ -155,8 +152,7 @@ public class ShieldEnemyAI : MonoBehaviour
             if (dirToPlayer < 0) kivedte = true;
         }
 
-        Debug.Log($"ÍTÉLET: {(kivedte ? "KIVÉDTE (Parry)" : "BEMENT (Sebzés)")}");
-        Debug.Log($"----------------------------------------------");
+      
 
         return kivedte;
     }
@@ -166,7 +162,7 @@ public class ShieldEnemyAI : MonoBehaviour
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.5f)
         {
-            PlayerHP php = player.GetComponent<PlayerHP>();
+            WarriorHealth php = player.GetComponent<WarriorHealth>();
             if (php != null) php.TakeDamage(damageAmount);
         }
     }

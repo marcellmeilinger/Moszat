@@ -29,11 +29,23 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
 
+        BossCharged bossAI = GetComponent<BossCharged>();
+
+        if (bossAI != null) 
+        {
+        
+            if (bossAI.IsVulnerable() == false)
+            {
+                Debug.Log("BOSS PÁNCÉL! (Nem szédül -> Nem sebzõdik)");
+     
+                return;
+            }
+        }
+  
         ShieldEnemyAI shieldAI = GetComponent<ShieldEnemyAI>();
 
         if (shieldAI != null)
         {
-         
             Debug.Log("Pajzsos AI észlelve! Ellenõrzés...");
 
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -41,7 +53,7 @@ public class EnemyHealth : MonoBehaviour
             {
                 if (shieldAI.ShouldBlockDamage(player.transform))
                 {
-                    Debug.Log(">>> SIKERES VÉDÉS! <<<");
+                    Debug.Log(">>> SIKERES VÉDÉS! (Pajzs) <<<");
                     return;
                 }
             }
@@ -50,11 +62,7 @@ public class EnemyHealth : MonoBehaviour
                 Debug.LogWarning("HIBA: Nem találom a játékost (Nincs 'Player' Tag?)");
             }
         }
-        else
-        {
-          
-        }
-
+      
 
         currentHealth -= damage;
 
@@ -71,7 +79,11 @@ public class EnemyHealth : MonoBehaviour
         }
         else
         {
-            anim.SetTrigger("hurt");
+         
+            if (bossAI == null)
+            {
+                anim.SetTrigger("hurt");
+            }
         }
     }
 
@@ -82,12 +94,24 @@ public class EnemyHealth : MonoBehaviour
 
         if (GetComponent<EnemyAI>() != null) GetComponent<EnemyAI>().enabled = false;
         if (GetComponent<ShieldEnemyAI>() != null) GetComponent<ShieldEnemyAI>().enabled = false;
+        if (GetComponent<BossCharged>() != null) GetComponent<BossCharged>().enabled = false;
 
-        GetComponent<Collider2D>().enabled = false;
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
+        anim.SetBool("isStunned", false);
+        anim.SetBool("isWalking", false);
+
+        GetComponent<Collider2D>().enabled = false;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic; 
+        }
+
         anim.SetTrigger("die");
+
         this.enabled = false;
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 2f);
     }
 }
