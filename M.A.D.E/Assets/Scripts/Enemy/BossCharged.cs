@@ -131,8 +131,8 @@ public class BossCharged : MonoBehaviour
         if (hasAttacked) return;
         hasAttacked = true;
 
-        PlayerHP php = victim.GetComponent<PlayerHP>();
-        if (php == null) php = victim.GetComponentInParent<PlayerHP>();
+        WarriorHealth php = victim.GetComponent<WarriorHealth>();
+        if (php == null) php = victim.GetComponentInParent<WarriorHealth>();
 
         if (php != null)
         {
@@ -154,7 +154,7 @@ public class BossCharged : MonoBehaviour
 
     IEnumerator ImpactRoutine()
     {
-        currentState = State.Impact; // Ebben az állapotban a FixedUpdate nullázza a sebességet
+        currentState = State.Impact;
         rb.linearVelocity = Vector2.zero;
         if (hitBox != null) hitBox.SetActive(false);
         SetColor(Color.white);

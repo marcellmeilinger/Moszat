@@ -108,4 +108,21 @@ public class WarriorHealth : MonoBehaviour
     }
 
     public bool IsDead() => isDead;
+
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+
+        currentHealth += amount;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        if (healthSlider != null)
+        {
+            healthSlider.value = currentHealth;
+        }
+    }
 }
