@@ -152,8 +152,8 @@ public class EnemyAI : MonoBehaviour
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.5f)
         {
-            PlayerHP php = player.GetComponent<PlayerHP>();
-            if (php != null) php.TakeDamage(damageAmount);
+            WarriorHealth warriorHealth = player.GetComponent<WarriorHealth>();
+            if (warriorHealth != null) warriorHealth.TakeDamage(damageAmount);
         }
     }
     void HandleObstacles()
