@@ -18,11 +18,11 @@ public class PoisonPotion : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         // Megkeresi a játékost bárhol is van
-        var playerHealth = FindObjectOfType<PlayerHealth>();
+        var warriorHealth = UnityEngine.Object.FindAnyObjectByType<WarriorHealth>();
 
-        if (playerHealth != null)
+        if (warriorHealth != null)
         {
-            playerHealth.TakeDamage(damageAmount);
+            warriorHealth.TakeDamage(damageAmount);
             Debug.Log("Láda csapda! - " + damageAmount + " HP");
         }
 
