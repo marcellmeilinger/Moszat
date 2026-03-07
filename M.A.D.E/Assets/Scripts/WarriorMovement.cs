@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class WarriorMovement : MonoBehaviour
 {
-    [Header("Mozgás Beállítások")]
+    [Header("Movement Settings")]
     public float speed = 4f;
     public float jumpForce = 6.5f;
 
@@ -15,18 +15,18 @@ public class WarriorMovement : MonoBehaviour
     private float moveInput;
     private bool isGrounded;
     private bool isAttacking = false;
+    private bool isPointerOverUI = false;
 
-    [Header("Támadás & Check")]
+    [Header("Attack & Check")]
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
     public int attackDamage = 20;
 
-    // --- ÚJ VÁLTOZÓK A SPAM ELLEN ---
-    public float attackCooldown = 0.6f; // Ennyi másodpercet kell várni két ütés között
-    private float nextAttackTime = 0f;  // Belső számláló
+    public float attackCooldown = 0.6f;
+    private float nextAttackTime = 0f;
 
-    [Header("Föld Érzékelés")]
+    [Header("Ground check")]
     public Transform groundCheck;
     public float checkRadius = 0.2f;
     public LayerMask whatIsGround;
@@ -60,20 +60,13 @@ public class WarriorMovement : MonoBehaviour
 
         if (context.performed)
         {
-            bool isOverUI = false;
-            if (EventSystem.current != null)
-            {
-                isOverUI = EventSystem.current.IsPointerOverGameObject();
-            }
-
-            // --- ITT VIZSGÁLJUK A COOLDOWNT IS (Time.time >= nextAttackTime) ---
-            if (!isOverUI && isGrounded && !isAttacking && Time.time >= nextAttackTime)
+         
+            if (!isPointerOverUI && isGrounded && !isAttacking && Time.time >= nextAttackTime)
             {
                 isAttacking = true;
                 rb.linearVelocity = Vector2.zero;
                 anim.SetTrigger("attack");
 
-                // Beállítjuk, mikor üthet legközelebb!
                 nextAttackTime = Time.time + attackCooldown;
             }
         }
@@ -94,6 +87,17 @@ public class WarriorMovement : MonoBehaviour
     void Update()
     {
         if (health.IsDead() || Time.timeScale == 0f) return;
+
+        if (EventSystem.current != null)
+        {
+            isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+        }
+
+     
+        if (isAttacking && Time.time >= nextAttackTime)
+        {
+            isAttacking = false;
+        }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 

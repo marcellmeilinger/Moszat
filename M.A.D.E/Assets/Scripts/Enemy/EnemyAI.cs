@@ -158,14 +158,25 @@ public class EnemyAI : MonoBehaviour
     }
     void HandleObstacles()
     {
+        // Ha épp esik a levegõben, ne próbáljon lépcsõzni
         if (Mathf.Abs(rb.linearVelocity.y) > 0.1f) return;
+
         Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+
+        // Kilõjük a két sugarat (láb és térd/szem)
         RaycastHit2D hitLow = Physics2D.Raycast(footPoint.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D hitHigh = Physics2D.Raycast(eyePoint.position, direction, checkDistance, obstacleLayer);
+
+        // --- CSAK A FELMENÉS LOGIKÁJA ---
+        // Ha a láb (Low) akadályba ütközik, de a térd/szem (High) nem, akkor az egy lépcsõ:
         if (hitLow.collider != null && hitHigh.collider == null)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            // Adunk neki egy pici "fel" sebességet (pl. 5f), hogy rácsússzon a lépcsõre
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f);
         }
+        // ---------------------------------
+
+        // Ha viszont magas a fal (mindkettõ falat ér), akkor forduljon meg (ahogy eddig is tette)
         else if (hitLow.collider != null && hitHigh.collider != null)
         {
             if (Vector2.Distance(transform.position, player.position) > chaseRange)
@@ -174,4 +185,6 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
+
+
 }

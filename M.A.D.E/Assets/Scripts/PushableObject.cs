@@ -8,7 +8,7 @@ public class PushableObject : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
     }
 
     void Update()
@@ -19,7 +19,7 @@ public class PushableObject : MonoBehaviour
         }
         else
         {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
