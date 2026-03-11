@@ -1,21 +1,17 @@
 using UnityEngine;
-using UnityEngine.Audio; // Az AudioMixer kezeléséhez
-using UnityEngine.UI;    // A Slider-ekhez
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class StartMenuManager : MonoBehaviour
 {
     [Header("UI Panel Referenciák")]
-    [Tooltip("A teljes Canvas, amit ki kell kapcsolni a játék indulásakor.")]
     public GameObject fullStartCanvas;
-
-    [Tooltip("A főmenü gombjait tartalmazó tároló (pl. ButtonContainer).")]
     public GameObject buttonContainer;
-
-    [Tooltip("A különálló Settings/Options kőtábla panel.")]
     public GameObject settingsPanel;
-
-    [Tooltip("A játék közbeni HUD/HP csík, ami csak induláskor jelenik meg.")]
     public GameObject healthHUD;
+
+    [Header("Narratív Rendszer")]
+    public IntroManager introManager; // Ide húzd be az IntroManager szkriptet
 
     [Header("Audio Beállítások")]
     public AudioMixer mainMixer;
@@ -23,13 +19,9 @@ public class StartMenuManager : MonoBehaviour
 
     void Start()
     {
-        // Alaphelyzetbe állítjuk a menüt indításkor
         ShowStartMenu();
     }
 
-    /// <summary>
-    /// Visszaállítja a menüt az alapállapotba (Gombok látszanak, Settings nem).
-    /// </summary>
     public void ShowStartMenu()
     {
         if (fullStartCanvas != null) fullStartCanvas.SetActive(true);
@@ -37,61 +29,63 @@ public class StartMenuManager : MonoBehaviour
         if (settingsPanel != null) settingsPanel.SetActive(false);
         if (healthHUD != null) healthHUD.SetActive(false);
 
-        // Idő megállítása és egér megjelenítése
         Time.timeScale = 0f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
-    // --- BEÁLLÍTÁSOK ABLAK KEZELÉSE ---
-
     public void OpenSettings()
     {
-        Debug.Log("Settings megnyitása...");
         if (buttonContainer != null) buttonContainer.SetActive(false);
         if (settingsPanel != null) settingsPanel.SetActive(true);
     }
 
     public void CloseSettings()
     {
-        Debug.Log("Vissza a főmenübe...");
         if (settingsPanel != null) settingsPanel.SetActive(false);
         if (buttonContainer != null) buttonContainer.SetActive(true);
     }
 
-    // --- JÁTÉK INDÍTÁSA ---
-
+    // Ezt hívja meg a START gomb
     public void StartGame()
     {
-        Debug.Log("Játék indítása!");
+        // 1. CSAK a gombokat rejtjük el, a Canvast NEM!
+        if (buttonContainer != null) buttonContainer.SetActive(false);
 
-        // 1. Kikapcsoljuk a teljes menü rendszert háttérrel együtt
-        if (fullStartCanvas != null) fullStartCanvas.SetActive(false);
-
-        // 2. Bekapcsoljuk a játék közbeni felületet
-        if (healthHUD != null) healthHUD.SetActive(true);
-
-        // 3. Idő elindítása és egér elrejtése (opcionális a harchoz)
-        Time.timeScale = 1f;
-        // Cursor.visible = false; // Ha FPS/TPS, akkor kapcsold be
-        // Cursor.lockState = CursorLockMode.Locked;
+        // 2. Elindítjuk a narratívát (a Canvas maradjon aktív!)
+        if (introManager != null)
+        {
+            introManager.StartIntro();
+        }
+        else
+        {
+            ActualStartAfterIntro();
+        }
     }
 
-    // --- HANGERŐ SZABÁLYZÁS ---
+    public void ActualStartAfterIntro()
+    {
+        // 3. MOST kapcsoljuk ki a teljes Canvast (háttérrel együtt)
+        if (fullStartCanvas != null) fullStartCanvas.SetActive(false);
+
+        if (healthHUD != null) healthHUD.SetActive(true);
+
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     public void SetVolume(float volume)
     {
         if (mainMixer != null)
         {
-            // Logaritmikus hangerő skálázás (-80dB-től 20dB-ig)
             float dbValue = volume > 0 ? Mathf.Log10(volume) * 20f : -80f;
-            mainMixer.SetFloat("MasterVolume", dbValue);
+            mainMixer.SetFloat("MasterVolume", dbValue); // [cite: 65]
         }
     }
 
     public void QuitGame()
     {
-        Debug.Log("Kilépés a játékból...");
-        Application.Quit();
+        Application.Quit(); // [cite: 139]
     }
 }
