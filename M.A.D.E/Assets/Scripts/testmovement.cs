@@ -6,8 +6,7 @@ public class testmovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float jumpForce = 14f;
 
-    // ÚJ VÁLTOZÓ: 0 és 1 közötti szám. Minél kisebb, annál jobban levágja az ugrást elengedéskor.
-    // 0.5f = felére csökken a lendület (kisebb ugrás).
+    // 0 és 1 közötti szám. Minél kisebb, annál jobban levágja az ugrást elengedéskor.
     [Range(0f, 1f)][SerializeField] private float jumpCutoff = 0.5f;
 
     [SerializeField] private LayerMask groundLayer;
@@ -16,10 +15,16 @@ public class testmovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private float horizontalInput;
 
+    // 🔹 Eltároljuk az eredeti méretet
+    private float baseScale;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+
+        // Elmentjük az eredeti X scale értéket (pl. 2 ha 2x-es méretű)
+        baseScale = transform.localScale.x;
     }
 
     private void Update()
@@ -32,32 +37,37 @@ public class testmovement : MonoBehaviour
         else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
             horizontalInput = 1;
 
-        // 2. UGRÁS MECHANIKA (Változtatható magasság)
+        // 2. UGRÁS MECHANIKA
 
-        // A: Ugrás indítása (Space lenyomás)
+        // Ugrás indítása
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
 
-        // B: Ugrás levágása (Space elengedés) - EZ AZ ÚJ RÉSZ
+        // Ugrás levágása
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            // Ha éppen felfelé mozog a karakter (velocity.y > 0)
             if (rb.linearVelocity.y > 0)
             {
-                // Megszorozzuk a sebességet pl. 0.5-tel, így hirtelen lelassul
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutoff);
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    rb.linearVelocity.y * jumpCutoff
+                );
             }
         }
 
         // 3. FIZIKA ALKALMAZÁSA
         rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, rb.linearVelocity.y);
 
-        // 4. KARAKTER FORGATÁSA
+        // 4. KARAKTER TÜKRÖZÉSE (FIXELVE)
         if (horizontalInput != 0)
         {
-            transform.localScale = new Vector3(Mathf.Sign(horizontalInput), 1, 1);
+            transform.localScale = new Vector3(
+                Mathf.Sign(horizontalInput) * baseScale,
+                baseScale,
+                baseScale
+            );
         }
     }
 

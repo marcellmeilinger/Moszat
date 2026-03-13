@@ -21,8 +21,8 @@ public class LootItem : MonoBehaviour, IInteractable
         // Csak a Coin-t vesszük fel automatikusan!
         if (itemName == "Coin")
         {
-            // Megnézzük, hogy a játékos ment-e bele (van-e rajta PlayerWallet)
-            if (other.GetComponent<PlayerWallet>() != null || other.GetComponent<PlayerHealth>() != null)
+            // Megnézzük, hogy a játékos ment-e bele
+            if (other.CompareTag("Player"))
             {
                 PickUpItem();
             }
@@ -39,36 +39,32 @@ public class LootItem : MonoBehaviour, IInteractable
 
     private void ApplyEffect()
     {
-        // GYÓGYÍTÁS
+        // GYÓGYÍTÁS (Itt a WarriorHealth típust keressük!)
         if (itemName == "Potion")
         {
-            var playerHealth = FindObjectOfType<PlayerHealth>();
-            if (playerHealth != null)
+            WarriorHealth wh = UnityEngine.Object.FindAnyObjectByType<WarriorHealth>();
+            if (wh != null)
             {
-                playerHealth.Heal(value);
-                Debug.Log("Játékos gyógyítva: " + value);
+                wh.Heal(value);
+                Debug.Log("Warrior gyógyítva: " + value);
             }
         }
-        // PÉNZ (Itt használjuk a PlayerWalletet!)
+        // PÉNZ
         else if (itemName == "Coin")
         {
-            var wallet = FindObjectOfType<PlayerWallet>();
+            PlayerWallet wallet = UnityEngine.Object.FindAnyObjectByType<PlayerWallet>();
             if (wallet != null)
             {
-                wallet.AddCoin(value); // Hozzáadjuk a pénztárcához
-            }
-            else
-            {
-                Debug.LogWarning("Nincs PlayerWallet a játékoson!");
+                wallet.AddCoin(value);
             }
         }
         // SEBZÉS NÖVELÉS
         else if (itemName == "DamagePotion")
         {
-            var powerUpScript = FindObjectOfType<DamagePowerUp>();
-            if (powerUpScript != null)
+            DamagePowerUp powerUp = UnityEngine.Object.FindAnyObjectByType<DamagePowerUp>();
+            if (powerUp != null)
             {
-                powerUpScript.ActivatePowerUp(amount: 10, duration: 10f);
+                powerUp.ActivatePowerUp(value, 10f);
             }
         }
     }
