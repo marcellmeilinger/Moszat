@@ -49,3 +49,5 @@ Desktop.ini
 # --- Crashlytics & Verziókövetés ---
 crashlytics-build.properties
 .collabignore
+Docs
+specification.txt

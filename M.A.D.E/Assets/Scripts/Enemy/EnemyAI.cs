@@ -158,14 +158,18 @@ public class EnemyAI : MonoBehaviour
     }
     void HandleObstacles()
     {
-        if (Mathf.Abs(rb.linearVelocity.y) > 0.1f) return;
+
         Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
+
         RaycastHit2D hitLow = Physics2D.Raycast(footPoint.position, direction, checkDistance, obstacleLayer);
         RaycastHit2D hitHigh = Physics2D.Raycast(eyePoint.position, direction, checkDistance, obstacleLayer);
+
         if (hitLow.collider != null && hitHigh.collider == null)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f);
         }
+    
+
         else if (hitLow.collider != null && hitHigh.collider != null)
         {
             if (Vector2.Distance(transform.position, player.position) > chaseRange)
@@ -174,4 +178,19 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
+    private void OnDrawGizmosSelected()
+    {
+        if (footPoint != null && eyePoint != null)
+        {
+            Vector2 direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            if (spriteFacesLeft) direction = -direction;
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(footPoint.position, direction * checkDistance);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(eyePoint.position, direction * checkDistance);
+        }
+    }
+
 }

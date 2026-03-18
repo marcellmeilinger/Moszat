@@ -60,6 +60,9 @@ TagManager:
   - name: cave_3
     uniqueID: 1136649761
     locked: 0
+  - name: tree2
+    uniqueID: 918768855
+    locked: 0
   - name: tree
     uniqueID: 3352858307
     locked: 0
