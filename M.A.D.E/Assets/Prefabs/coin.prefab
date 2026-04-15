@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1426253592415427834}
   - component: {fileID: 6467982518652631116}
   - component: {fileID: 4479119364170473575}
+  - component: {fileID: 8322318743824896789}
   m_Layer: 0
   m_Name: coin
   m_TagString: Untagged
@@ -156,3 +157,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8322318743824896789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8953309357445959798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada858f52884d8942892f425135db6fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoinSoundOnly
+  pickupSound: {fileID: 8300000, guid: 26d1a103adc554949ab12f92746f10a4, type: 3}
