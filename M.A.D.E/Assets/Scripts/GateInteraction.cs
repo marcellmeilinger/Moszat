@@ -4,21 +4,21 @@ using System.Collections;
 
 /// <summary>
 /// Kezeli a kapukkal való interakciót. Ellenőrzi az érmék számát, 
-/// kezeli a nyitási animációt és a következő szintre lépést.
+/// kezeli a nyitási animációt és a következő szintre lépést az IInteractable interfészen keresztül.
 /// </summary>
 public class GateInteraction : MonoBehaviour, IInteractable
 {
     [Header("Gate Settings")]
-    [SerializeField] private int requiredCoins = 100;
+    public int requiredCoins = 100;
 
     [Header("UI Feedback")]
-    [SerializeField] private TextMeshProUGUI feedbackText;
-    [SerializeField] private float textDisplayTime = 3f;
+    public TextMeshProUGUI feedbackText;
+    public float textDisplayTime = 3f;
 
     private Animator anim;
 
     /// <summary>
-    /// Jelzi, hogy a kapu fizikailag kinyílt-e már.
+    /// Jelzi, hogy a kapu meg lett-e már nyitva.
     /// </summary>
     public bool isOpened { get; private set; } = false;
 
@@ -33,42 +33,41 @@ public class GateInteraction : MonoBehaviour, IInteractable
     }
 
     /// <summary>
-    /// Az interakció logikája. Ha zárva van, ellenőrzi a pénzt. Ha nyitva, szintet vált.
+    /// Az interakció logikája. A PlayerInteraction rendszer hívja meg az 'E' gomb lenyomásakor.
     /// </summary>
     public void Interact()
     {
-        // 1. ESET: A kapu még zárva van
         if (!isOpened)
         {
-            PlayerWallet wallet = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWallet>();
+            // Megkeressük a játékost és a pénztárcáját
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
 
-            if (wallet != null)
+            PlayerWallet playerWallet = player.GetComponent<PlayerWallet>();
+
+            if (playerWallet != null)
             {
-                if (wallet.currentCoins >= requiredCoins)
+                if (playerWallet.currentCoins >= requiredCoins)
                 {
-                    // Van elég pénz: Nyitás
                     anim.SetTrigger("Open");
                     isOpened = true;
-                    ShowFeedback("Kapu kinyílt!\nNyomj újra 'E'-t a belépéshez.");
+                    // Szöveg pontosan a beérkező kód alapján
+                    ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
                 }
                 else
                 {
-                    // Nincs elég pénz: Hibaüzenet
-                    int missingCoins = requiredCoins - wallet.currentCoins;
-                    ShowFeedback("Még kell " + missingCoins + " érme a nyitáshoz.");
+                    // Szöveg és ikon pontosan a beérkező kód alapján
+                    int missingCoins = requiredCoins - playerWallet.currentCoins;
+                    ShowFeedback("<sprite=0>" + missingCoins);
                 }
             }
         }
-        // 2. ESET: A kapu már nyitva van, a játékos újra megnyomja az E-t
         else
         {
+            // Ha már nyitva van, a következő interakció szintet vált
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.NextLevel();
-            }
-            else
-            {
-                Debug.LogWarning("LevelManager nem található a jelenetben!");
             }
         }
     }
@@ -90,18 +89,19 @@ public class GateInteraction : MonoBehaviour, IInteractable
         feedbackText.text = "";
     }
 
+    /// <summary>
+    /// A környezeti felirat, ami interakció előtt megjelenik.
+    /// </summary>
     public string GetDescription()
     {
         return isOpened ? "Enter Next Level" : "Open Gate";
     }
 
     /// <summary>
-    /// Itt fontos változtatás: akkor is interaktálhatónak kell maradnia, 
-    /// ha már nyitva van, hogy be lehessen lépni (NextLevel).
+    /// Meghatározza, hogy a kapu érzékelhető-e az interakciós rendszer számára.
     /// </summary>
     public bool CanInteract()
     {
-        // Mindig interaktálható, amíg a játékos el nem hagyja a szintet
         return true;
     }
 }
