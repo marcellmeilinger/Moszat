@@ -1,59 +1,107 @@
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 /// <summary>
-/// Kezeli a kapukkal való interakciót a játékos részéről.
-/// Megvalósítja az IInteractable interfészt, így a PlayerInteraction rendszeren keresztül vezérelhető.
+/// Kezeli a kapukkal való interakciót. Ellenőrzi az érmék számát, 
+/// kezeli a nyitási animációt és a következő szintre lépést.
 /// </summary>
 public class GateInteraction : MonoBehaviour, IInteractable
 {
-    /// <summary>
-    /// A kapu animációiért felelős komponens referenciája.
-    /// </summary>
+    [Header("Gate Settings")]
+    [SerializeField] private int requiredCoins = 100;
+
+    [Header("UI Feedback")]
+    [SerializeField] private TextMeshProUGUI feedbackText;
+    [SerializeField] private float textDisplayTime = 3f;
+
     private Animator anim;
 
     /// <summary>
-    /// Jelzi, hogy a kapu meg lett-e már nyitva. 
-    /// Az állapotot a vizuális visszajelző rendszer is figyeli.
+    /// Jelzi, hogy a kapu fizikailag kinyílt-e már.
     /// </summary>
-    public bool isOpened { get; private set; }
+    public bool isOpened { get; private set; } = false;
 
-    /// <summary>
-    /// Inicializálja az Animator komponenst a kezdéskor.
-    /// </summary>
     void Start()
     {
         anim = GetComponent<Animator>();
-    }
 
-    /// <summary>
-    /// Végrehajtja a kapu nyitását. Ezt a metódust a PlayerInteraction hívja meg.
-    /// </summary>
-    public void Interact()
-    {
-        if (!isOpened)
+        if (feedbackText != null)
         {
-            anim.SetTrigger("Open"); 
-            isOpened = true; 
-            Debug.Log("A kapu kinyílt.");
+            feedbackText.text = "";
         }
     }
 
     /// <summary>
-    /// Visszaadja a tárgy rövid leírását a UI számára.
+    /// Az interakció logikája. Ha zárva van, ellenőrzi a pénzt. Ha nyitva, szintet vált.
     /// </summary>
-    /// <returns>A kapu megnevezése.</returns>
+    public void Interact()
+    {
+        // 1. ESET: A kapu még zárva van
+        if (!isOpened)
+        {
+            PlayerWallet wallet = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWallet>();
+
+            if (wallet != null)
+            {
+                if (wallet.currentCoins >= requiredCoins)
+                {
+                    // Van elég pénz: Nyitás
+                    anim.SetTrigger("Open");
+                    isOpened = true;
+                    ShowFeedback("Kapu kinyílt!\nNyomj újra 'E'-t a belépéshez.");
+                }
+                else
+                {
+                    // Nincs elég pénz: Hibaüzenet
+                    int missingCoins = requiredCoins - wallet.currentCoins;
+                    ShowFeedback("Még kell " + missingCoins + " érme a nyitáshoz.");
+                }
+            }
+        }
+        // 2. ESET: A kapu már nyitva van, a játékos újra megnyomja az E-t
+        else
+        {
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.NextLevel();
+            }
+            else
+            {
+                Debug.LogWarning("LevelManager nem található a jelenetben!");
+            }
+        }
+    }
+
+    private void ShowFeedback(string message)
+    {
+        if (feedbackText != null)
+        {
+            StopAllCoroutines();
+            StartCoroutine(DisplayText(message));
+        }
+        Debug.Log(message);
+    }
+
+    IEnumerator DisplayText(string message)
+    {
+        feedbackText.text = message;
+        yield return new WaitForSeconds(textDisplayTime);
+        feedbackText.text = "";
+    }
+
     public string GetDescription()
     {
-        return "Gate";
+        return isOpened ? "Enter Next Level" : "Open Gate";
     }
 
     /// <summary>
-    /// Ellenőrzi, hogy a kapu jelenleg interaktálható-e.
-    /// Ha a kapu már nyitva van, a felirat nem jelenik meg többet.
+    /// Itt fontos változtatás: akkor is interaktálhatónak kell maradnia, 
+    /// ha már nyitva van, hogy be lehessen lépni (NextLevel).
     /// </summary>
-    /// <returns>Igaz, ha a kapu még zárva van.</returns>
     public bool CanInteract()
     {
-        return !isOpened; // [cite: 70]
+        // Mindig interaktálható, amíg a játékos el nem hagyja a szintet
+        return true;
     }
 }
