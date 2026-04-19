@@ -2,9 +2,9 @@ using UnityEngine;
 
 /// <summary>
 /// Kezeli a kapukkal való interakciót a játékos részéről.
-/// Figyeli a játékos közelségét és a gombnyomást ('E') az animáció elindításához.
+/// Megvalósítja az IInteractable interfészt, így a PlayerInteraction rendszeren keresztül vezérelhető.
 /// </summary>
-public class GateInteraction : MonoBehaviour
+public class GateInteraction : MonoBehaviour, IInteractable
 {
     /// <summary>
     /// A kapu animációiért felelős komponens referenciája.
@@ -12,17 +12,13 @@ public class GateInteraction : MonoBehaviour
     private Animator anim;
 
     /// <summary>
-    /// Igaz, ha a játékos a kapuhoz tartozó Trigger területen belül tartózkodik.
+    /// Jelzi, hogy a kapu meg lett-e már nyitva. 
+    /// Az állapotot a vizuális visszajelző rendszer is figyeli.
     /// </summary>
-    private bool isPlayerNear;
+    public bool isOpened { get; private set; }
 
     /// <summary>
-    /// Jelzi, hogy a kapu meg lett-e már nyitva.
-    /// </summary>
-    private bool isOpened;
-
-    /// <summary>
-    /// Unity Start metódus, Inicializálja az Animator komponenst.
+    /// Inicializálja az Animator komponenst a kezdéskor.
     /// </summary>
     void Start()
     {
@@ -30,40 +26,34 @@ public class GateInteraction : MonoBehaviour
     }
 
     /// <summary>
-    /// Képkockánként lefutó frissítés.
-    /// Ellenőrzi, hogy a játékos a közelben van-e, a kapu még zárva van, 
-    /// és lenyomta-e a megfelelő gombot ('E') a nyitáshoz.
+    /// Végrehajtja a kapu nyitását. Ezt a metódust a PlayerInteraction hívja meg.
     /// </summary>
-    void Update()
+    public void Interact()
     {
-        if (isPlayerNear && !isOpened && Input.GetKeyDown(KeyCode.E))
+        if (!isOpened)
         {
-            anim.SetTrigger("Open");
-            isOpened = true;
+            anim.SetTrigger("Open"); 
+            isOpened = true; 
+            Debug.Log("A kapu kinyílt.");
         }
     }
 
     /// <summary>
-    /// Akkor hívódik meg, ha egy másik 2D fizikai objektum belép a trigger zónába.
+    /// Visszaadja a tárgy rövid leírását a UI számára.
     /// </summary>
-    /// <param name="collision">Az ütközésben részt vevő Collider adatai.</param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    /// <returns>A kapu megnevezése.</returns>
+    public string GetDescription()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = true;
-        }
+        return "Gate";
     }
 
     /// <summary>
-    /// Akkor hívódik meg, ha egy másik 2D fizikai objektum elhagyja a trigger zónát.
+    /// Ellenőrzi, hogy a kapu jelenleg interaktálható-e.
+    /// Ha a kapu már nyitva van, a felirat nem jelenik meg többet.
     /// </summary>
-    /// <param name="collision">A trigger zónát elhagyó Collider adatai.</param>
-    private void OnTriggerExit2D(Collider2D collision)
+    /// <returns>Igaz, ha a kapu még zárva van.</returns>
+    public bool CanInteract()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-        }
+        return !isOpened; // [cite: 70]
     }
 }

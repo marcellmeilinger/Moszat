@@ -15,6 +15,11 @@ public class LootItem : MonoBehaviour, IInteractable
         PickUpItem();
     }
 
+    public bool CanInteract()
+    {
+        return true; // Csak akkor interaktálható, ha még nincs kinyitva
+    }
+
     // --- 2. AUTOMATIKUS FELVÉTEL (Sétálásra - Pénzhez) ---
     private void OnTriggerEnter2D(Collider2D other)
     {
