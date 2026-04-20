@@ -1,40 +1,27 @@
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// A játékos környezettel való kapcsolatáért felelős osztály.
-/// Ez kezeli a ládák kinyitását, használati tárgyak aktiválását és az érmék felvételét.
+/// Kezeli a vizuális visszajelzést és az interakciók indítását. [cite: 93]
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
     [Header("Settings")]
-    
-    /// <summary>
-    /// A sugár mérete, amilyen távolságból a játékos képes interaktálni a tárgyakkal.
-    /// </summary>
     [SerializeField] private float interactionRange = 2f;
-    
-    /// <summary>
-    /// Az a fizikai réteg (Layer), amelyen az interaktálható elemek helyezkednek el.
-    /// </summary>
     [SerializeField] private LayerMask interactableLayer;
 
-    [Header("Buttons")]
-    
-    /// <summary>
-    /// Az általános interakciót elindító gomb (pl. láda nyitás, kapu).
-    /// </summary>
-    [SerializeField] private KeyCode interactKey = KeyCode.E; 
-    
-    /// <summary>
-    /// A tárgyak felvételét kezdeményező gomb (pl. érmék, italok).
-    /// </summary>
-    [SerializeField] private KeyCode pickupKey = KeyCode.F;  
+    [Header("UI Reference")]
+    [SerializeField] private GameObject interactionPrompt;
 
-    /// <summary>
-    /// Képkockánként lefutó frissítés. Figyeli az interakciós és a felvétel gombok lenyomását.
-    /// </summary>
+    [Header("Buttons")]
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private KeyCode pickupKey = KeyCode.F;
+
     private void Update()
     {
+        UpdateInteractionUI();
+
         if (Input.GetKeyDown(interactKey))
         {
             TryInteract(isPickupAction: false);
@@ -46,28 +33,54 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Megpróbál interakcióba lépni a hatósugáron belül lévő, IInteractable interfésszel 
-    /// rendelkező objektumokkal. Különbséget tesz a felvétel (LootItem) és az általános használat között.
-    /// </summary>
-    /// <param name="isPickupAction">Igaz, ha a játékos a felvétel (F) gombot nyomta meg.</param>
+    private void UpdateInteractionUI()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, interactionRange, interactableLayer);
+
+        if (hit != null)
+        {
+            IInteractable interactable = hit.GetComponentInParent<IInteractable>();
+
+            if (interactable != null && interactable.CanInteract())
+            {
+                interactionPrompt.SetActive(true);
+                var textComponent = interactionPrompt.GetComponent<TextMeshProUGUI>();
+
+                bool isLoot = hit.GetComponentInParent<LootItem>() != null;
+                // ÚJ: Ellenőrizzük, hogy Pushable-e
+                bool isPushable = hit.GetComponentInParent<PushableObject>() != null;
+
+                if (isLoot)
+                    textComponent.text = "Press 'F' to pickup";
+                else if (isPushable)
+                    textComponent.text = "Hold 'E' to push"; // Speciális felirat a ládához
+                else
+                    textComponent.text = "Press 'E' to interact";
+            }
+        }
+        else
+        {
+            interactionPrompt.SetActive(false);
+        }
+    }
+
     private void TryInteract(bool isPickupAction)
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, interactionRange, interactableLayer);
 
         foreach (var hit in hitColliders)
         {
-            IInteractable interactable = hit.GetComponent<IInteractable>();
+            IInteractable interactable = hit.GetComponentInParent<IInteractable>();
 
             if (interactable != null)
             {
-                bool isLootItem = hit.GetComponent<LootItem>() != null;
+                // Loot típus ellenőrzése a megfelelő gombhoz [cite: 56, 137]
+                bool isLootItem = hit.GetComponentInParent<LootItem>() != null;
 
-          
                 if (isPickupAction && isLootItem)
                 {
                     interactable.Interact();
-                    return; 
+                    return;
                 }
                 else if (!isPickupAction && !isLootItem)
                 {

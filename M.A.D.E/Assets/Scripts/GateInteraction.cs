@@ -2,18 +2,25 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class GateInteraction : MonoBehaviour
+/// <summary>
+/// Kezeli a kapukkal való interakciót. Ellenőrzi az érmék számát, 
+/// kezeli a nyitási animációt és a következő szintre lépést az IInteractable interfészen keresztül.
+/// </summary>
+public class GateInteraction : MonoBehaviour, IInteractable
 {
+    [Header("Gate Settings")]
     public int requiredCoins = 100;
 
-    [Header("UI Visszajelzés")]
+    [Header("UI Feedback")]
     public TextMeshProUGUI feedbackText;
     public float textDisplayTime = 3f;
 
     private Animator anim;
-    private bool isPlayerNear;
-    private bool isOpened = false;
-    private PlayerWallet playerWallet;
+
+    /// <summary>
+    /// Jelzi, hogy a kapu meg lett-e már nyitva.
+    /// </summary>
+    public bool isOpened { get; private set; } = false;
 
     void Start()
     {
@@ -25,33 +32,42 @@ public class GateInteraction : MonoBehaviour
         }
     }
 
-    void Update()
+    /// <summary>
+    /// Az interakció logikája. A PlayerInteraction rendszer hívja meg az 'E' gomb lenyomásakor.
+    /// </summary>
+    public void Interact()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (!isOpened)
         {
-            if (!isOpened)
+            // Megkeressük a játékost és a pénztárcáját
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+
+            PlayerWallet playerWallet = player.GetComponent<PlayerWallet>();
+
+            if (playerWallet != null)
             {
-                if (playerWallet != null)
+                if (playerWallet.currentCoins >= requiredCoins)
                 {
-                    if (playerWallet.currentCoins >= requiredCoins)
-                    {
-                        anim.SetTrigger("Open");
-                        isOpened = true;
-                        ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
-                    }
-                    else
-                    {
-                        int missingCoins = requiredCoins - playerWallet.currentCoins;
-                        ShowFeedback("<sprite=0>" + missingCoins);
-                    }
+                    anim.SetTrigger("Open");
+                    isOpened = true;
+                    // Szöveg pontosan a beérkező kód alapján
+                    ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
+                }
+                else
+                {
+                    // Szöveg és ikon pontosan a beérkező kód alapján
+                    int missingCoins = requiredCoins - playerWallet.currentCoins;
+                    ShowFeedback("<sprite=0>" + missingCoins);
                 }
             }
-            else
+        }
+        else
+        {
+            // Ha már nyitva van, a következő interakció szintet vált
+            if (LevelManager.Instance != null)
             {
-                if (LevelManager.Instance != null)
-                {
-                    LevelManager.Instance.NextLevel();
-                }
+                LevelManager.Instance.NextLevel();
             }
         }
     }
@@ -73,23 +89,19 @@ public class GateInteraction : MonoBehaviour
         feedbackText.text = "";
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    /// <summary>
+    /// A környezeti felirat, ami interakció előtt megjelenik.
+    /// </summary>
+    public string GetDescription()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = true;
-            playerWallet = collision.GetComponent<PlayerWallet>();
-        }
+        return isOpened ? "Enter Next Level" : "Open Gate";
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    /// <summary>
+    /// Meghatározza, hogy a kapu érzékelhető-e az interakciós rendszer számára.
+    /// </summary>
+    public bool CanInteract()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-            playerWallet = null;
-
-            if (feedbackText != null) feedbackText.text = "";
-        }
+        return true;
     }
 }

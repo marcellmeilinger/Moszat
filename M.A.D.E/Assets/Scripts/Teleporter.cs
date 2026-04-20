@@ -1,61 +1,54 @@
 using UnityEngine;
 
 /// <summary>
-/// Egy olyan kapu vagy zóna, amely egy meghatározott pontra teleportálja a belelépő játékost.
-/// Kétirányú teleporter funkciókat is betölthet, ha két ilyen objektum egymásra hivatkozik.
+/// Egy olyan kapu vagy zóna, amely egy meghatározott pontra teleportálja a játékost.
+/// Megvalósítja az IInteractable interfészt, így a PlayerInteraction rendszeren keresztül aktiválható.
 /// </summary>
-public class TwoWayTeleporter : MonoBehaviour
+public class TwoWayTeleporter : MonoBehaviour, IInteractable
 {
+    [Header("Teleport Settings")]
     /// <summary>
     /// A célállomás Unity Transform pozíciója, ahová a játékos kerül.
     /// </summary>
-    public Transform destination;
+    [SerializeField] private Transform destination;
 
     /// <summary>
-    /// Igaz, ha a játékos karaktere a teleporter zónájában van (2D Trigger).
+    /// Végrehajtja a teleportálást. A PlayerInteraction szkript hívja meg az 'E' gomb lenyomásakor.
     /// </summary>
-    private bool isPlayerNear;
-
-    /// <summary>
-    /// Belső hivatkozás az aktuálisan érzékelt játékos GameObject-re, hogy elérhető legyen számára az Update ciklusból áthelyezésre.
-    /// </summary>
-    private GameObject player;
-
-    /// <summary>
-    /// Képkockánként lefutó frissítés. Ha a játékos a zónában tartózkodik és megnyomja az 'E' gombot,
-    /// a játékos pozíciója felülíródik a célállomáséra.
-    /// </summary>
-    void Update()
+    public void Interact()
     {
-        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (destination != null)
         {
-            player.transform.position = destination.position;
+            // Megkeressük a játékost (mivel az interakciót ő indította, biztosan létezik)
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                player.transform.position = destination.position;
+                Debug.Log("Sikeres teleportálás a célpontra: " + destination.name);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Teleport hiba: Nincs célállomás (destination) beállítva!");
         }
     }
 
     /// <summary>
-    /// Fizikai trigger azonosítása. Ha a Player taggel ellátott objektum érkezik, beregisztrálja a közelségét.
+    /// Visszaadja a tárgy rövid leírását a UI számára.
     /// </summary>
-    /// <param name="collision">A teleporter zónát érintő Collider adatai.</param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    /// <returns>A teleporter megnevezése.</returns>
+    public string GetDescription()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = true;
-            player = collision.gameObject;
-        }
+        return "Teleporter";
     }
 
     /// <summary>
-    /// Fizikai trigger kilépés azonosítása. Alaphelyzetbe állítja az értékeket, miután a játékos távozott.
+    /// Meghatározza, hogy a teleporter jelenleg használható-e.
     /// </summary>
-    /// <param name="collision">A teleporter zónát elhagyó Collider adatai.</param>
-    private void OnTriggerExit2D(Collider2D collision)
+    /// <returns>Mindig igaz, mivel a teleporter korlátlanul használható.</returns>
+    public bool CanInteract()
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-            player = null;
-        }
+        // Ha a jövőben feltételhez kötnéd (pl. kell egy kulcs), itt tudod ellenőrizni.
+        return true;
     }
 }
