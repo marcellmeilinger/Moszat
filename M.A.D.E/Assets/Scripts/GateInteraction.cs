@@ -1,69 +1,107 @@
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 /// <summary>
-/// Kezeli a kapukkal való interakciót a játékos részéről.
-/// Figyeli a játékos közelségét és a gombnyomást ('E') az animáció elindításához.
+/// Kezeli a kapukkal való interakciót. Ellenőrzi az érmék számát, 
+/// kezeli a nyitási animációt és a következő szintre lépést az IInteractable interfészen keresztül.
 /// </summary>
-public class GateInteraction : MonoBehaviour
+public class GateInteraction : MonoBehaviour, IInteractable
 {
-    /// <summary>
-    /// A kapu animációiért felelős komponens referenciája.
-    /// </summary>
-    private Animator anim;
+    [Header("Gate Settings")]
+    public int requiredCoins = 100;
 
-    /// <summary>
-    /// Igaz, ha a játékos a kapuhoz tartozó Trigger területen belül tartózkodik.
-    /// </summary>
-    private bool isPlayerNear;
+    [Header("UI Feedback")]
+    public TextMeshProUGUI feedbackText;
+    public float textDisplayTime = 3f;
+
+    private Animator anim;
 
     /// <summary>
     /// Jelzi, hogy a kapu meg lett-e már nyitva.
     /// </summary>
-    private bool isOpened;
+    public bool isOpened { get; private set; } = false;
 
-    /// <summary>
-    /// Unity Start metódus, Inicializálja az Animator komponenst.
-    /// </summary>
     void Start()
     {
         anim = GetComponent<Animator>();
-    }
 
-    /// <summary>
-    /// Képkockánként lefutó frissítés.
-    /// Ellenőrzi, hogy a játékos a közelben van-e, a kapu még zárva van, 
-    /// és lenyomta-e a megfelelő gombot ('E') a nyitáshoz.
-    /// </summary>
-    void Update()
-    {
-        if (isPlayerNear && !isOpened && Input.GetKeyDown(KeyCode.E))
+        if (feedbackText != null)
         {
-            anim.SetTrigger("Open");
-            isOpened = true;
+            feedbackText.text = "";
         }
     }
 
     /// <summary>
-    /// Akkor hívódik meg, ha egy másik 2D fizikai objektum belép a trigger zónába.
+    /// Az interakció logikája. A PlayerInteraction rendszer hívja meg az 'E' gomb lenyomásakor.
     /// </summary>
-    /// <param name="collision">Az ütközésben részt vevő Collider adatai.</param>
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void Interact()
     {
-        if (collision.CompareTag("Player"))
+        if (!isOpened)
         {
-            isPlayerNear = true;
+            // Megkeressük a játékost és a pénztárcáját
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+
+            PlayerWallet playerWallet = player.GetComponent<PlayerWallet>();
+
+            if (playerWallet != null)
+            {
+                if (playerWallet.currentCoins >= requiredCoins)
+                {
+                    anim.SetTrigger("Open");
+                    isOpened = true;
+                    // Szöveg pontosan a beérkező kód alapján
+                    ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
+                }
+                else
+                {
+                    // Szöveg és ikon pontosan a beérkező kód alapján
+                    int missingCoins = requiredCoins - playerWallet.currentCoins;
+                    ShowFeedback("<sprite=0>" + missingCoins);
+                }
+            }
+        }
+        else
+        {
+            // Ha már nyitva van, a következő interakció szintet vált
+            if (LevelManager.Instance != null)
+            {
+                LevelManager.Instance.NextLevel();
+            }
         }
     }
 
-    /// <summary>
-    /// Akkor hívódik meg, ha egy másik 2D fizikai objektum elhagyja a trigger zónát.
-    /// </summary>
-    /// <param name="collision">A trigger zónát elhagyó Collider adatai.</param>
-    private void OnTriggerExit2D(Collider2D collision)
+    private void ShowFeedback(string message)
     {
-        if (collision.CompareTag("Player"))
+        if (feedbackText != null)
         {
-            isPlayerNear = false;
+            StopAllCoroutines();
+            StartCoroutine(DisplayText(message));
         }
+        Debug.Log(message);
+    }
+
+    IEnumerator DisplayText(string message)
+    {
+        feedbackText.text = message;
+        yield return new WaitForSeconds(textDisplayTime);
+        feedbackText.text = "";
+    }
+
+    /// <summary>
+    /// A környezeti felirat, ami interakció előtt megjelenik.
+    /// </summary>
+    public string GetDescription()
+    {
+        return isOpened ? "Enter Next Level" : "Open Gate";
+    }
+
+    /// <summary>
+    /// Meghatározza, hogy a kapu érzékelhető-e az interakciós rendszer számára.
+    /// </summary>
+    public bool CanInteract()
+    {
+        return true;
     }
 }
