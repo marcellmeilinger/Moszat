@@ -41,4 +41,5 @@ public class ArenaTrigger : MonoBehaviour
             gameObject.SetActive(false); 
         }
     }
+
 }

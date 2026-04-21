@@ -2,10 +2,9 @@ using UnityEngine;
 
 /// <summary>
 /// Egy olyan környezeti objektumot jelöl, amit a játékos képes eltolni.
-/// Célja, hogy az 'E' gomb nyomvatartása mellett feloldja a fizikai tengelyeket, 
-/// lehetővé téve a mozgást.
+/// Megvalósítja az IInteractable interfészt a vizuális visszajelzéshez.
 /// </summary>
-public class PushableObject : MonoBehaviour
+public class PushableObject : MonoBehaviour, IInteractable
 {
     /// <summary>
     /// Az eltolható objektum 2D fizikai teste.
@@ -13,57 +12,53 @@ public class PushableObject : MonoBehaviour
     private Rigidbody2D rb;
 
     /// <summary>
-    /// Igaz, ha a játékos éppen hozzáér a betolható tárgyhoz.
-    /// </summary>
-    private bool isPlayerNear = false;
-
-    /// <summary>
-    /// Unity Start metódus. Lekéri a komponenst, majd rögzíti az X tengely menti mozgást és a forgatást (Rotation).
+    /// Unity Start metódus. Inicializálja a Rigidbody-t és alaphelyzetben rögzíti az X tengelyt.
     /// </summary>
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        // Kezdéskor rögzítjük az X mozgást és a forgatást
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
     }
 
     /// <summary>
     /// Képkockánként lefutó frissítés.
-    /// Ha a játékos közel van és nyomja a dedikált gombot (E), csak a forgatást hagyja befagyasztva, a mozgást engedi.
-    /// Ellenkező esetben mindent - mozgást és forgatást - teljesen lezár.
+    /// Itt kezeljük a fizikai feloldást, ha a játékos nyomva tartja az interakciós gombot.
     /// </summary>
     void Update()
     {
-        if (isPlayerNear && Input.GetKey(KeyCode.E))
+        // Megjegyzés: Az interakció gombot (KeyCode.E) itt figyeljük a folyamatos nyomvatartáshoz,
+        // de a feliratot a PlayerInteraction kezeli.
+        if (Input.GetKey(KeyCode.E))
         {
+            // Feloldjuk az X tengelyt, hogy tolható legyen
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         else
         {
+            // Visszazárjuk, hogy ne guruljon el magától
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
     /// <summary>
-    /// Unity fizikai ütközés detektor. Figyeli, ha a játékos karaktere (Player tag) hozzáér a mozgatható objektumhoz.
+    /// Az interfész által megkövetelt metódus. Mivel a toláshoz nyomvatartás kell,
+    /// az érdemi logikát az Update végzi, de az interfész jelenléte aktiválja a UI-t.
     /// </summary>
-    /// <param name="collision">A beleütköző másik fizikai teszt adata (Collision2D).</param>
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Interact()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isPlayerNear = true;
-        }
+        // A tolás folyamatos bemenetet igényel (Input.GetKey), nem egyszeri leütést.
     }
 
     /// <summary>
-    /// Unity fizikai ütközés megszakító detektor. Visszaállítja az állapotot, ha a játékos kilép az érintkezésből.
+    /// Visszaadja a tárgy leírását.
     /// </summary>
-    /// <param name="collision">A kilépő fizikai teszt adata (Collision2D).</param>
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-        }
-    }
+    /// <returns>A tárgy megnevezése.</returns>
+    public string GetDescription() => "Heavy Crate";
+
+    /// <summary>
+    /// Meghatározza, hogy megjelenjen-e a felirat.
+    /// </summary>
+    /// <returns>Mindig igaz, amíg az objektum létezik.</returns>
+    public bool CanInteract() => true;
 }
