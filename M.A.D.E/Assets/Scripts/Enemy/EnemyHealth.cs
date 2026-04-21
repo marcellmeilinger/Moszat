@@ -12,6 +12,9 @@ public class EnemyHealth : MonoBehaviour
     private Animator anim;
     private bool isDead = false;
 
+    [Header("Boss arena")]
+    public GameObject arenaWall;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -92,26 +95,58 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        if (GetComponent<EnemyAI>() != null) GetComponent<EnemyAI>().enabled = false;
-        if (GetComponent<ShieldEnemyAI>() != null) GetComponent<ShieldEnemyAI>().enabled = false;
+        Debug.Log("Boss meghalt, folyamat elindítva...");
+
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isStunned", false);
+            anim.SetTrigger("die");
+        }
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+            if (playerRb != null) playerRb.gravityScale = 1.6f;
+
+            WarriorMovement moveScript = player.GetComponent<WarriorMovement>();
+            if (moveScript != null) moveScript.jumpForce = 8f;
+
+            Debug.Log("Játékos fizika visszaállítva.");
+        }
+
+        if (arenaWall != null)
+        {
+            StartCoroutine(DisableWallsAfterDelay(2f));
+        }
+
         if (GetComponent<BossCharged>() != null) GetComponent<BossCharged>().enabled = false;
+        if (GetComponent<EnemyAI>() != null) GetComponent<EnemyAI>().enabled = false;
+
+        GetComponent<Collider2D>().enabled = false;
+
+        Rigidbody2D enemyRb = GetComponent<Rigidbody2D>();
+        if (enemyRb != null)
+        {
+            enemyRb.linearVelocity = Vector2.zero;
+            enemyRb.bodyType = RigidbodyType2D.Static;
+        }
 
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
-        anim.SetBool("isStunned", false);
-        anim.SetBool("isWalking", false);
-
-        GetComponent<Collider2D>().enabled = false;
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic; 
-        }
-
-        anim.SetTrigger("die");
-
         this.enabled = false;
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 3f);
     }
+
+    private System.Collections.IEnumerator DisableWallsAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (arenaWall != null)
+        {
+            arenaWall.SetActive(false);
+            Debug.Log("Falak eltüntetve késleltetve.");
+        }
+    }
+
 }
