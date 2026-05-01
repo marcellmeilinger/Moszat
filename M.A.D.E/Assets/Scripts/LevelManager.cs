@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -101,7 +102,7 @@ public class LevelManager : MonoBehaviour
                 yield return null;
             }
         }
-
+        Debug.Log("Loading next level...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
