@@ -32,6 +32,18 @@ A világ tele van interaktív elemekkel:
 - **Kapuk és Teleporterek**: A pályarészek közötti logikai és azonnali mozgást biztosítanak.
 - **Létrán mászás**: Vertikális felfedezést tesz lehetővé, kikapcsolva a gravitációt a mozgás idejére.
 
+## 🗺️ Pályák és Assetek (Labirintus)
+
+A játékban található pályák manuálisan kerültek felépítésre a Unity Editor beépített 2D Tilemap rendszerének segítségével, így nem külső fájlokból (pl. txt) kerülnek beolvasásra.
+
+*   **Elérhetőség a játékban**: A felépített pályák (level1, level2, level3) a játék elindításával a főmenüből játszhatóak végig.
+*   **Fájlszintű elérés**: A pályákat tartalmazó Unity Scene fájlok a projekt mappaszerkezetében a `M.A.D.E/Assets/Scenes/` könyvtárban találhatóak meg (pl. `level1.unity`, `level2.unity`, `level3.unity`).
+*   **Assetek elérése**: A játék felépítéséhez használt vizuális és hanganyagok (assetek) az alábbi főbb mappákban találhatóak a `M.A.D.E/Assets/` könyvtáron belül:
+    *   **Pályaelemek (Tilemap):** `Platform tile pack/`, `2D Pixel Art Platformer Biome - American Forest/`, `Cave Platformer Tileset/` stb.
+    *   **Karakterek és animációk:** `Medieval Warrior Pack 2/` (Főhős), `Enemy Animations/` (Ellenfelek)
+    *   **Egyéb Sprite-ok és Interaktív elemek:** `Sprites/` (pl. ládák, tárgyak), `Prefabs/` (előre beállított játékobjektumok)
+    *   **Hangok:** `Sounds/`
+
 ## ✨ Funkciók
 
 - **Dinamikus 2D Platforming**: Gördülékeny mozgás fizikára (Rigidbody2D) építve.

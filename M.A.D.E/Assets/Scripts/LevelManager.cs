@@ -33,21 +33,25 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        // Pálya betöltésekor automatikus kivilágosodás
         if (fadeScreen != null)
         {
+            // Kényszerítsük, hogy látszódjon és fekete legyen az elején
+            fadeScreen.gameObject.SetActive(true);
+            Color c = fadeScreen.color;
+            c.a = 1f;
+            fadeScreen.color = c;
+
             StartCoroutine(FadeIn());
         }
     }
 
     IEnumerator FadeIn()
     {
-        fadeScreen.gameObject.SetActive(true);
-        Color c = fadeScreen.color;
-        c.a = 1f; // Fekete
-        fadeScreen.color = c;
+        // Várunk egy picit, hogy a betöltési sokk elmúljon
+        yield return new WaitForSeconds(0.1f);
 
-        while (fadeScreen.color.a > 0f)
+        Color c = fadeScreen.color;
+        while (c.a > 0f)
         {
             c.a -= Time.deltaTime * fadeSpeed;
             fadeScreen.color = c;

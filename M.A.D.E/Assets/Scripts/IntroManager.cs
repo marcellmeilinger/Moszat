@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
-using UnityEngine.Events;
 
 public class IntroManager : MonoBehaviour
 {
@@ -10,76 +9,137 @@ public class IntroManager : MonoBehaviour
     public TextMeshProUGUI storyText;
 
     [Header("Beállítások")]
+    public string[] sentences;
     public float typingSpeed = 0.05f;
-
-    [Header("Történet Mondatok")]
-    [TextArea(5, 10)]
-    public string[] storyLines;
-
-    private int currentIndex = 0;
+    private int index = 0;
     private bool isTyping = false;
-    private Coroutine typingCoroutine = null; // Inicializálva a hiba elkerülése végett
+    private string currentFullSentence = ""; // Eltároljuk a teljes mondatot a skiphez
 
-    public UnityEvent onIntroFinished;
+    [Header("Audio")]
+    public AudioSource typewriterSource;
+
+    void Start()
+    {
+        // Amikor elindul a főmenü, kényszerítjük a hangot, hogy maradjon csendben
+        if (typewriterSource != null)
+        {
+            typewriterSource.Stop();
+            typewriterSource.playOnAwake = false; // Programozott védelem
+        }
+
+        // Biztosítjuk, hogy a storyPanel ne legyen látható az elején
+        if (storyPanel != null) storyPanel.SetActive(false);
+    }
+
+    void Awake()
+    {
+        // Amikor betölt a menü, azonnal kényszerítjük a hangot a leállásra
+        if (typewriterSource != null)
+        {
+            typewriterSource.Stop();
+            typewriterSource.loop = true; // Biztosítjuk a loopot
+        }
+    }
 
     public void StartIntro()
     {
-        if (storyPanel == null || storyText == null)
-        {
-            Debug.LogError("IntroManager: Hiányzó UI referenciák az Inspectorban!");
-            return;
-        }
+        // Ha már fut, ne indítsuk el mégegyszer
+        if (isTyping) return;
 
-        storyPanel.SetActive(true);
-        currentIndex = 0;
-        typingCoroutine = StartCoroutine(TypeText(storyLines[currentIndex]));
+        if (storyPanel != null) storyPanel.SetActive(true);
+        index = 0;
+
+        // Mindenképp leállítunk minden korábbi folyamatot
+        StopAllCoroutines();
+        if (typewriterSource != null) typewriterSource.Stop();
+
+        StartCoroutine(TypeSentence(sentences[index]));
     }
 
     void Update()
     {
-        if (storyPanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (isTyping)
             {
-                // Megállítjuk a gépelést és kiírjuk a teljes sort
-                if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-                storyText.text = storyLines[currentIndex];
-                isTyping = false;
+                // Ha épp gépel és megnyomják a Space-t: SKIP a végére
+                CompleteSentence();
             }
             else
             {
-                // Következő sorra ugrás
-                currentIndex++;
-                if (currentIndex < storyLines.Length)
-                {
-                    typingCoroutine = StartCoroutine(TypeText(storyLines[currentIndex]));
-                }
-                else
-                {
-                    FinishIntro();
-                }
+                // Ha már végzett a gépeléssel: Következő mondat
+                NextSentence();
             }
         }
     }
 
-    IEnumerator TypeText(string line)
+    IEnumerator TypeSentence(string sentence)
     {
         isTyping = true;
+        currentFullSentence = sentence;
         storyText.text = "";
 
-        foreach (char letter in line.ToCharArray())
+        if (typewriterSource != null)
         {
-            storyText.text += letter;
-            yield return new WaitForSecondsRealtime(typingSpeed);
+            typewriterSource.Play();
         }
 
-        isTyping = false;
-        typingCoroutine = null;
+        foreach (char letter in sentence.ToCharArray())
+        {
+            storyText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        // Ha magától végigért a gépelés
+        FinishTyping();
     }
 
-    void FinishIntro()
+    private void CompleteSentence()
     {
-        storyPanel.SetActive(false);
-        if (onIntroFinished != null) onIntroFinished.Invoke();
+        // Megállítjuk a gépelést végző Coroutine-t
+        StopAllCoroutines();
+
+        // Egyből kiírjuk a teljes szöveget
+        storyText.text = currentFullSentence;
+
+        // Leállítjuk a hangot és jelzzük, hogy vége a gépelésnek
+        FinishTyping();
+    }
+
+    private void FinishTyping()
+    {
+        if (typewriterSource != null)
+        {
+            typewriterSource.Stop();
+        }
+        isTyping = false;
+    }
+
+    public void NextSentence()
+    {
+        if (index < sentences.Length - 1)
+        {
+            index++;
+            StartCoroutine(TypeSentence(sentences[index]));
+        }
+        else
+        {
+            FinishIntro();
+        }
+    }
+
+    private void FinishIntro()
+    {
+        if (storyPanel != null) storyPanel.SetActive(false);
+
+        StartMenuManager menuManager = FindObjectOfType<StartMenuManager>();
+        if (menuManager != null)
+        {
+            menuManager.LoadFirstLevel();
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        }
     }
 }
