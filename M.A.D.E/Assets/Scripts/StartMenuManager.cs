@@ -2,14 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class StartMenuManager : MonoBehaviour
 {
     [Header("UI Panel Referenciák")]
     public GameObject buttonContainer;
     public GameObject settingsPanel;
-    public GameObject fullStartCanvas; // A teljes menü canvas
+    public GameObject fullStartCanvas;
 
     [Header("Narratív Rendszer")]
     public IntroManager introManager;
@@ -36,9 +35,9 @@ public class StartMenuManager : MonoBehaviour
     {
         if (buttonContainer != null) buttonContainer.SetActive(false);
 
-        // Fokozatos elhalkítás indítása
+        // Menüzene lehalkítása
         AudioSource bgm = GetComponent<AudioSource>();
-        if (bgm != null) StartCoroutine(FadeOutMusic(bgm, 1.0f));
+        if (bgm != null) StartCoroutine(FadeOutMusic(bgm, 0.5f));
 
         if (introManager != null)
         {
@@ -50,7 +49,6 @@ public class StartMenuManager : MonoBehaviour
         }
     }
 
-    // Segédfüggvény a halkításhoz
     private IEnumerator FadeOutMusic(AudioSource audioSource, float duration)
     {
         float startVolume = audioSource.volume;
@@ -64,51 +62,34 @@ public class StartMenuManager : MonoBehaviour
         }
 
         audioSource.Stop();
-        audioSource.volume = startVolume; // Visszaállítjuk az alapértéket a következő belépéshez
+        audioSource.volume = startVolume;
     }
 
-    // Ezt hívja meg az IntroManager a legvégén!
     public void LoadFirstLevel()
     {
-        // Indítunk egy külön folyamatot a váltáshoz, hogy elkerüljük a hibaüzenetet
         StartCoroutine(InstantBlackAndLoad());
     }
 
     private IEnumerator InstantBlackAndLoad()
     {
-        // 1. INPUT LETILTÁSA a hiba ellen
-        // Megkeressük a PlayerInput komponenst, ha létezik a menüben (vagy Alaricon)
+        // 1. Input tiltása a hiba ellen
         UnityEngine.InputSystem.PlayerInput pi = FindObjectOfType<UnityEngine.InputSystem.PlayerInput>();
         if (pi != null) pi.enabled = false;
 
-        // 2. AZONNALI FEKETE PANEL
+        // 2. Fekete képernyő (LevelManageren keresztül)
         if (LevelManager.Instance != null && LevelManager.Instance.fadeScreen != null)
         {
             LevelManager.Instance.fadeScreen.gameObject.SetActive(true);
-            LevelManager.Instance.fadeScreen.color = new Color(0, 0, 0, 1f); // 100% fekete
+            LevelManager.Instance.fadeScreen.color = new Color(0, 0, 0, 1f);
         }
 
+        // 3. Menü eltüntetése
         if (fullStartCanvas != null) fullStartCanvas.SetActive(false);
 
-        // 3. VÁRAKOZÁS (Fontos a Unity belső folyamatainak)
-        yield return new WaitForSecondsRealtime(0.1f);
+        // 4. Rövid várakozás a stabil váltáshoz
+        yield return new WaitForSecondsRealtime(0.2f);
 
-        // 4. BETÖLTÉS
-        SceneManager.LoadScene(1);
-
-        AudioSource bgm = GetComponent<AudioSource>();
-        if (bgm != null)
-        {
-            // Gyors lehalkítás a betöltés előtt
-            float startVol = bgm.volume;
-            for (float t = 0; t < 0.1f; t += Time.deltaTime)
-            {
-                bgm.volume = Mathf.Lerp(startVol, 0, t / 0.1f);
-                yield return null;
-            }
-        }
-
-        yield return new WaitForSecondsRealtime(0.1f);
+        // 5. Tényleges betöltés
         SceneManager.LoadScene(1);
     }
 

@@ -13,43 +13,34 @@ public class IntroManager : MonoBehaviour
     public float typingSpeed = 0.05f;
     private int index = 0;
     private bool isTyping = false;
-    private string currentFullSentence = ""; // Eltároljuk a teljes mondatot a skiphez
+    private bool introActive = false; // Megakadályozza a vakon kattintást
+    private string currentFullSentence = "";
 
     [Header("Audio")]
     public AudioSource typewriterSource;
 
     void Start()
     {
-        // Amikor elindul a főmenü, kényszerítjük a hangot, hogy maradjon csendben
+        // Alaphelyzetbe állítás indításkor
         if (typewriterSource != null)
         {
             typewriterSource.Stop();
-            typewriterSource.playOnAwake = false; // Programozott védelem
+            typewriterSource.playOnAwake = false;
+            typewriterSource.loop = true;
         }
 
-        // Biztosítjuk, hogy a storyPanel ne legyen látható az elején
         if (storyPanel != null) storyPanel.SetActive(false);
-    }
-
-    void Awake()
-    {
-        // Amikor betölt a menü, azonnal kényszerítjük a hangot a leállásra
-        if (typewriterSource != null)
-        {
-            typewriterSource.Stop();
-            typewriterSource.loop = true; // Biztosítjuk a loopot
-        }
+        introActive = false;
     }
 
     public void StartIntro()
     {
-        // Ha már fut, ne indítsuk el mégegyszer
         if (isTyping) return;
 
+        introActive = true; // Mostantól figyeljük a kattintásokat
         if (storyPanel != null) storyPanel.SetActive(true);
         index = 0;
 
-        // Mindenképp leállítunk minden korábbi folyamatot
         StopAllCoroutines();
         if (typewriterSource != null) typewriterSource.Stop();
 
@@ -58,16 +49,17 @@ public class IntroManager : MonoBehaviour
 
     void Update()
     {
+        // Csak akkor fut le, ha a Start-ra nyomtunk
+        if (!introActive) return;
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (isTyping)
             {
-                // Ha épp gépel és megnyomják a Space-t: SKIP a végére
                 CompleteSentence();
             }
             else
             {
-                // Ha már végzett a gépeléssel: Következő mondat
                 NextSentence();
             }
         }
@@ -90,28 +82,19 @@ public class IntroManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        // Ha magától végigért a gépelés
         FinishTyping();
     }
 
     private void CompleteSentence()
     {
-        // Megállítjuk a gépelést végző Coroutine-t
         StopAllCoroutines();
-
-        // Egyből kiírjuk a teljes szöveget
         storyText.text = currentFullSentence;
-
-        // Leállítjuk a hangot és jelzzük, hogy vége a gépelésnek
         FinishTyping();
     }
 
     private void FinishTyping()
     {
-        if (typewriterSource != null)
-        {
-            typewriterSource.Stop();
-        }
+        if (typewriterSource != null) typewriterSource.Stop();
         isTyping = false;
     }
 
@@ -130,6 +113,7 @@ public class IntroManager : MonoBehaviour
 
     private void FinishIntro()
     {
+        introActive = false;
         if (storyPanel != null) storyPanel.SetActive(false);
 
         StartMenuManager menuManager = FindObjectOfType<StartMenuManager>();
