@@ -3,7 +3,7 @@ using TMPro;
 
 /// <summary>
 /// A játékos környezettel való kapcsolatáért felelős osztály.
-/// Kezeli a vizuális visszajelzést és az interakciók indítását. [cite: 93]
+/// Kezeli a vizuális visszajelzést, az interakciókat és a hangeffekteket.
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
@@ -18,15 +18,21 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private KeyCode pickupKey = KeyCode.F;
 
+    [Header("Audio Effects")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip potionPickupSound; // Ide húzd a nyelés/felvétel hangot
+
     private void Update()
     {
         UpdateInteractionUI();
 
+        // Interakció indítása (E gomb)
         if (Input.GetKeyDown(interactKey))
         {
             TryInteract(isPickupAction: false);
         }
 
+        // Tárgy felvétele (F gomb)
         if (Input.GetKeyDown(pickupKey))
         {
             TryInteract(isPickupAction: true);
@@ -35,6 +41,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void UpdateInteractionUI()
     {
+        // Megnézzük, van-e valami a közelben
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactionRange, interactableLayer);
 
         if (hit != null)
@@ -46,16 +53,23 @@ public class PlayerInteraction : MonoBehaviour
                 interactionPrompt.SetActive(true);
                 var textComponent = interactionPrompt.GetComponent<TextMeshProUGUI>();
 
-                bool isLoot = hit.GetComponentInParent<LootItem>() != null;
-                // ÚJ: Ellenőrizzük, hogy Pushable-e
-                bool isPushable = hit.GetComponentInParent<PushableObject>() != null;
+                if (textComponent != null)
+                {
+                    // Ellenőrizzük a tárgy típusát a megfelelő felirathoz
+                    bool isLoot = hit.GetComponentInParent<LootItem>() != null;
+                    bool isPushable = hit.GetComponentInParent<PushableObject>() != null;
 
-                if (isLoot)
-                    textComponent.text = "Press 'F' to pickup";
-                else if (isPushable)
-                    textComponent.text = "Hold 'E' to push"; // Speciális felirat a ládához
-                else
-                    textComponent.text = "Press 'E' to interact";
+                    if (isLoot)
+                        textComponent.text = "Press 'F' to pickup";
+                    else if (isPushable)
+                        textComponent.text = "Hold 'E' to push";
+                    else
+                        textComponent.text = "Press 'E' to interact";
+                }
+            }
+            else
+            {
+                interactionPrompt.SetActive(false);
             }
         }
         else
@@ -74,14 +88,16 @@ public class PlayerInteraction : MonoBehaviour
 
             if (interactable != null)
             {
-                // Loot típus ellenőrzése a megfelelő gombhoz [cite: 56, 137]
                 bool isLootItem = hit.GetComponentInParent<LootItem>() != null;
 
+                // Ha F-et nyomtunk és Loot (pl. Potion) van előttünk
                 if (isPickupAction && isLootItem)
                 {
+                    PlayPickupSound();
                     interactable.Interact();
                     return;
                 }
+                // Ha E-t nyomtunk és NEM Loot (pl. Kar, Ajtó, Láda)
                 else if (!isPickupAction && !isLootItem)
                 {
                     interactable.Interact();
@@ -91,8 +107,18 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private void PlayPickupSound()
+    {
+        if (audioSource != null && potionPickupSound != null)
+        {
+            // PlayOneShot-ot használunk, hogy ne szakadjon félbe a hang, ha több tárgyat veszünk fel
+            audioSource.PlayOneShot(potionPickupSound);
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
+        // Segédkör a Scene nézetben a hatótáv ellenőrzéséhez
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactionRange);
     }

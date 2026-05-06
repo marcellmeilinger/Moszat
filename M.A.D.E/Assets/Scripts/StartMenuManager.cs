@@ -1,21 +1,20 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StartMenuManager : MonoBehaviour
 {
     [Header("UI Panel Referenciák")]
-    public GameObject fullStartCanvas;
     public GameObject buttonContainer;
     public GameObject settingsPanel;
-    public GameObject healthHUD;
+    public GameObject fullStartCanvas;
 
     [Header("Narratív Rendszer")]
-    public IntroManager introManager; // Ide húzd be az IntroManager szkriptet
+    public IntroManager introManager;
 
     [Header("Audio Beállítások")]
     public AudioMixer mainMixer;
-    public Slider volumeSlider;
 
     void Start()
     {
@@ -24,68 +23,77 @@ public class StartMenuManager : MonoBehaviour
 
     public void ShowStartMenu()
     {
-        if (fullStartCanvas != null) fullStartCanvas.SetActive(true);
         if (buttonContainer != null) buttonContainer.SetActive(true);
         if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (healthHUD != null) healthHUD.SetActive(false);
 
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
-    public void OpenSettings()
-    {
-        if (buttonContainer != null) buttonContainer.SetActive(false);
-        if (settingsPanel != null) settingsPanel.SetActive(true);
-    }
-
-    public void CloseSettings()
-    {
-        if (settingsPanel != null) settingsPanel.SetActive(false);
-        if (buttonContainer != null) buttonContainer.SetActive(true);
-    }
-
-    // Ezt hívja meg a START gomb
     public void StartGame()
     {
-        // 1. CSAK a gombokat rejtjük el, a Canvast NEM!
         if (buttonContainer != null) buttonContainer.SetActive(false);
 
-        // 2. Elindítjuk a narratívát (a Canvas maradjon aktív!)
+        // Menüzene lehalkítása
+        AudioSource bgm = GetComponent<AudioSource>();
+        if (bgm != null) StartCoroutine(FadeOutMusic(bgm, 0.5f));
+
         if (introManager != null)
         {
             introManager.StartIntro();
         }
         else
         {
-            ActualStartAfterIntro();
+            LoadFirstLevel();
         }
     }
 
-    public void ActualStartAfterIntro()
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float duration)
     {
-        // 3. MOST kapcsoljuk ki a teljes Canvast (háttérrel együtt)
+        float startVolume = audioSource.volume;
+        float timer = 0;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0, timer / duration);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+    }
+
+    public void LoadFirstLevel()
+    {
+        StartCoroutine(InstantBlackAndLoad());
+    }
+
+    private IEnumerator InstantBlackAndLoad()
+    {
+        // 1. Input tiltása a hiba ellen
+        UnityEngine.InputSystem.PlayerInput pi = FindObjectOfType<UnityEngine.InputSystem.PlayerInput>();
+        if (pi != null) pi.enabled = false;
+
+        // 2. Fekete képernyő (LevelManageren keresztül)
+        if (LevelManager.Instance != null && LevelManager.Instance.fadeScreen != null)
+        {
+            LevelManager.Instance.fadeScreen.gameObject.SetActive(true);
+            LevelManager.Instance.fadeScreen.color = new Color(0, 0, 0, 1f);
+        }
+
+        // 3. Menü eltüntetése
         if (fullStartCanvas != null) fullStartCanvas.SetActive(false);
 
-        if (healthHUD != null) healthHUD.SetActive(true);
+        // 4. Rövid várakozás a stabil váltáshoz
+        yield return new WaitForSecondsRealtime(0.2f);
 
-        Time.timeScale = 1f;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        // 5. Tényleges betöltés
+        SceneManager.LoadScene(1);
     }
 
-    public void SetVolume(float volume)
-    {
-        if (mainMixer != null)
-        {
-            float dbValue = volume > 0 ? Mathf.Log10(volume) * 20f : -80f;
-            mainMixer.SetFloat("MasterVolume", dbValue); // [cite: 65]
-        }
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit(); // [cite: 139]
-    }
+    public void OpenSettings() { buttonContainer.SetActive(false); settingsPanel.SetActive(true); }
+    public void CloseSettings() { settingsPanel.SetActive(false); buttonContainer.SetActive(true); }
+    public void QuitGame() { Application.Quit(); }
 }
