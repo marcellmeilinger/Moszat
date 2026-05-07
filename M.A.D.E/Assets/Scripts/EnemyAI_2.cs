@@ -1,14 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
-public class ShieldEnemyAI : MonoBehaviour
+public class EnemyAI_2 : MonoBehaviour
 {
     [Header("Enemy Settings")]
-    public float speed = 1f;
-    public float chaseRange = 5f;
+    public float speed = 3f;
+    public float chaseRange = 6f;
     public float attackRange = 1.5f;
-    public float attackCooldown = 2.5f;
-    public int damageAmount = 20;
+    public float attackCooldown = 1.0f;
+    public int damageAmount = 10;
+
+    [Header("Vertical Movement")]
+    public bool isverticalmovement = false;
 
     [Header("References")]
     public Transform player;
@@ -25,30 +27,34 @@ public class ShieldEnemyAI : MonoBehaviour
     private Vector2 rightTarget;
     private Vector2 currentPatrolTarget;
     private float patrolTimer = 0f;
-
-    [Header("Obstacle Detection")]
-    public Transform footPoint;
-    public Transform eyePoint;
-    public LayerMask obstacleLayer;
-    public float checkDistance = 2.0f;
-
     private float nextAttackTime = 0f;
+
     private bool isFacingRight = true;
     public bool spriteFacesLeft = false;
-    private bool isAttacking = false;
 
-    private bool willBlockNextHit = true;
-
-    [Header("Block Settings")]
-    public float recoilForce = 10f;
+    [Header("Obstacle")]
+    public Transform footPoint;
+    public Transform eyePoint;
+    public float jumpForce = 8f;
+    public LayerMask obstacleLayer;
+    public float checkDistance = 2.0f;
 
     void Start()
     {
         if (rb == null) rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 3f;
+
         rb.linearDamping = 10f;
 
-        if (spriteFacesLeft) isFacingRight = false; else isFacingRight = true;
+        if (isverticalmovement)
+        {
+            rb.gravityScale = 0f;
+        }
+        else
+        {
+            rb.gravityScale = 3f;
+        }
+
+        isFacingRight = !spriteFacesLeft;
 
         Vector2 startPos = transform.position;
         leftTarget = new Vector2(startPos.x - patrolDistanceLeft, startPos.y);
@@ -60,7 +66,6 @@ public class ShieldEnemyAI : MonoBehaviour
     void Update()
     {
         if (player == null) return;
-        if (isAttacking) return;
 
         float distance = Vector2.Distance(transform.position, player.position);
 
@@ -83,11 +88,14 @@ public class ShieldEnemyAI : MonoBehaviour
         anim.SetBool("isWalking", true);
         MoveTo(currentPatrolTarget);
 
-        HandleObstacles();
+        if (!isverticalmovement)
+            HandleObstacles();
 
         patrolTimer += Time.deltaTime;
 
-        if (Mathf.Abs(transform.position.x - currentPatrolTarget.x) < 0.5f || patrolTimer > 6f)
+        float distanceToPoint = Vector2.Distance(transform.position, currentPatrolTarget);
+
+        if (distanceToPoint < 1.0f || patrolTimer > 6f)
         {
             currentPatrolTarget = (currentPatrolTarget == leftTarget) ? rightTarget : leftTarget;
             patrolTimer = 0f;
@@ -96,45 +104,45 @@ public class ShieldEnemyAI : MonoBehaviour
 
     void ChaseState()
     {
+        patrolTimer = 0f;
         anim.SetBool("isWalking", true);
         MoveTo(player.position);
 
-        HandleObstacles();
+        if (!isverticalmovement) HandleObstacles();
     }
 
     void AttackState()
     {
         rb.linearVelocity = Vector2.zero;
         anim.SetBool("isWalking", false);
-
         LookAtTarget(player.position);
 
         if (Time.time >= nextAttackTime)
         {
-            StartCoroutine(PerformShieldAttack());
+            anim.SetTrigger("attack");
             nextAttackTime = Time.time + attackCooldown;
         }
-    }
-
-    IEnumerator PerformShieldAttack()
-    {
-        isAttacking = true;
-        anim.SetTrigger("attack");
-        yield return new WaitForSeconds(3.0f);
-        isAttacking = false;
     }
 
     void MoveTo(Vector2 target)
     {
         Vector2 direction = (target - (Vector2)transform.position).normalized;
-        rb.linearVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
+
+        if (isverticalmovement)
+        {
+            rb.linearVelocity = direction * speed;
+        }
+        else
+        {
+            Vector2 newVelocity = new Vector2(direction.x * speed, rb.linearVelocity.y);
+            rb.linearVelocity = newVelocity;
+        }
+
         LookAtTarget(target);
     }
 
     void LookAtTarget(Vector2 target)
     {
-        if (isAttacking) return;
-
         float dirX = target.x - transform.position.x;
         if (dirX > 0 && !isFacingRight) Flip();
         else if (dirX < 0 && isFacingRight) Flip();
@@ -149,36 +157,18 @@ public class ShieldEnemyAI : MonoBehaviour
         transform.localScale = scaler;
     }
 
-    public bool ShouldBlockDamage(Transform attackerTransform)
-    {
-        if (willBlockNextHit)
-        {
-            willBlockNextHit = false;
-            Debug.Log("Pajzs aktív: SIKERES VÉDÉS!");
-            return true;
-        }
-        else
-        {
-            willBlockNextHit = true;
-            Debug.Log("Pajzs inaktív: SEBZÉS!");
-            return false;
-        }
-    }
-
     public void DealDamage()
     {
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.5f)
         {
-            WarriorHealth php = player.GetComponent<WarriorHealth>();
-            if (php != null) php.TakeDamage(damageAmount);
+            WarriorHealth warriorHealth = player.GetComponent<WarriorHealth>();
+            if (warriorHealth != null) warriorHealth.TakeDamage(damageAmount);
         }
     }
 
     void HandleObstacles()
     {
-        if (footPoint == null || eyePoint == null) return;
-
         Vector2 direction = isFacingRight ? Vector2.right : Vector2.left;
 
         RaycastHit2D hitLow = Physics2D.Raycast(footPoint.position, direction, checkDistance, obstacleLayer);
