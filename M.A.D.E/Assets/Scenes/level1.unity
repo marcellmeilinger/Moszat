@@ -8989,7 +8989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3802304947257296796, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: requiredCoins
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3899788340592008939, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: m_Layer
