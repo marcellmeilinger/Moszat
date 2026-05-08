@@ -4,7 +4,49 @@ Ez a dokumentum a **M.A.D.E** projekt legfontosabb frissítéseit (Pull Requeste
 
 ---
 
+## 2026. Május
+
+### Zene, Hangok és Főmenü (StartMenu)
+- **Aktuális frissítések** – *Máj. 1-2.*
+  - Külön `StartMenu` Scene létrehozása a letisztultabb kezelésért.
+  - Háttérzene beállítása a főmenühöz és a Level 1 pályához.
+  - Új hangeffektek: bájital (potion) felvételi hangok, és "írógép" stílusú hangeffekt a történeti szövegdobozhoz (Storypanel).
+  - Érmék és kulcsok elhelyezkedésének véglegesítése a pályákon.
+  - Teleport layer hibák javítása és interakciós (tutorial) segédletek a Level 1-hez.
+
+---
+
+## 2026. Április
+
+### Boss Harc és Level 3 befejezése
+- **PR #25, PR #23, PR #19** – *Ápr. 13-21.*
+  - A harmadik pálya (Level 3) térképének teljes felépítése és javítása.
+  - A végső Boss Aréna kialakítása speciális (üres) háttérrel, és a Boss elleni harci mechanikák (Boss fight) integrálása a játékba.
+
+### Játék Befejezés és Útmutatók
+- **PR #22** – *Ápr. 19-20.*
+  - A játék végi `EndingPanel` és a történetet lezáró események (Princess megmentése) implementálása.
+  - Interakciós segédletek (Interaction guides) elhelyezése a játékban, hogy segítsék a játékosokat.
+  - Az Irányítás (Controls) fül hozzáadása a beállítások menühöz.
+
+### Interakciók és Kulcsrendszer
+- **PR #26, PR #21** – *Ápr. 19-23.*
+  - Teljes kulcsrendszer bevezetése: Zöld és Narancssárga kulcsok felvétele, zárak (Keyhole), és az UI elemük (KeyUI).
+  - Mozgatható falak és kapuk (Movable Gate/Wall) megvalósítása a feladványokhoz.
+  - A `GateInteractions` frissítése és kibővítése új funkciókkal a konfliktusok elkerüléséért.
+
+### Rendszerbővítések és Tesztelés
+- **PR #24, PR #20** – *Ápr. 15-20.*
+  - Unity Tesztek (Unity Tests) integrálása a kódminőség megőrzése érdekében.
+  - További felvehető tárgyak (items) hangeffektjeinek beállítása.
+
+---
+
 ## 2026. Március
+
+### Dokumentáció és Adminisztráció
+- **PR #18** – *Márc. 26.*
+  - Az első sprint (Sprint 1) dokumentációjának feltöltése és rögzítése.
 
 ### Új Asset Pack és Vizuális Elemek
 - **PR #17** – *Márc. 22.*

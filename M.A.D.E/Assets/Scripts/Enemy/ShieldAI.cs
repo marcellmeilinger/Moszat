@@ -154,13 +154,13 @@ public class ShieldEnemyAI : MonoBehaviour
         if (willBlockNextHit)
         {
             willBlockNextHit = false;
-            Debug.Log("Pajzs aktív: SIKERES VÉDÉS!");
+            Debug.Log("Pajzs aktÃ­v: SIKERES VÃ‰DÃ‰S!");
             return true;
         }
         else
         {
             willBlockNextHit = true;
-            Debug.Log("Pajzs inaktív: SEBZÉS!");
+            Debug.Log("Pajzs inaktÃ­v: SEBZÃ‰S!");
             return false;
         }
     }
