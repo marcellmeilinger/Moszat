@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StartMenuManager : MonoBehaviour
 {
@@ -15,9 +16,19 @@ public class StartMenuManager : MonoBehaviour
 
     [Header("Audio Beállítások")]
     public AudioMixer mainMixer;
+    public Slider volumeSlider;
 
     void Start()
     {
+        // Hangerő betöltése és beállítása
+        float savedVolume = PlayerPrefs.GetFloat("MainVolume", 1f);
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = savedVolume;
+            volumeSlider.onValueChanged.AddListener(SetVolume);
+        }
+        ApplyVolume(savedVolume);
+
         ShowStartMenu();
     }
 
@@ -96,4 +107,21 @@ public class StartMenuManager : MonoBehaviour
     public void OpenSettings() { buttonContainer.SetActive(false); settingsPanel.SetActive(true); }
     public void CloseSettings() { settingsPanel.SetActive(false); buttonContainer.SetActive(true); }
     public void QuitGame() { Application.Quit(); }
+
+    public void SetVolume(float sliderValue)
+    {
+        PlayerPrefs.SetFloat("MainVolume", sliderValue);
+        PlayerPrefs.Save();
+        ApplyVolume(sliderValue);
+    }
+
+    private void ApplyVolume(float sliderValue)
+    {
+        if (mainMixer != null)
+        {
+            // A decibel skála logaritmikus, 0.0001 és 1 közötti slider értékkel számolunk
+            float volumeVal = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f;
+            mainMixer.SetFloat("MasterVolume", volumeVal); // Győződj meg róla, hogy a paraméter neve "MasterVolume" a Mixerben
+        }
+    }
 }

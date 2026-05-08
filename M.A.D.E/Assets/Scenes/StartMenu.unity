@@ -208,6 +208,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 816001640842271255, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_Value
+      value: 0.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 816001640842271255, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_MinValue
+      value: 0.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 816001640842271255, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 0}
@@ -364,6 +372,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+--- !u!114 &352007630 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 816001640842271255, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+  m_PrefabInstance: {fileID: 352007629}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &352007631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5905707610925980115, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
@@ -774,7 +793,8 @@ MonoBehaviour:
   settingsPanel: {fileID: 352007631}
   fullStartCanvas: {fileID: 2086577769}
   introManager: {fileID: 867061329}
-  mainMixer: {fileID: 0}
+  mainMixer: {fileID: 24100000, guid: 7ed3579002666c04da6ee99649fcc35d, type: 2}
+  volumeSlider: {fileID: 352007630}
 --- !u!114 &867061331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -789,6 +809,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SajatJatek::LevelManager
   fadeScreen: {fileID: 233491624}
   fadeSpeed: 1.5
+  mainMixer: {fileID: 0}
   levelEndPanel: {fileID: 0}
   timeText: {fileID: 0}
   damageDealtText: {fileID: 0}

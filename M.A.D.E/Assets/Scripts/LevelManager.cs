@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.Audio;
 
 public class LevelManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class LevelManager : MonoBehaviour
     [Header("Átmenet (Fade)")]
     public Image fadeScreen;
     public float fadeSpeed = 1.5f;
+
+    [Header("Audio")]
+    public AudioMixer mainMixer;
 
     [Header("Statisztikák")]
     private float startTime;
@@ -33,6 +37,14 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
+        // Hangerő beállítása a pályakezdéskor
+        if (mainMixer != null)
+        {
+            float savedVolume = PlayerPrefs.GetFloat("MainVolume", 1f);
+            float volumeVal = Mathf.Log10(Mathf.Clamp(savedVolume, 0.0001f, 1f)) * 20f;
+            mainMixer.SetFloat("MasterVolume", volumeVal);
+        }
+
         if (fadeScreen != null)
         {
             // Kényszerítsük, hogy látszódjon és fekete legyen az elején

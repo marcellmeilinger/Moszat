@@ -69,9 +69,10 @@ public class WarriorMovement : MonoBehaviour
     public LayerMask whatIsGround;
 
     /// <summary>
-    /// Unity Start metódus. Lekéri a kezdeti komponenseket (Rigidbody, Animator, Health).
+    /// Unity Awake metódus. Lekéri a kezdeti komponenseket (Rigidbody, Animator, Health).
+    /// Sokkal biztosabb itt lekérni, mint a Start-ban, mert az Input System OnEnable-je hamarabb lefuthat.
     /// </summary>
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -85,6 +86,7 @@ public class WarriorMovement : MonoBehaviour
     /// <param name="context">Az Input Action kontextusa, ahonnan az X tengely érkezik.</param>
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (health == null) return;
         if (health.IsDead() || Time.timeScale == 0f) { moveInput = 0; return; }
         moveInput = context.ReadValue<Vector2>().x;
     }
@@ -96,9 +98,11 @@ public class WarriorMovement : MonoBehaviour
     /// <param name="context">Az Input Action kontextusa.</param>
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (health == null) return;
         if (health.IsDead() || Time.timeScale == 0f) return;
         if (context.performed && isGrounded && !isAttacking)
         {
+            if (rb == null || anim == null) return;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             anim.SetTrigger("takeJump");
         }
@@ -111,6 +115,7 @@ public class WarriorMovement : MonoBehaviour
     /// <param name="context">Az Input Action kontextusa.</param>
     public void OnAttack(InputAction.CallbackContext context)
     {
+        if (health == null) return;
         if (health.IsDead() || Time.timeScale == 0f) return;
 
         if (context.performed)
@@ -118,6 +123,7 @@ public class WarriorMovement : MonoBehaviour
          
             if (!isPointerOverUI && isGrounded && !isAttacking && Time.time >= nextAttackTime)
             {
+                if (rb == null || anim == null) return;
                 isAttacking = true;
                 rb.linearVelocity = Vector2.zero;
                 anim.SetTrigger("attack");
