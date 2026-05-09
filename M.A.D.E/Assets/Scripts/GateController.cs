@@ -7,12 +7,16 @@ public class GateController : MonoBehaviour
 
     public void OpenGate()
     {
+        if (!gameObject.activeInHierarchy) return;
+
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 90)));
     }
 
     public void CloseGate()
     {
+        if (!gameObject.activeInHierarchy) return;
+
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 0)));
     }

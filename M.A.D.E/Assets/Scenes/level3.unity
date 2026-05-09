@@ -1764,7 +1764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8297432634338934543, guid: 8097410b77a9fa54484fb320c03e2347, type: 3}
       propertyPath: stunDuration
-      value: 1.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 9027084438418000396, guid: 8097410b77a9fa54484fb320c03e2347, type: 3}
       propertyPath: m_AnchorMax.x
