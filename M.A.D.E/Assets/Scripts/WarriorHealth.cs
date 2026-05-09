@@ -4,31 +4,40 @@ using UnityEngine.UI;
 
 public class WarriorHealth : MonoBehaviour
 {
-    [Header("Élet Beállítások")]
+    [Header("Health Settings")]
     public int maxHealth = 100;
     public int currentHealth;
 
-    [Header("UI Referenciák")]
+    public static int savedHealth = -1;
+
+    [Header("UI References")]
     public Slider healthSlider;
     public GameObject warriorHealthbarCanvas;
     public GameObject deathScreenUI;
 
-    [Header("Vizuális Effektek")]
+    [Header("Visual Effects")]
     public Color damageColor = Color.red;
     public float flashDuration = 0.15f;
 
     private Animator anim;
     private Rigidbody2D rb;
-    private SpriteRenderer sprite; // Ez kell a színváltáshoz
+    private SpriteRenderer sprite;
     private bool isDead = false;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>(); // Lekérjük a SpriteRenderert
+        sprite = GetComponent<SpriteRenderer>();
 
-        currentHealth = maxHealth;
+        if (savedHealth != -1)
+        {
+            currentHealth = savedHealth;
+        }
+        else
+        {
+            currentHealth = maxHealth;
+        }
 
         if (healthSlider != null)
         {
@@ -46,7 +55,6 @@ public class WarriorHealth : MonoBehaviour
         if (healthSlider != null)
             healthSlider.value = currentHealth;
 
-        // Effekt elindítása
         StartCoroutine(DamageFlash());
 
         anim.SetTrigger("takeHit");
@@ -56,13 +64,8 @@ public class WarriorHealth : MonoBehaviour
 
     IEnumerator DamageFlash()
     {
-        // Karakter vörös lesz
         sprite.color = damageColor;
-
-        // Várunk egy picit
         yield return new WaitForSeconds(flashDuration);
-
-        // Visszaállítjuk az eredeti fehér színre (ami a textúra alap színe)
         sprite.color = Color.white;
     }
 
@@ -71,17 +74,16 @@ public class WarriorHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        // Csak a HP csúszkát kapcsold ki, ne az egész Canvast, ha nem vagy biztos a hierarchiában!
+        savedHealth = -1;
+
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
-        // VAGY ha biztos vagy benne, hogy a DeathScreen nincs benne:
         if (warriorHealthbarCanvas != null) warriorHealthbarCanvas.SetActive(false);
 
         anim.SetTrigger("death");
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
 
-        // Invoke-ot használunk Coroutine helyett
         Invoke("ShowDeathScreen", 2f);
     }
 
@@ -89,19 +91,15 @@ public class WarriorHealth : MonoBehaviour
     {
         if (deathScreenUI != null)
         {
-            // 1. Bekapcsoljuk a menüt
             deathScreenUI.SetActive(true);
 
-            // 2. Kényszerítjük, hogy minden gyereke (gombok, szöveg) is aktív legyen
             foreach (Transform child in deathScreenUI.transform)
             {
                 child.gameObject.SetActive(true);
             }
 
-            // 3. Csak ezután állítjuk meg az idõt
             Time.timeScale = 0f;
 
-            // 4. Kurzort láthatóvá tesszük, hogy lehessen kattintani
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -124,5 +122,11 @@ public class WarriorHealth : MonoBehaviour
         {
             healthSlider.value = currentHealth;
         }
+    }
+
+    public void SaveHealthForNextScene()
+    {
+        savedHealth = currentHealth;
+        Debug.Log("HP elmentve a következõ pályára: " + savedHealth);
     }
 }

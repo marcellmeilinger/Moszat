@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class DeathZone : MonoBehaviour
 {
-    [Header("Death Zone Beállítások")]
-    [Tooltip("Ennyi sebzést ad a beleeső karaktereknek (a 9999 garantálja az azonnali halált)")]
+    [Header("Death Zone Settings")]
+    [Tooltip("Damage to Deal")]
     public int damageAmount = 9999;
 
     private void OnTriggerEnter2D(Collider2D collision)

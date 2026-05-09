@@ -19,7 +19,6 @@ public class TwoWayTeleporter : MonoBehaviour, IInteractable
     {
         if (destination != null)
         {
-            // Megkeressük a játékost (mivel az interakciót ő indította, biztosan létezik)
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
             {
@@ -48,7 +47,6 @@ public class TwoWayTeleporter : MonoBehaviour, IInteractable
     /// <returns>Mindig igaz, mivel a teleporter korlátlanul használható.</returns>
     public bool CanInteract()
     {
-        // Ha a jövőben feltételhez kötnéd (pl. kell egy kulcs), itt tudod ellenőrizni.
         return true;
     }
 }

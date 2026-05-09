@@ -20,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [Header("Audio Effects")]
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip potionPickupSound; // Ide húzd a nyelés/felvétel hangot
+    [SerializeField] private AudioClip potionPickupSound;
 
     private void Update()
     {
@@ -41,7 +41,6 @@ public class PlayerInteraction : MonoBehaviour
 
     private void UpdateInteractionUI()
     {
-        // Megnézzük, van-e valami a közelben
         Collider2D hit = Physics2D.OverlapCircle(transform.position, interactionRange, interactableLayer);
 
         if (hit != null)
@@ -55,7 +54,6 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (textComponent != null)
                 {
-                    // Ellenőrizzük a tárgy típusát a megfelelő felirathoz
                     bool isLoot = hit.GetComponentInParent<LootItem>() != null;
                     bool isPushable = hit.GetComponentInParent<PushableObject>() != null;
 
@@ -111,14 +109,12 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (audioSource != null && potionPickupSound != null)
         {
-            // PlayOneShot-ot használunk, hogy ne szakadjon félbe a hang, ha több tárgyat veszünk fel
             audioSource.PlayOneShot(potionPickupSound);
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        // Segédkör a Scene nézetben a hatótáv ellenőrzéséhez
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactionRange);
     }

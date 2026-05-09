@@ -6,7 +6,6 @@ public class PoisonPotion : MonoBehaviour
     [SerializeField] private int damageAmount = 20;
     [SerializeField] private float delay = 0.5f;
 
-    // Ez CSAK akkor indul el, amikor a láda létrehozza a tárgyat (Instantiate)
     private void Start()
     {
         StartCoroutine(ActivatePoison());
@@ -14,10 +13,8 @@ public class PoisonPotion : MonoBehaviour
 
     private IEnumerator ActivatePoison()
     {
-        // Vár 0.5 másodpercet (amíg kirepül)
         yield return new WaitForSeconds(delay);
 
-        // Megkeresi a játékost bárhol is van
         var warriorHealth = UnityEngine.Object.FindAnyObjectByType<WarriorHealth>();
 
         if (warriorHealth != null)

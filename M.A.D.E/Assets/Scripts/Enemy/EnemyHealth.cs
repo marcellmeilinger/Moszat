@@ -94,6 +94,8 @@ public class EnemyHealth : MonoBehaviour
         }
 
         if (GetComponent<EnemyAI>() != null) GetComponent<EnemyAI>().enabled = false;
+        if (GetComponent<EnemyAI_2>() != null) GetComponent<EnemyAI_2>().enabled = false; 
+        if (GetComponent<ShieldEnemyAI>() != null) GetComponent<ShieldEnemyAI>().enabled = false;
         if (GetComponent<BossCharged>() != null) GetComponent<BossCharged>().enabled = false;
 
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
@@ -122,5 +124,4 @@ public class EnemyHealth : MonoBehaviour
             Debug.Log("Falak kinyitva!");
         }
     }
-
 }

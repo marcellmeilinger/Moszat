@@ -11,8 +11,8 @@ using UnityEngine.SceneManagement;
 public class PrincessEndingSound : MonoBehaviour, IInteractable
 {
     [Header("Sound Effects")]
-    public AudioSource cheerSource;      // ÚJ: A győzelmi hang forrása (2D-re állítva hangosabb!)
-    public AudioSource typewriterSource; // A gépelés hangforrása (Loop legyen bekapcsolva!)
+    public AudioSource cheerSource;      
+    public AudioSource typewriterSource;
 
     [Header("Ending UI References")]
     [SerializeField] private Image fadePanel;
@@ -45,7 +45,6 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        // Space vagy Bal egérgomb a továbblépéshez
         if (canProceed && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
             if (isTyping)
@@ -61,20 +60,16 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
 
     private IEnumerator StartEndingSequence()
     {
-        // 1. Megállítjuk a játékot
         Time.timeScale = 0f;
 
-        // 2. UI elemek elrejtése
         if (playerHUD != null) playerHUD.SetActive(false);
         if (interactionPromptToHide != null) interactionPromptToHide.SetActive(false);
 
-        // 3. Győzelmi hang lejátszása (ha be van kötve)
         if (cheerSource != null)
         {
             cheerSource.Play();
         }
 
-        // 4. Sötétítés (unscaledDeltaTime-mal, mert Time.timeScale = 0)
         fadePanel.gameObject.SetActive(true);
         float alpha = 0;
         while (alpha < 1)
@@ -84,7 +79,6 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
             yield return null;
         }
 
-        // 5. Első mondat megjelenítése
         canProceed = true;
         DisplayNextSentence();
     }
@@ -119,7 +113,6 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
         foreach (char letter in sentence.ToCharArray())
         {
             endingText.text += letter;
-            // WaitForSecondsRealtime kell a TimeScale = 0 miatt!
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
 
@@ -144,7 +137,6 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
 
     private void ReturnToMainMenu()
     {
-        // Fontos az idő visszaállítása a menü előtt!
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }

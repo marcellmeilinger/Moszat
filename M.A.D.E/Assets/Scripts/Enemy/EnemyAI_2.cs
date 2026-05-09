@@ -159,6 +159,8 @@ public class EnemyAI_2 : MonoBehaviour
 
     public void DealDamage()
     {
+        if (!this.enabled) return;
+
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.5f)
         {

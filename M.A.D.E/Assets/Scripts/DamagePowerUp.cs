@@ -19,23 +19,18 @@ public class DamagePowerUp : MonoBehaviour
 
     private IEnumerator PowerUpRoutine(int amount, float duration)
     {
-        // 1. Activation
         isPowerUpActive = true;
         currentBonusDamage = amount;
 
-        // Aura turn on
         if (auraEffect != null) auraEffect.SetActive(true);
 
         Debug.Log($"POWERUP AKTÍV! +{amount} Sebzés");
 
-        // 2. Waiting
         yield return new WaitForSeconds(duration);
 
-        // 3. Turn off
         isPowerUpActive = false;
         currentBonusDamage = 0;
 
-        // Aura turn off
         if (auraEffect != null) auraEffect.SetActive(false);
 
         Debug.Log("PowerUp has expired.");
