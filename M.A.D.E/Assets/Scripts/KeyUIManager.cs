@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// A felvett kulcsokat a képernyőn (HUD) vizuálisan megjelenítő felület kezelője.
+/// </summary>
 public class KeyUIManager : MonoBehaviour
 {
     public static KeyUIManager Instance;

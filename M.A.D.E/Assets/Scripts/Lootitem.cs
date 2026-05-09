@@ -1,6 +1,9 @@
 using UnityEngine;
 using System;
 
+/// <summary>
+/// FelkaphatÃ³ tÃ¡rgyak (loot) Ã¡ltalÃ¡nos viselkedÃ©sÃ©t megvalÃ³sÃ­tÃ³ osztÃ¡ly.
+/// </summary>
 public class LootItem : MonoBehaviour, IInteractable
 {
     [Header("Item data")]
@@ -9,7 +12,7 @@ public class LootItem : MonoBehaviour, IInteractable
 
     public Action OnItemPickedUp;
 
-    // --- 1. KÉZI FELVÉTEL (Gombnyomásra - Potionökhöz) ---
+    // --- 1. Kï¿½ZI FELVï¿½TEL (Gombnyomï¿½sra - Potionï¿½khï¿½z) ---
     public void Interact()
     {
         PickUpItem();
@@ -20,13 +23,13 @@ public class LootItem : MonoBehaviour, IInteractable
         return true;
     }
 
-    // --- 2. AUTOMATIKUS FELVÉTEL (Sétálásra - Pénzhez) ---
+    // --- 2. AUTOMATIKUS FELVï¿½TEL (Sï¿½tï¿½lï¿½sra - Pï¿½nzhez) ---
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Csak a Coin-t vesszük fel automatikusan!
+        // Csak a Coin-t vesszï¿½k fel automatikusan!
         if (itemName == "Coin")
         {
-            // Megnézzük, hogy a játékos ment-e bele
+            // Megnï¿½zzï¿½k, hogy a jï¿½tï¿½kos ment-e bele
             if (other.CompareTag("Player"))
             {
                 PickUpItem();
@@ -43,17 +46,17 @@ public class LootItem : MonoBehaviour, IInteractable
 
     private void ApplyEffect()
     {
-        // GYÓGYÍTÁS (Itt a WarriorHealth típust keressük!)
+        // GYï¿½GYï¿½Tï¿½S (Itt a WarriorHealth tï¿½pust keressï¿½k!)
         if (itemName == "Potion")
         {
             WarriorHealth wh = UnityEngine.Object.FindAnyObjectByType<WarriorHealth>();
             if (wh != null)
             {
                 wh.Heal(value);
-                Debug.Log("Warrior gyógyítva: " + value);
+                Debug.Log("Warrior gyï¿½gyï¿½tva: " + value);
             }
         }
-        // PÉNZ
+        // Pï¿½NZ
         else if (itemName == "Coin")
         {
             PlayerWallet wallet = UnityEngine.Object.FindAnyObjectByType<PlayerWallet>();
@@ -62,7 +65,7 @@ public class LootItem : MonoBehaviour, IInteractable
                 wallet.AddCoin(value);
             }
         }
-        // SEBZÉS NÖVELÉS
+        // SEBZï¿½S Nï¿½VELï¿½S
         else if (itemName == "DamagePotion")
         {
             DamagePowerUp powerUp = UnityEngine.Object.FindAnyObjectByType<DamagePowerUp>();
@@ -75,6 +78,6 @@ public class LootItem : MonoBehaviour, IInteractable
 
     public string GetDescription()
     {
-        return "Felvétel: " + itemName;
+        return "Felvï¿½tel: " + itemName;
     }
 }

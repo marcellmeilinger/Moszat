@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Alternatív vagy továbbfejlesztett ellenséges mesterséges intelligencia, specifikus viselkedésekkel.
+/// </summary>
 public class EnemyAI_2 : MonoBehaviour
 {
     [Header("Enemy Settings")]

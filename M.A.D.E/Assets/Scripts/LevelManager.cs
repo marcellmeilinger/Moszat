@@ -6,6 +6,9 @@ using System.Collections;
 using System;
 using UnityEngine.Audio;
 
+/// <summary>
+/// A pályák és jelenetek betöltéséért felelős globális menedzser.
+/// </summary>
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;

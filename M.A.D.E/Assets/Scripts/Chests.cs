@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Kincsesládák interakcióját és kinyitását, valamint a loot (jutalom) generálását végző osztály.
+/// </summary>
 public class TreasureChest : MonoBehaviour, IInteractable
 {
     [SerializeField] private bool isOpened = false;

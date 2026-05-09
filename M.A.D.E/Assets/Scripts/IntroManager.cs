@@ -2,6 +2,9 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/// <summary>
+/// A játék eleji bevezető (Intro) és történetmesélő képernyő kezelője.
+/// </summary>
 public class IntroManager : MonoBehaviour
 {
     [Header("UI References")]

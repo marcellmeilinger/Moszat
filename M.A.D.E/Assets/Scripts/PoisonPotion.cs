@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Mérgező bájital, amely sebzést okoz a játékosnak, ha felveszi.
+/// </summary>
 public class PoisonPotion : MonoBehaviour
 {
     [SerializeField] private int damageAmount = 20;
@@ -20,7 +23,7 @@ public class PoisonPotion : MonoBehaviour
         if (warriorHealth != null)
         {
             warriorHealth.TakeDamage(damageAmount);
-            Debug.Log("L�da csapda! - " + damageAmount + " HP");
+            Debug.Log("Lda csapda! - " + damageAmount + " HP");
         }
 
         Destroy(gameObject);

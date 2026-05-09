@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Pajzzsal védekező ellenség viselkedése. Csökkentheti vagy kivédheti a szemből érkező sebzést.
+/// </summary>
 public class ShieldEnemyAI : MonoBehaviour
 {
     [Header("Enemy Settings")]

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// A játékos sebzését ideiglenesen megnövelő (Damage Power-Up) tárgy osztálya.
+/// </summary>
 public class DamagePowerUp : MonoBehaviour
 {
     [Header("Status (To another developer)")]
@@ -24,7 +27,7 @@ public class DamagePowerUp : MonoBehaviour
 
         if (auraEffect != null) auraEffect.SetActive(true);
 
-        Debug.Log($"POWERUP AKT�V! +{amount} Sebz�s");
+        Debug.Log($"POWERUP AKTV! +{amount} Sebzs");
 
         yield return new WaitForSeconds(duration);
 

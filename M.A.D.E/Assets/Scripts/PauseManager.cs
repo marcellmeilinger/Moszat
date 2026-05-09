@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// A játék szüneteltetését (Pause) és a Pause menü kezelését végző osztály.
+/// </summary>
 public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenuUI;

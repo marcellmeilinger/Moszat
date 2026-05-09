@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Halálzónák (pl. szakadékok) definiálására szolgál. Azonnali halált vagy sebzést okoz a játékosnak.
+/// </summary>
 public class DeathZone : MonoBehaviour
 {
     [Header("Death Zone Settings")]

@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Zárt kapuk kinyitását és állapotát vezérlő osztály (pl. kulcs vagy nyomólap hatására).
+/// </summary>
 public class GateController : MonoBehaviour
 {
     private Coroutine currentRoutine;

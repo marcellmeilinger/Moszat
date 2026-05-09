@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Alapvető ellenséges viselkedést és járőrözést megvalósító osztály.
+/// Felelős az ellenség mozgásáért, támadásáért és a játékos követéséért.
+/// </summary>
 public class EnemyAI : MonoBehaviour
 {
     [Header("Enemy Settings")]

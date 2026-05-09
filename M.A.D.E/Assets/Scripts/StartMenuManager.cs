@@ -4,6 +4,9 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// A főmenü (Start Menu) gombjainak és felületeinek vezérlője.
+/// </summary>
 public class StartMenuManager : MonoBehaviour
 {
     [Header("UI Panel References")]

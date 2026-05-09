@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Főellenség (Boss) mesterséges intelligenciája, amely rohamozó (charged) támadásokat képes végrehajtani.
+/// </summary>
 public class BossCharged : MonoBehaviour
 {
     [Header("Settings")]

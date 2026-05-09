@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Az ellenfelek √©leterej√©t √©s hal√°l√°t kezel≈ë komponens.
+/// Nyilv√°ntartja a s√©r√ºl√©seket, √©s elind√≠tja a hal√°l anim√°ci√≥t.
+/// </summary>
 public class EnemyHealth : MonoBehaviour
 {
     public int maxHealth = 100;
@@ -36,7 +40,7 @@ public class EnemyHealth : MonoBehaviour
         BossCharged bossAI = GetComponent<BossCharged>();
         if (bossAI != null && bossAI.IsVulnerable() == false)
         {
-            Debug.Log("BOSS P¡NC…L! Nem sebzıdik.");
+            Debug.Log("BOSS PNCL! Nem sebzdik.");
             return;
         }
 
@@ -68,7 +72,7 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        Debug.Log("Boss meghalt, ÈrtÈkek vissza·llÌt·sa...");
+        Debug.Log("Boss meghalt, rtkek visszalltsa...");
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
@@ -77,14 +81,14 @@ public class EnemyHealth : MonoBehaviour
             if (playerRb != null)
             {
                 playerRb.gravityScale = 1.6f;
-                Debug.Log("Gravit·ciÛ vissza·llÌtva!");
+                Debug.Log("Gravitci visszalltva!");
             }
 
             WarriorMovement moveScript = player.GetComponent<WarriorMovement>();
             if (moveScript != null)
             {
                 moveScript.jumpForce = 8f;
-                Debug.Log("Jump Force vissza·llÌtva!");
+                Debug.Log("Jump Force visszalltva!");
             }
         }
 
