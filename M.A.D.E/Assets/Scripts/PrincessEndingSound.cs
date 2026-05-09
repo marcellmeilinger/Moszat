@@ -2,26 +2,27 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
-using UnityEngine.SceneManagement; // A jelenetváltáshoz
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// A játék lezárásáért felelős osztály. Kezeli a sötétítést, a HUD elrejtését,
-/// a játékidő megállítását és a Space-szel léptethető záró narratívát.
+/// a játékidő megállítását és a Space-szel léptethető záró narratívát + hangokat.
 /// </summary>
 public class PrincessEndingSound : MonoBehaviour, IInteractable
 {
-    [Header("Sound effects")]
-    public AudioClip cheerSound;
+    [Header("Sound Effects")]
+    public AudioSource cheerSource;      // ÚJ: A győzelmi hang forrása (2D-re állítva hangosabb!)
+    public AudioSource typewriterSource; // A gépelés hangforrása (Loop legyen bekapcsolva!)
 
     [Header("Ending UI References")]
-    [SerializeField] private Image fadePanel;           // A fekete Panel
-    [SerializeField] private TextMeshProUGUI endingText; // A narratív szövegmező
+    [SerializeField] private Image fadePanel;
+    [SerializeField] private TextMeshProUGUI endingText;
     [SerializeField] private float fadeSpeed = 0.5f;
     [SerializeField] private float typingSpeed = 0.05f;
 
     [Header("UI to Hide")]
-    [SerializeField] private GameObject playerHUD;               // A HP bar és érme kijelző
-    [SerializeField] private GameObject interactionPromptToHide; // A "Press E" felirat
+    [SerializeField] private GameObject playerHUD;
+    [SerializeField] private GameObject interactionPromptToHide;
 
     [Header("Story Settings")]
     [TextArea(3, 10)]
@@ -31,10 +32,8 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
     private bool isTyping = false;
     private bool hasInteracted = false;
     private bool canProceed = false;
+    private string currentFullSentence = "";
 
-    /// <summary>
-    /// Az interfész által megkövetelt metódus. Elindítja a finálét.
-    /// </summary>
     public void Interact()
     {
         if (!hasInteracted)
@@ -46,8 +45,8 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        // Csak akkor figyeljük a Space-t, ha már elindult a történet mesélése
-        if (canProceed && Input.GetKeyDown(KeyCode.Space))
+        // Space vagy Bal egérgomb a továbblépéshez
+        if (canProceed && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)))
         {
             if (isTyping)
             {
@@ -62,20 +61,20 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
 
     private IEnumerator StartEndingSequence()
     {
-        // 1. Játék megállítása (TimeScale = 0), hogy senki ne mozogjon a háttérben
+        // 1. Megállítjuk a játékot
         Time.timeScale = 0f;
 
-        // 2. HUD és interakciós feliratok elrejtése
+        // 2. UI elemek elrejtése
         if (playerHUD != null) playerHUD.SetActive(false);
         if (interactionPromptToHide != null) interactionPromptToHide.SetActive(false);
 
-        // 3. Győzelmi hang lejátszása
-        if (cheerSound != null)
+        // 3. Győzelmi hang lejátszása (ha be van kötve)
+        if (cheerSource != null)
         {
-            AudioSource.PlayClipAtPoint(cheerSound, transform.position);
+            cheerSource.Play();
         }
 
-        // 4. Képernyő sötétítése (Time.unscaledDeltaTime-ot használunk, mert az idő áll!)
+        // 4. Sötétítés (unscaledDeltaTime-mal, mert Time.timeScale = 0)
         fadePanel.gameObject.SetActive(true);
         float alpha = 0;
         while (alpha < 1)
@@ -85,7 +84,7 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
             yield return null;
         }
 
-        // 5. Történet mesélésének engedélyezése
+        // 5. Első mondat megjelenítése
         canProceed = true;
         DisplayNextSentence();
     }
@@ -95,6 +94,8 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
         if (currentSentenceIndex < storySentences.Length)
         {
             StopAllCoroutines();
+            if (typewriterSource != null) typewriterSource.Stop();
+
             StartCoroutine(TypeSentence(storySentences[currentSentenceIndex]));
             currentSentenceIndex++;
         }
@@ -107,33 +108,47 @@ public class PrincessEndingSound : MonoBehaviour, IInteractable
     private IEnumerator TypeSentence(string sentence)
     {
         isTyping = true;
+        currentFullSentence = sentence;
         endingText.text = "";
+
+        if (typewriterSource != null)
+        {
+            typewriterSource.Play();
+        }
 
         foreach (char letter in sentence.ToCharArray())
         {
             endingText.text += letter;
-            // WaitForSecondsRealtime-ot használunk, mert a Time.timeScale 0!
+            // WaitForSecondsRealtime kell a TimeScale = 0 miatt!
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
 
-        isTyping = false;
+        FinishTyping();
     }
 
     private void CompleteSentence()
     {
         StopAllCoroutines();
-        endingText.text = storySentences[currentSentenceIndex - 1];
+        endingText.text = currentFullSentence;
+        FinishTyping();
+    }
+
+    private void FinishTyping()
+    {
+        if (typewriterSource != null)
+        {
+            typewriterSource.Stop();
+        }
         isTyping = false;
     }
 
     private void ReturnToMainMenu()
     {
-        // FONTOS: Visszaállítjuk az időt, különben a főmenü is meg lesz állva!
+        // Fontos az idő visszaállítása a menü előtt!
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
 
     public bool CanInteract() => !hasInteracted;
-
     public string GetDescription() => "Save the Princess";
 }

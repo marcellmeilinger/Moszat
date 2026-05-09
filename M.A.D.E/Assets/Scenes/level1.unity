@@ -1622,6 +1622,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1849232683}
     m_Modifications:
+    - target: {fileID: 275765244418173224, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -174
+      objectReference: {fileID: 0}
+    - target: {fileID: 275765244418173224, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936584632447030105, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1310
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936584632447030105, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 740
+      objectReference: {fileID: 0}
+    - target: {fileID: 3136019266766847120, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 166
+      objectReference: {fileID: 0}
+    - target: {fileID: 3136019266766847120, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -160
+      objectReference: {fileID: 0}
     - target: {fileID: 3387227781495270745, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1629,6 +1653,10 @@ PrefabInstance:
     - target: {fileID: 3387227781495270745, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666215514751452612, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3956843452728650359, guid: 9839188fca9e27d4099e3a184dc02498, type: 3}
       propertyPath: m_Name
@@ -4162,11 +4190,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4987509983397727021, guid: 41bd43b0665b58c4599042e3fa596581, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -195
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4987509983397727021, guid: 41bd43b0665b58c4599042e3fa596581, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -182
+      value: -157
       objectReference: {fileID: 0}
     - target: {fileID: 4987509983397727021, guid: 41bd43b0665b58c4599042e3fa596581, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6811,6 +6839,7 @@ MonoBehaviour:
   fullStartCanvas: {fileID: 0}
   introManager: {fileID: 0}
   mainMixer: {fileID: 0}
+  volumeSlider: {fileID: 0}
 --- !u!82 &1495851614
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9021,7 +9050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4966672523932074845, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4966672523932074845, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: m_fontAsset
@@ -9033,7 +9062,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: c464633f7b881314cbfcf58c9a398b0e, type: 2}
     - target: {fileID: 4966672523932074845, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: m_fontSizeBase
-      value: 14
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4966672523932074845, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: m_sharedMaterial
@@ -9303,6 +9332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5865993203700632345, guid: 4e5d34e33f404274a8de1c87978d5ad0, type: 3}
+      propertyPath: mainMixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 7ed3579002666c04da6ee99649fcc35d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
