@@ -6,6 +6,23 @@ Ez a dokumentum a **M.A.D.E** projekt legfontosabb frissítéseit (Pull Requeste
 
 ## 2026. Május
 
+### Véglegesítés, Release és Útmutatók
+- **PR #32, PR #29, PR #27** – *Máj. 6-9.*
+  - A Pause menü integrálása a Level 2 pályára.
+  - Végső simítások (Finalizations) az útmutatókon (Guides) és a játék végi befejezésen.
+  - `README.md` kiegészítése a hivatalos GitHub Release (final_version) telepítési és futtatási instrukcióival.
+  - Fájlok áthelyezése és a konfliktusok feloldása az átláthatóbb struktúráért.
+
+### Interakciók és Feladványok (Level 3)
+- **PR #34, PR #31** – *Máj. 8-9.*
+  - Lila nyomólap (PurplePressurePlate) és Lila fal (PurpleWall) logikájának, valamint a kapuvezérlő (GateController) javításának bevezetése a 3. pályára.
+  - A Boss inaktivitási idejének (inactivity time) finomhangolása, és a Start Menu pozíciójának optimalizálása.
+
+### Játékmenet Véglegesítése és Ellenségek
+- **PR #33, PR #30** – *Máj. 8-9.*
+  - Ellenségek elhelyezése és konfigurálása mindhárom pályán (Level 1, 2, 3).
+  - A teljes játékmenet tesztelése és a játékélmény véglegesítése.
+
 ### Zene, Hangok és Főmenü (StartMenu)
 - **Aktuális frissítések** – *Máj. 1-2.*
   - Külön `StartMenu` Scene létrehozása a letisztultabb kezelésért.
