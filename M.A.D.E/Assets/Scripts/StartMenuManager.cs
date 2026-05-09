@@ -6,21 +6,20 @@ using UnityEngine.UI;
 
 public class StartMenuManager : MonoBehaviour
 {
-    [Header("UI Panel Referenciák")]
+    [Header("UI Panel References")]
     public GameObject buttonContainer;
     public GameObject settingsPanel;
     public GameObject fullStartCanvas;
 
-    [Header("Narratív Rendszer")]
+    [Header("Intro manager")]
     public IntroManager introManager;
 
-    [Header("Audio Beállítások")]
+    [Header("Audio Settings")]
     public AudioMixer mainMixer;
     public Slider volumeSlider;
 
     void Start()
     {
-        // Hangerő betöltése és beállítása
         float savedVolume = PlayerPrefs.GetFloat("MainVolume", 1f);
         if (volumeSlider != null)
         {
@@ -46,7 +45,6 @@ public class StartMenuManager : MonoBehaviour
     {
         if (buttonContainer != null) buttonContainer.SetActive(false);
 
-        // Menüzene lehalkítása
         AudioSource bgm = GetComponent<AudioSource>();
         if (bgm != null) StartCoroutine(FadeOutMusic(bgm, 0.5f));
 
@@ -83,24 +81,19 @@ public class StartMenuManager : MonoBehaviour
 
     private IEnumerator InstantBlackAndLoad()
     {
-        // 1. Input tiltása a hiba ellen
         UnityEngine.InputSystem.PlayerInput pi = FindObjectOfType<UnityEngine.InputSystem.PlayerInput>();
         if (pi != null) pi.enabled = false;
 
-        // 2. Fekete képernyő (LevelManageren keresztül)
         if (LevelManager.Instance != null && LevelManager.Instance.fadeScreen != null)
         {
             LevelManager.Instance.fadeScreen.gameObject.SetActive(true);
             LevelManager.Instance.fadeScreen.color = new Color(0, 0, 0, 1f);
         }
 
-        // 3. Menü eltüntetése
         if (fullStartCanvas != null) fullStartCanvas.SetActive(false);
 
-        // 4. Rövid várakozás a stabil váltáshoz
         yield return new WaitForSecondsRealtime(0.2f);
 
-        // 5. Tényleges betöltés
         SceneManager.LoadScene(1);
     }
 
@@ -119,9 +112,8 @@ public class StartMenuManager : MonoBehaviour
     {
         if (mainMixer != null)
         {
-            // A decibel skála logaritmikus, 0.0001 és 1 közötti slider értékkel számolunk
             float volumeVal = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f;
-            mainMixer.SetFloat("MasterVolume", volumeVal); // Győződj meg róla, hogy a paraméter neve "MasterVolume" a Mixerben
+            mainMixer.SetFloat("MasterVolume", volumeVal); 
         }
     }
 }

@@ -167,11 +167,13 @@ public class ShieldEnemyAI : MonoBehaviour
 
     public void DealDamage()
     {
+        if (!this.enabled) return;
+
         float dist = Vector2.Distance(transform.position, player.position);
         if (dist <= attackRange + 0.5f)
         {
-            WarriorHealth php = player.GetComponent<WarriorHealth>();
-            if (php != null) php.TakeDamage(damageAmount);
+            WarriorHealth warriorHealth = player.GetComponent<WarriorHealth>();
+            if (warriorHealth != null) warriorHealth.TakeDamage(damageAmount);
         }
     }
 

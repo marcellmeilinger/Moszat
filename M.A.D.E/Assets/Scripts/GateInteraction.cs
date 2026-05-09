@@ -39,7 +39,6 @@ public class GateInteraction : MonoBehaviour, IInteractable
     {
         if (!isOpened)
         {
-            // Megkeressük a játékost és a pénztárcáját
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player == null) return;
 
@@ -51,12 +50,10 @@ public class GateInteraction : MonoBehaviour, IInteractable
                 {
                     anim.SetTrigger("Open");
                     isOpened = true;
-                    // Szöveg pontosan a beérkező kód alapján
                     ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
                 }
                 else
                 {
-                    // Szöveg és ikon pontosan a beérkező kód alapján
                     int missingCoins = requiredCoins - playerWallet.currentCoins;
                     ShowFeedback("<sprite=0>" + missingCoins);
                 }
@@ -64,7 +61,6 @@ public class GateInteraction : MonoBehaviour, IInteractable
         }
         else
         {
-            // Ha már nyitva van, a következő interakció szintet vált
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.NextLevel();

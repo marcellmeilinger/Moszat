@@ -10,20 +10,20 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
 
-    [Header("Átmenet (Fade)")]
+    [Header("Fade")]
     public Image fadeScreen;
     public float fadeSpeed = 1.5f;
 
     [Header("Audio")]
     public AudioMixer mainMixer;
 
-    [Header("Statisztikák")]
+    [Header("Statistics")]
     private float startTime;
     private float totalDamageDealt;
     private float totalDamageTaken;
     private bool levelFinished = false;
 
-    [Header("UI Panel Referenciák")]
+    [Header("UI Panel")]
     public GameObject levelEndPanel;
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI damageDealtText;
@@ -37,7 +37,6 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        // Hangerő beállítása a pályakezdéskor
         if (mainMixer != null)
         {
             float savedVolume = PlayerPrefs.GetFloat("MainVolume", 1f);
@@ -47,7 +46,6 @@ public class LevelManager : MonoBehaviour
 
         if (fadeScreen != null)
         {
-            // Kényszerítsük, hogy látszódjon és fekete legyen az elején
             fadeScreen.gameObject.SetActive(true);
             Color c = fadeScreen.color;
             c.a = 1f;
@@ -59,7 +57,6 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator FadeIn()
     {
-        // Várunk egy picit, hogy a betöltési sokk elmúljon
         yield return new WaitForSeconds(0.1f);
 
         Color c = fadeScreen.color;
@@ -93,12 +90,22 @@ public class LevelManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
+
+        WarriorHealth.savedHealth = -1;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void NextLevel()
     {
         Time.timeScale = 1f;
+
+        WarriorHealth playerHealth = FindObjectOfType<WarriorHealth>();
+        if (playerHealth != null && !playerHealth.IsDead())
+        {
+            playerHealth.SaveHealthForNextScene();
+        }
+
         StartCoroutine(FadeAndLoadNextLevel());
     }
 
@@ -108,7 +115,7 @@ public class LevelManager : MonoBehaviour
         {
             fadeScreen.gameObject.SetActive(true);
             Color c = fadeScreen.color;
-            c.a = 0f; // Átlátszó
+            c.a = 0f;
             fadeScreen.color = c;
 
             while (fadeScreen.color.a < 1f)

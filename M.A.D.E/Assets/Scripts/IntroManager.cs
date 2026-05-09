@@ -4,16 +4,16 @@ using System.Collections;
 
 public class IntroManager : MonoBehaviour
 {
-    [Header("UI Referenciák")]
+    [Header("UI References")]
     public GameObject storyPanel;
     public TextMeshProUGUI storyText;
 
-    [Header("Beállítások")]
+    [Header("Settings")]
     public string[] sentences;
     public float typingSpeed = 0.05f;
     private int index = 0;
     private bool isTyping = false;
-    private bool introActive = false; // Megakadályozza a vakon kattintást
+    private bool introActive = false;
     private string currentFullSentence = "";
 
     [Header("Audio")]
@@ -21,7 +21,6 @@ public class IntroManager : MonoBehaviour
 
     void Start()
     {
-        // Alaphelyzetbe állítás indításkor
         if (typewriterSource != null)
         {
             typewriterSource.Stop();
@@ -37,7 +36,7 @@ public class IntroManager : MonoBehaviour
     {
         if (isTyping) return;
 
-        introActive = true; // Mostantól figyeljük a kattintásokat
+        introActive = true; 
         if (storyPanel != null) storyPanel.SetActive(true);
         index = 0;
 
@@ -49,7 +48,6 @@ public class IntroManager : MonoBehaviour
 
     void Update()
     {
-        // Csak akkor fut le, ha a Start-ra nyomtunk
         if (!introActive) return;
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))

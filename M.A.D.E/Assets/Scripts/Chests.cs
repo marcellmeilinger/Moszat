@@ -15,7 +15,7 @@ public class TreasureChest : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        return !isOpened; // Csak akkor interaktálható, ha még nincs kinyitva
+        return !isOpened;
     }
 
     private void OpenChest()

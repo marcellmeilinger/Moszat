@@ -231,6 +231,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: StartMenuManager, SajatJatek
       objectReference: {fileID: 0}
+    - target: {fileID: 2683389754361046349, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2976144620776019664, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -347,6 +351,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5770023607131244250, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5905707610925980115, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -366,6 +374,14 @@ PrefabInstance:
     - target: {fileID: 7928715938523834393, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: StartMenuManager, SajatJatek
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014011054868581184, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709410025330769499, guid: 88f9d71c55ba03d41b33f992d6858a6d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

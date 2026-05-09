@@ -17,7 +17,7 @@ public class LootItem : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        return true; // Csak akkor interaktálható, ha még nincs kinyitva
+        return true;
     }
 
     // --- 2. AUTOMATIKUS FELVÉTEL (Sétálásra - Pénzhez) ---
@@ -34,12 +34,11 @@ public class LootItem : MonoBehaviour, IInteractable
         }
     }
 
-    // --- KÖZÖS LOGIKA ---
     private void PickUpItem()
     {
-        ApplyEffect();               // Hatás kifejtése
-        OnItemPickedUp?.Invoke();    // Esemény jelzése
-        Destroy(gameObject);         // Tárgy eltüntetése
+        ApplyEffect();               
+        OnItemPickedUp?.Invoke();   
+        Destroy(gameObject);      
     }
 
     private void ApplyEffect()

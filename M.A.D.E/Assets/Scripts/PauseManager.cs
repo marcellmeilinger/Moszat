@@ -5,17 +5,15 @@ public class PauseManager : MonoBehaviour
 {
     public GameObject pauseMenuUI;
     private bool isPaused = false;
-    private WarriorHealth playerHealth; // Referencia az élethez
+    private WarriorHealth playerHealth;
 
     void Start()
     {
-        // Megkeressük a játékost és az életét
         playerHealth = Object.FindAnyObjectByType<WarriorHealth>();
     }
 
     void Update()
     {
-        // Ha a játékos halott, ne lehessen megnyitni a Pause menüt
         if (playerHealth != null && playerHealth.IsDead()) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))

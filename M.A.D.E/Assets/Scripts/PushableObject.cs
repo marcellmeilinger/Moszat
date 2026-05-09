@@ -47,7 +47,6 @@ public class PushableObject : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
-        // A tolás folyamatos bemenetet igényel (Input.GetKey), nem egyszeri leütést.
     }
 
     /// <summary>
