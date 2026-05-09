@@ -121,8 +121,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+      - m_Target: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+        m_TargetAssemblyTypeName: PauseManager, SajatJatek
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -254,8 +254,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+      - m_Target: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+        m_TargetAssemblyTypeName: PauseManager, SajatJatek
         m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
@@ -878,8 +878,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+      - m_Target: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+        m_TargetAssemblyTypeName: PauseManager, SajatJatek
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:

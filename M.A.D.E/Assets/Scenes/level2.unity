@@ -1963,6 +1963,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5949377928600821752, guid: 0aae4acae1e82e64381754cd7c4491f8, type: 3}
   m_PrefabInstance: {fileID: 657978480}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &670440833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5585666354740167110, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+  m_PrefabInstance: {fileID: 1446601598}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &695493382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3404,6 +3409,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+      propertyPath: pauseMenuUI
+      value: 
+      objectReference: {fileID: 670440833}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3846,6 +3855,42 @@ PrefabInstance:
     - target: {fileID: 3524685886929618816, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882891399866385255, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+    - target: {fileID: 4882891399866385255, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Resume
+      objectReference: {fileID: 0}
+    - target: {fileID: 4882891399866385255, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseManager, SajatJatek
+      objectReference: {fileID: 0}
+    - target: {fileID: 7387062172978006258, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+    - target: {fileID: 7387062172978006258, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 7387062172978006258, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseManager, SajatJatek
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148985999103438744, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5393648695361255789, guid: 95e80022753bb784397bc9429ddf9f8f, type: 3}
+    - target: {fileID: 9148985999103438744, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148985999103438744, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseManager, SajatJatek
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
