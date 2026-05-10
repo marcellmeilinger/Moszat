@@ -9,7 +9,14 @@ public class PlayerWallet : MonoBehaviour
     /// A jelenleg birtokolt érmék száma.
     /// </summary>
     public int currentCoins = 0;
-
+    void Start()
+    {
+        if (SaveManager.Instance != null)
+        {
+            currentCoins = SaveManager.Instance.data.coins;
+            Debug.Log("Érmék betöltve: " + currentCoins);
+        }
+    }
     /// <summary>
     /// Érmék hozzáadása a játékos tárcájához.
     /// </summary>
@@ -17,7 +24,11 @@ public class PlayerWallet : MonoBehaviour
     public void AddCoin(int amount)
     {
         currentCoins += amount;
-        Debug.Log("Wallet is updated! Balance: " + currentCoins);
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.data.coins = currentCoins;
+        }
+        Debug.Log("Pénztárca frissítve! Egyenleg: " + currentCoins);
 
     }
 }

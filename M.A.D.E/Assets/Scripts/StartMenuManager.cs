@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO; // <-- ÚJ: Ez kell a fájl meglétének ellenőrzéséhez
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,9 @@ public class StartMenuManager : MonoBehaviour
     public GameObject buttonContainer;
     public GameObject settingsPanel;
     public GameObject fullStartCanvas;
+
+    [Header("Save System Continue")]
+    public Button continueButton;
 
     [Header("Intro manager")]
     public IntroManager introManager;
@@ -31,6 +35,13 @@ public class StartMenuManager : MonoBehaviour
         }
         ApplyVolume(savedVolume);
 
+        if (continueButton != null)
+        {
+            string path = Application.persistentDataPath + "/savegame.json";
+            if (File.Exists(path)) continueButton.interactable = true;
+            else continueButton.interactable = false;
+        }
+
         ShowStartMenu();
     }
 
@@ -46,6 +57,8 @@ public class StartMenuManager : MonoBehaviour
 
     public void StartGame()
     {
+        if (SaveManager.Instance != null) SaveManager.Instance.DeleteSave();
+
         if (buttonContainer != null) buttonContainer.SetActive(false);
 
         AudioSource bgm = GetComponent<AudioSource>();
@@ -58,6 +71,15 @@ public class StartMenuManager : MonoBehaviour
         else
         {
             LoadFirstLevel();
+        }
+    }
+
+    public void ContinueGame()
+    {
+        if (SaveManager.Instance != null)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(SaveManager.Instance.data.currentLevelIndex);
         }
     }
 
@@ -116,7 +138,7 @@ public class StartMenuManager : MonoBehaviour
         if (mainMixer != null)
         {
             float volumeVal = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f;
-            mainMixer.SetFloat("MasterVolume", volumeVal); 
+            mainMixer.SetFloat("MasterVolume", volumeVal);
         }
     }
 }

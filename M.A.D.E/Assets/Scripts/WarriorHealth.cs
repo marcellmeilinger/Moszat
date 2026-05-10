@@ -2,17 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// A játékos (Warrior) életerejét, sérülését és halálát kezelő osztály.
-/// Frissíti a HUD életerő sávját, és megjeleníti a halál képernyőt (Death Screen).
-/// </summary>
 public class WarriorHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHealth = 100;
     public int currentHealth;
-
-    public static int savedHealth = -1;
 
     [Header("UI References")]
     public Slider healthSlider;
@@ -28,49 +22,44 @@ public class WarriorHealth : MonoBehaviour
     private SpriteRenderer sprite;
     private bool isDead = false;
 
+    public static int savedHealth = -1;
+
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
 
-        if (savedHealth != -1)
+        if (SaveManager.Instance != null && SaveManager.Instance.hasSaveData)
         {
-            currentHealth = savedHealth;
+            currentHealth = SaveManager.Instance.data.hp;
+
+            int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+
+            if (SaveManager.Instance.data.currentLevelIndex == currentSceneIndex &&
+                SaveManager.Instance.data.isMidLevelSave == true)
+            {
+                rb.simulated = false;
+                transform.position = new Vector3(
+                    SaveManager.Instance.data.playerPosX,
+                    SaveManager.Instance.data.playerPosY + 0.1f,
+                    transform.position.z
+                );
+                Physics2D.SyncTransforms();
+                rb.simulated = true;
+                Debug.Log("Sikeres teleportálás a mentett helyre!");
+            }
+            else
+            {
+                Debug.Log("Új pálya vagy Restart: Alaphelyzet.");
+            }
         }
         else
         {
             currentHealth = maxHealth;
         }
 
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth;
-            healthSlider.value = currentHealth;
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        if (isDead || Time.timeScale == 0f) return;
-
-        currentHealth -= damage;
-
-        if (healthSlider != null)
-            healthSlider.value = currentHealth;
-
-        StartCoroutine(DamageFlash());
-
-        anim.SetTrigger("takeHit");
-
-        if (currentHealth <= 0) Die();
-    }
-
-    IEnumerator DamageFlash()
-    {
-        sprite.color = damageColor;
-        yield return new WaitForSeconds(flashDuration);
-        sprite.color = Color.white;
+        if (healthSlider != null) { healthSlider.maxValue = maxHealth; healthSlider.value = currentHealth; }
     }
 
     void Die()
@@ -78,59 +67,52 @@ public class WarriorHealth : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        savedHealth = -1;
-
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
-
         if (warriorHealthbarCanvas != null) warriorHealthbarCanvas.SetActive(false);
-
         anim.SetTrigger("death");
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
-
         Invoke("ShowDeathScreen", 2f);
     }
+    public void TakeDamage(int damage)
+    {
+        if (isDead || Time.timeScale == 0f) return;
+        currentHealth -= damage;
+
+        if (SaveManager.Instance != null) SaveManager.Instance.data.hp = currentHealth;
+
+        if (healthSlider != null) healthSlider.value = currentHealth;
+        StartCoroutine(DamageFlash());
+        anim.SetTrigger("takeHit");
+        if (currentHealth <= 0) Die();
+    }
+
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+        currentHealth += amount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+        if (SaveManager.Instance != null) SaveManager.Instance.data.hp = currentHealth;
+
+        if (healthSlider != null) healthSlider.value = currentHealth;
+    }
+
+    IEnumerator DamageFlash() { sprite.color = damageColor; yield return new WaitForSeconds(flashDuration); sprite.color = Color.white; }
+
+   
 
     void ShowDeathScreen()
     {
         if (deathScreenUI != null)
         {
             deathScreenUI.SetActive(true);
-
             foreach (Transform child in deathScreenUI.transform)
-            {
                 child.gameObject.SetActive(true);
-            }
-
             Time.timeScale = 0f;
-
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
     }
-
     public bool IsDead() => isDead;
-
-    public void Heal(int amount)
-    {
-        if (isDead) return;
-
-        currentHealth += amount;
-
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-
-        if (healthSlider != null)
-        {
-            healthSlider.value = currentHealth;
-        }
-    }
-
-    public void SaveHealthForNextScene()
-    {
-        savedHealth = currentHealth;
-        Debug.Log("HP elmentve a k�vetkez� p�ly�ra: " + savedHealth);
-    }
 }

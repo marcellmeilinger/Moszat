@@ -1,63 +1,65 @@
 using UnityEngine;
+using System.Linq;
 
-/// <summary>
-/// Egy olyan környezeti objektumot jelöl, amit a játékos képes eltolni.
-/// Megvalósítja az IInteractable interfészt a vizuális visszajelzéshez.
-/// </summary>
 public class PushableObject : MonoBehaviour, IInteractable
 {
-    /// <summary>
-    /// Az eltolható objektum 2D fizikai teste.
-    /// </summary>
+    [Header("Save Settings")]
+    public string uniqueID;
+
     private Rigidbody2D rb;
 
-    /// <summary>
-    /// Unity Start metódus. Inicializálja a Rigidbody-t és alaphelyzetben rögzíti az X tengelyt.
-    /// </summary>
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Kezdéskor rögzítjük az X mozgást és a forgatást
         rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+
+        
+        if (SaveManager.Instance != null && SaveManager.Instance.hasSaveData && SaveManager.Instance.data.isMidLevelSave)
+        {
+            var savedBox = SaveManager.Instance.data.boxPositions.FirstOrDefault(b => b.id == uniqueID);
+            if (savedBox != null)
+            {
+                transform.position = new Vector3(savedBox.posX, savedBox.posY, transform.position.z);
+                Debug.Log(uniqueID + " pozíciója betöltve.");
+            }
+        }
     }
 
-    /// <summary>
-    /// Képkockánként lefutó frissítés.
-    /// Itt kezeljük a fizikai feloldást, ha a játékos nyomva tartja az interakciós gombot.
-    /// </summary>
     void Update()
     {
-        // Megjegyzés: Az interakció gombot (KeyCode.E) itt figyeljük a folyamatos nyomvatartáshoz,
-        // de a feliratot a PlayerInteraction kezeli.
         if (Input.GetKey(KeyCode.E))
         {
-            // Feloldjuk az X tengelyt, hogy tolható legyen
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         else
         {
-            // Visszazárjuk, hogy ne guruljon el magától
             rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
         }
     }
 
-    /// <summary>
-    /// Az interfész által megkövetelt metódus. Mivel a toláshoz nyomvatartás kell,
-    /// az érdemi logikát az Update végzi, de az interfész jelenléte aktiválja a UI-t.
-    /// </summary>
-    public void Interact()
+    public void SaveCurrentPosition()
     {
+        if (SaveManager.Instance == null || string.IsNullOrEmpty(uniqueID)) return;
+
+        var existing = SaveManager.Instance.data.boxPositions.FirstOrDefault(b => b.id == uniqueID);
+
+        if (existing != null)
+        {
+            existing.posX = transform.position.x;
+            existing.posY = transform.position.y;
+        }
+        else
+        {
+            SaveManager.Instance.data.boxPositions.Add(new ObjectPosData
+            {
+                id = uniqueID,
+                posX = transform.position.x,
+                posY = transform.position.y
+            });
+        }
     }
 
-    /// <summary>
-    /// Visszaadja a tárgy leírását.
-    /// </summary>
-    /// <returns>A tárgy megnevezése.</returns>
+    public void Interact() { }
     public string GetDescription() => "Heavy Crate";
-
-    /// <summary>
-    /// Meghatározza, hogy megjelenjen-e a felirat.
-    /// </summary>
-    /// <returns>Mindig igaz, amíg az objektum létezik.</returns>
     public bool CanInteract() => true;
 }

@@ -9,10 +9,17 @@ public class LootItem : MonoBehaviour, IInteractable
     [Header("Item data")]
     [SerializeField] private string itemName = "Potion";
     [SerializeField] private int value = 20;
+    public string uniqueID;
+
 
     public Action OnItemPickedUp;
 
-    // --- 1. K�ZI FELV�TEL (Gombnyom�sra - Potion�kh�z) ---
+    void Start()
+    {
+        if (uniqueID != "" && SaveManager.Instance != null && SaveManager.Instance.data.removedIDs.Contains(uniqueID)) Destroy(gameObject);
+    }
+
+    // --- 1. KEZI FELVETEL (Gombnyomosra - Potionokhoz) ---
     public void Interact()
     {
         PickUpItem();
@@ -23,13 +30,12 @@ public class LootItem : MonoBehaviour, IInteractable
         return true;
     }
 
-    // --- 2. AUTOMATIKUS FELV�TEL (S�t�l�sra - P�nzhez) ---
+    // --- 2. AUTOMATIKUS FELVETEL (Setalasra - Penzhez) ---
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Csak a Coin-t vessz�k fel automatikusan!
+        // Csak a Coin-t vesszi fel automatikusan!
         if (itemName == "Coin")
         {
-            // Megn�zz�k, hogy a j�t�kos ment-e bele
             if (other.CompareTag("Player"))
             {
                 PickUpItem();
@@ -40,13 +46,18 @@ public class LootItem : MonoBehaviour, IInteractable
     private void PickUpItem()
     {
         ApplyEffect();               
-        OnItemPickedUp?.Invoke();   
+        OnItemPickedUp?.Invoke();
+        if (uniqueID != "" && SaveManager.Instance != null) 
+        { 
+            SaveManager.Instance.data.removedIDs.Add(uniqueID); 
+            SaveManager.Instance.SaveGame(); 
+        }
         Destroy(gameObject);      
     }
 
     private void ApplyEffect()
     {
-        // GY�GY�T�S (Itt a WarriorHealth t�pust keress�k!)
+        // GYOGYITAS
         if (itemName == "Potion")
         {
             WarriorHealth wh = UnityEngine.Object.FindAnyObjectByType<WarriorHealth>();
@@ -56,7 +67,7 @@ public class LootItem : MonoBehaviour, IInteractable
                 Debug.Log("Warrior gy�gy�tva: " + value);
             }
         }
-        // P�NZ
+        // PENZ
         else if (itemName == "Coin")
         {
             PlayerWallet wallet = UnityEngine.Object.FindAnyObjectByType<PlayerWallet>();
@@ -65,7 +76,7 @@ public class LootItem : MonoBehaviour, IInteractable
                 wallet.AddCoin(value);
             }
         }
-        // SEBZ�S N�VEL�S
+        // SEBZES NOVELES
         else if (itemName == "DamagePotion")
         {
             DamagePowerUp powerUp = UnityEngine.Object.FindAnyObjectByType<DamagePowerUp>();
