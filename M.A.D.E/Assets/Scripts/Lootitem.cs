@@ -19,7 +19,7 @@ public class LootItem : MonoBehaviour, IInteractable
         if (uniqueID != "" && SaveManager.Instance != null && SaveManager.Instance.data.removedIDs.Contains(uniqueID)) Destroy(gameObject);
     }
 
-    // --- 1. KEZI FELVETEL (Gombnyomosra - Potionokhoz) ---
+    // 1. KEZI FELVETEL
     public void Interact()
     {
         PickUpItem();
@@ -30,7 +30,7 @@ public class LootItem : MonoBehaviour, IInteractable
         return true;
     }
 
-    // --- 2. AUTOMATIKUS FELVETEL (Setalasra - Penzhez) ---
+    // 2. AUTOMATIKUS FELVETEL
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Csak a Coin-t vesszi fel automatikusan!
@@ -64,7 +64,7 @@ public class LootItem : MonoBehaviour, IInteractable
             if (wh != null)
             {
                 wh.Heal(value);
-                Debug.Log("Warrior gy�gy�tva: " + value);
+                Debug.Log("Warrior gyogyitva: +" + value);
             }
         }
         // PENZ
@@ -89,6 +89,6 @@ public class LootItem : MonoBehaviour, IInteractable
 
     public string GetDescription()
     {
-        return "Felv�tel: " + itemName;
+        return "Felvetel: " + itemName;
     }
 }

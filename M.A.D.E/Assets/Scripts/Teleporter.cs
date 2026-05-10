@@ -23,7 +23,7 @@ public class TwoWayTeleporter : MonoBehaviour, IInteractable
             if (player != null)
             {
                 player.transform.position = destination.position;
-                Debug.Log("Sikeres teleportálás a célpontra: " + destination.name);
+                Debug.Log("Sikeres teleportalas: " + destination.name);
             }
         }
         else

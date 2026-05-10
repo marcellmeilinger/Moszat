@@ -22,7 +22,7 @@ public class SaveManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
-        Debug.Log("JÁTÉK ELMENTVE: " + path);
+        Debug.Log("Jatek mentve: " + path);
     }
 
     public void LoadGame()
@@ -32,7 +32,7 @@ public class SaveManager : MonoBehaviour
             string json = File.ReadAllText(path);
             data = JsonUtility.FromJson<SaveData>(json);
             hasSaveData = true;
-            Debug.Log("MENTÉS BETÖLTVE!");
+            Debug.Log("Mentes betoltve!");
         }
         else
         {
@@ -45,6 +45,6 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(path)) File.Delete(path);
         data = new SaveData();
         hasSaveData = false;
-        Debug.Log("MENTÉS TÖRÖLVE!");
+        Debug.Log("Mentes torolve!");
     }
 }

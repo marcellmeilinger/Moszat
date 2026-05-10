@@ -1,5 +1,5 @@
 using System.Collections;
-using System.IO; // <-- ÚJ: Ez kell a fájl meglétének ellenőrzéséhez
+using System.IO;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;

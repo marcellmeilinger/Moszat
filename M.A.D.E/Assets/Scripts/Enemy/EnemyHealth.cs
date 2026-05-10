@@ -84,6 +84,18 @@ public class EnemyHealth : MonoBehaviour
         BossCharged bossAI = GetComponent<BossCharged>();
         if (bossAI != null && bossAI.IsVulnerable() == false) return;
 
+        ShieldEnemyAI shieldAI = GetComponent<ShieldEnemyAI>();
+        if (shieldAI != null)
+        {
+            Transform attacker = GameObject.FindGameObjectWithTag("Player")?.transform;
+
+            if (shieldAI.ShouldBlockDamage(attacker))
+            {
+                Debug.Log("<color=blue>EnemyHealth: A pajzs felfogta az utest!</color>");
+                return;
+            }
+        }
+
         currentHealth -= damage;
 
         if (healthSlider != null)
@@ -117,14 +129,14 @@ public class EnemyHealth : MonoBehaviour
             if (playerRb != null)
             {
                 playerRb.gravityScale = 1.6f;
-                Debug.Log("Gravitacio visszallitva!");
+                Debug.Log("Gravitacio visszaallitva!");
             }
 
             WarriorMovement moveScript = player.GetComponent<WarriorMovement>();
             if (moveScript != null)
             {
                 moveScript.jumpForce = 8f;
-                Debug.Log("Jump Force visszallitva!");
+                Debug.Log("Jump Force visszaallitva!");
             }
         }
 

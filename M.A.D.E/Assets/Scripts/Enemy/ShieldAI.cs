@@ -152,18 +152,34 @@ public class ShieldEnemyAI : MonoBehaviour
         transform.localScale = scaler;
     }
 
+    private int totalHitsReceived = 0;
+    private float hitResetTimer = 0f;
+    private float timeBetweenAttacks = 0.3f;
+
+    private int hitCount = 0;
+    private float lastHitTime = 0f;
+    private float hitCooldown = 0.25f; 
+
     public bool ShouldBlockDamage(Transform attackerTransform)
     {
-        if (willBlockNextHit)
+        if (Time.time < lastHitTime + hitCooldown)
         {
-            willBlockNextHit = false;
-            Debug.Log("Pajzs aktív: SIKERES VÉDÉS!");
+            return (hitCount % 2 != 0);
+        }
+
+        lastHitTime = Time.time;
+        hitCount++; 
+
+
+
+        if (hitCount % 2 != 0)
+        {
+            Debug.Log("<color=cyan>Pajzs: 1. utes Blokkolva!</color>");
             return true;
         }
         else
         {
-            willBlockNextHit = true;
-            Debug.Log("Pajzs inaktív: SEBZÉS!");
+            Debug.Log("<color=red>Pajzs: 2. utes Sebzodes!</color>");
             return false;
         }
     }

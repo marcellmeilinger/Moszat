@@ -14,7 +14,7 @@ public class PlayerWallet : MonoBehaviour
         if (SaveManager.Instance != null)
         {
             currentCoins = SaveManager.Instance.data.coins;
-            Debug.Log("Érmék betöltve: " + currentCoins);
+            Debug.Log("Ermek betoltve: " + currentCoins);
         }
     }
     /// <summary>
@@ -28,7 +28,7 @@ public class PlayerWallet : MonoBehaviour
         {
             SaveManager.Instance.data.coins = currentCoins;
         }
-        Debug.Log("Pénztárca frissítve! Egyenleg: " + currentCoins);
+        Debug.Log("Penztarca frissitve! Egyenleg: " + currentCoins);
 
     }
 }

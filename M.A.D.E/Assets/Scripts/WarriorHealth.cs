@@ -47,11 +47,11 @@ public class WarriorHealth : MonoBehaviour
                 );
                 Physics2D.SyncTransforms();
                 rb.simulated = true;
-                Debug.Log("Sikeres teleportálás a mentett helyre!");
+                Debug.Log("Sikeres teleportalas a mentett helyre!");
             }
             else
             {
-                Debug.Log("Új pálya vagy Restart: Alaphelyzet.");
+                Debug.Log("Uj palya vagy Restart: Alaphelyzet.");
             }
         }
         else

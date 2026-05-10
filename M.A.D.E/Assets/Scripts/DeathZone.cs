@@ -19,7 +19,7 @@ public class DeathZone : MonoBehaviour
             return;
         }
 
-        // 2. (Opcionális) Ha egy ellenség esik le a pályáról, őt is megöli
+        // 2. Ha egy ellenség esik le a pályáról, őt is megöli
         EnemyHealth enemyHealth = collision.GetComponent<EnemyHealth>();
         if (enemyHealth != null)
         {

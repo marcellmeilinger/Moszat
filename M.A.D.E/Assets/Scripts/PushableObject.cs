@@ -20,7 +20,7 @@ public class PushableObject : MonoBehaviour, IInteractable
             if (savedBox != null)
             {
                 transform.position = new Vector3(savedBox.posX, savedBox.posY, transform.position.z);
-                Debug.Log(uniqueID + " pozíciója betöltve.");
+                Debug.Log(uniqueID + " pozicioja betoltve.");
             }
         }
     }
