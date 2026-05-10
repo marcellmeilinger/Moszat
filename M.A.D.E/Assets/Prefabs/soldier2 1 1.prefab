@@ -2013,6 +2013,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   arenaWall: {fileID: 0}
+  uniqueID: 
 --- !u!114 &4781381656814577228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2065,7 +2066,7 @@ AudioSource:
   m_GameObject: {fileID: 3324635567121411258}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 7ed3579002666c04da6ee99649fcc35d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0

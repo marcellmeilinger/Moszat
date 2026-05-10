@@ -933,6 +933,8 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  arenaWall: {fileID: 0}
+  uniqueID: 
 --- !u!114 &2887399366420748766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,8 +955,14 @@ MonoBehaviour:
   player: {fileID: 0}
   anim: {fileID: 351697595175048854}
   rb: {fileID: 3984507539073065131}
-  pointA: {fileID: 1609976483985891240, guid: 2cfe12305381e8949b48d889de634e79, type: 3}
-  pointB: {fileID: 5406883028723463664, guid: 9b1edd17a96e2e14e92fe3802a72b344, type: 3}
+  patrolDistanceLeft: 3
+  patrolDistanceRight: 3
+  footPoint: {fileID: 0}
+  eyePoint: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  checkDistance: 2
   spriteFacesLeft: 1
   recoilForce: 10
 --- !u!210 &7257326296855850736
@@ -979,7 +987,7 @@ AudioSource:
   m_GameObject: {fileID: 2433684165899679041}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 7ed3579002666c04da6ee99649fcc35d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
