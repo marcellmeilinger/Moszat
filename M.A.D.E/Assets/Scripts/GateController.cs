@@ -1,10 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Egy egyszerű kapu vezérlő osztály, amely a kapu nyitási (90 fok) és zárási (0 fok) rotációs animációját kezeli.
+/// </summary>
 public class GateController : MonoBehaviour
 {
     private Coroutine currentRoutine;
 
+    /// <summary>
+    /// Elindítja a kapu kinyitásának (90 fokos elfordulás) simított animációját.
+    /// </summary>
     public void OpenGate()
     {
         if (!gameObject.activeInHierarchy) return;
@@ -12,12 +18,18 @@ public class GateController : MonoBehaviour
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 90)));
     }
 
+    /// <summary>
+    /// Azonnal, animáció nélkül kinyitja a kaput (például betöltéskor).
+    /// </summary>
     public void SetOpenInstant()
     {
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         transform.rotation = Quaternion.Euler(0, 0, 90);
     }
 
+    /// <summary>
+    /// Elindítja a kapu bezárásának (0 fokra való visszafordulás) simított animációját.
+    /// </summary>
     public void CloseGate()
     {
         if (!gameObject.activeInHierarchy) return;
@@ -25,6 +37,11 @@ public class GateController : MonoBehaviour
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 0)));
     }
 
+    /// <summary>
+    /// Coroutine, amely a megadott rotációra forgatja a kaput az idő múlásával (interpolációval).
+    /// </summary>
+    /// <param name="targetRotation">A cél rotáció kvaterniója.</param>
+    /// <returns>IEnumerator a rotáció időzítéséhez.</returns>
     private IEnumerator RotateTo(Quaternion targetRotation)
     {
         float duration = 1f;

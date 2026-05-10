@@ -2,6 +2,10 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/// <summary>
+/// A játékos által összegyűjtött érmék számának megjelenítéséért felelős UI osztály.
+/// Animálja az érme ikont is, ha a pénz mennyisége megváltozik.
+/// </summary>
 public class CoinDisplay : MonoBehaviour
 {
     private TextMeshProUGUI textMesh;
@@ -10,6 +14,9 @@ public class CoinDisplay : MonoBehaviour
 
     [SerializeField] private RectTransform coinIcon;
 
+    /// <summary>
+    /// Kezdeti beállítás, megkeresi a játékos tárcáját (PlayerWallet) és frissíti a kezdeti értéket.
+    /// </summary>
     void Start()
     {
         textMesh = GetComponent<TextMeshProUGUI>();
@@ -22,6 +29,9 @@ public class CoinDisplay : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Folyamatosan figyeli a játékos érméinek számát. Ha változik, frissíti a UI szöveget és elindítja a pop-up animációt.
+    /// </summary>
     void Update()
     {
         if (wallet != null && wallet.currentCoins != lastCoinCount)
@@ -37,6 +47,10 @@ public class CoinDisplay : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Az érme ikon "ugráló" (pop) animációjáért felelős Coroutine, amely új érme felvételekor aktiválódik.
+    /// </summary>
+    /// <returns>IEnumerator az animáció időzítéséhez.</returns>
     private IEnumerator PopAnimation()
     {
         Vector2 originalPos = coinIcon.anchoredPosition;

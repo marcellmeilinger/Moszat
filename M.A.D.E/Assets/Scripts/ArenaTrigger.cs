@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// A boss arénát aktiváló trigger osztály. 
+/// Amikor a játékos belép, lezárja az arénát, megváltoztatja a gravitációt, és aktiválja a boss viselkedését.
+/// </summary>
 public class ArenaTrigger : MonoBehaviour
 {
     public GameObject wallToActivate;
@@ -11,6 +15,10 @@ public class ArenaTrigger : MonoBehaviour
     public float bossAreaGravity = 13f;
     public float bossAreaJumpForce = 13f;
 
+    /// <summary>
+    /// Akkor hívódik meg, amikor egy objektum (a játékos) belép a trigger területére.
+    /// </summary>
+    /// <param name="other">A belépő objektum ütközője.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// A kamera mozgását irányító osztály, amely simított mozgással követi a játékost.
+/// Képes a kamera mozgásterének korlátozására is egy megadott területen belül.
+/// </summary>
 public class CameraFollow : MonoBehaviour
 {
     [Header("Follow Settings")]
@@ -12,6 +16,10 @@ public class CameraFollow : MonoBehaviour
     public Vector2 minMaxX;       
     public Vector2 minMaxY;       
 
+    /// <summary>
+    /// A LateUpdate minden frame végén hívódik meg, garantálva, hogy a kamera 
+    /// a játékos mozgása után frissítse a pozícióját.
+    /// </summary>
     void LateUpdate() 
     {
         if (target == null) return;

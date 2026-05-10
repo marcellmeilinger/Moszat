@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// A játékos által mozgatható (tolható) objektumok logikáját kezeli, például a ládákat.
+/// Képes elmenteni és visszatölteni a saját pozícióját a mentési rendszer segítségével.
+/// </summary>
 public class PushableObject : MonoBehaviour, IInteractable
 {
     [Header("Save Settings")]
@@ -8,6 +12,9 @@ public class PushableObject : MonoBehaviour, IInteractable
 
     private Rigidbody2D rb;
 
+    /// <summary>
+    /// Kezdeti beállítás és a pozíció betöltése, ha létezik érvényes mentés hozzá.
+    /// </summary>
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,6 +32,9 @@ public class PushableObject : MonoBehaviour, IInteractable
         }
     }
 
+    /// <summary>
+    /// Képkockánként figyeli az 'E' gomb lenyomását, hogy a játékos tudja mozgatni az objektumot.
+    /// </summary>
     void Update()
     {
         if (Input.GetKey(KeyCode.E))
@@ -37,6 +47,9 @@ public class PushableObject : MonoBehaviour, IInteractable
         }
     }
 
+    /// <summary>
+    /// Elmenti az objektum jelenlegi pozícióját a globális mentési adatok közé.
+    /// </summary>
     public void SaveCurrentPosition()
     {
         if (SaveManager.Instance == null || string.IsNullOrEmpty(uniqueID)) return;
@@ -59,7 +72,18 @@ public class PushableObject : MonoBehaviour, IInteractable
         }
     }
 
+    /// <summary>
+    /// Az interakció végrehajtása (üres, mert a mozgatás fizikai alapon működik az Update-ben).
+    /// </summary>
     public void Interact() { }
+    /// <summary>
+    /// Visszaadja a megjelenítendő UI leírást.
+    /// </summary>
+    /// <returns>A leíró szöveg.</returns>
     public string GetDescription() => "Heavy Crate";
+    /// <summary>
+    /// Visszaadja, hogy lehet-e vele interaktálni (mindig igaz).
+    /// </summary>
+    /// <returns>Igaz érték.</returns>
     public bool CanInteract() => true;
 }

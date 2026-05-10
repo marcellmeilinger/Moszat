@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// A játékos életerejét (HP) kezelő fő osztály.
+/// Felelős a sebződésért, gyógyulásért, halálért és a HP UI frissítéséért.
+/// Emellett össze van kötve a mentési rendszerrel a HP és a pozíció visszatöltése érdekében.
+/// </summary>
 public class WarriorHealth : MonoBehaviour
 {
     [Header("Health Settings")]
@@ -24,6 +29,9 @@ public class WarriorHealth : MonoBehaviour
 
     public static int savedHealth = -1;
 
+    /// <summary>
+    /// A játékos kezdeti életerejének és helyzetének beállítása, valamint az esetleges mentett állapot betöltése.
+    /// </summary>
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -62,6 +70,9 @@ public class WarriorHealth : MonoBehaviour
         if (healthSlider != null) { healthSlider.maxValue = maxHealth; healthSlider.value = currentHealth; }
     }
 
+    /// <summary>
+    /// A játékos halálát kezeli: letiltja a mozgást, lejátsza az animációt és megjeleníti a halál képernyőt.
+    /// </summary>
     void Die()
     {
         if (isDead) return;
@@ -74,6 +85,10 @@ public class WarriorHealth : MonoBehaviour
         rb.simulated = false;
         Invoke("ShowDeathScreen", 2f);
     }
+    /// <summary>
+    /// A játékos sebződésének feldolgozása. Ha az életerő elfogy, meghívja a Die metódust.
+    /// </summary>
+    /// <param name="damage">A bekapott sebzés mértéke.</param>
     public void TakeDamage(int damage)
     {
         if (isDead || Time.timeScale == 0f) return;
@@ -87,6 +102,10 @@ public class WarriorHealth : MonoBehaviour
         if (currentHealth <= 0) Die();
     }
 
+    /// <summary>
+    /// A játékos gyógyítása és a HP mentése.
+    /// </summary>
+    /// <param name="amount">A gyógyulás mértéke.</param>
     public void Heal(int amount)
     {
         if (isDead) return;
@@ -98,10 +117,17 @@ public class WarriorHealth : MonoBehaviour
         if (healthSlider != null) healthSlider.value = currentHealth;
     }
 
+    /// <summary>
+    /// Egy rövid felvillanás effekttel vizuálisan is jelzi a sebződést.
+    /// </summary>
+    /// <returns>IEnumerator az időzítéshez.</returns>
     IEnumerator DamageFlash() { sprite.color = damageColor; yield return new WaitForSeconds(flashDuration); sprite.color = Color.white; }
 
    
 
+    /// <summary>
+    /// Megjeleníti a halál képernyőt és megállítja az időt.
+    /// </summary>
     void ShowDeathScreen()
     {
         if (deathScreenUI != null)
@@ -114,5 +140,9 @@ public class WarriorHealth : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
         }
     }
+    /// <summary>
+    /// Visszaadja, hogy a játékos halott-e.
+    /// </summary>
+    /// <returns>Igaz, ha a játékos halott.</returns>
     public bool IsDead() => isDead;
 }
