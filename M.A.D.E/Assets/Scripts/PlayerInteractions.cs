@@ -46,7 +46,9 @@ public class PlayerInteraction : MonoBehaviour
         if (hit != null)
         {
             IInteractable interactable = hit.GetComponentInParent<IInteractable>();
+            bool isKeyhole = hit.GetComponentInParent<KeyholeBlock>() != null;
 
+          
             if (interactable != null && interactable.CanInteract())
             {
                 interactionPrompt.SetActive(true);
@@ -61,6 +63,8 @@ public class PlayerInteraction : MonoBehaviour
                         textComponent.text = "Press 'F' to pickup";
                     else if (isPushable)
                         textComponent.text = "Hold 'E' to push";
+                    else if (isKeyhole)
+                        textComponent.text = "Press 'E' to use Key";
                     else
                         textComponent.text = "Press 'E' to interact";
                 }
