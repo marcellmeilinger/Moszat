@@ -1,14 +1,12 @@
 using UnityEngine;
 
-public class KeyholeBlock : MonoBehaviour
+public class KeyholeBlock : MonoBehaviour, IInteractable
 {
     public PlayerKeyRing.KeyColor requiredColor;
     public GateController connectedGate;
     public string uniqueID;
 
-    private bool isPlayerNear = false;
     private bool isUsed = false;
-    private PlayerKeyRing playerKeyRing;
 
     void Start()
     {
@@ -25,18 +23,39 @@ public class KeyholeBlock : MonoBehaviour
         }
     }
 
-    void Update()
+    // INTERFACE IMPLEMENTÁCIÓ
+
+    public bool CanInteract()
     {
-        if (isPlayerNear && !isUsed && Input.GetKeyDown(KeyCode.E))
+        return !isUsed;
+    }
+
+    public string GetDescription()
+    {
+        return "use Key";
+    }
+
+    public void Interact()
+    {
+        if (isUsed) return;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
+            PlayerKeyRing playerKeyRing = player.GetComponent<PlayerKeyRing>();
+
             if (playerKeyRing != null && playerKeyRing.HasKey(requiredColor))
             {
-                UnlockGate();
+                UnlockGate(playerKeyRing);
+            }
+            else
+            {
+                Debug.Log("Nincs nálad a megfelelõ kulcs!");
             }
         }
     }
 
-    private void UnlockGate()
+    private void UnlockGate(PlayerKeyRing playerKeyRing)
     {
         isUsed = true;
         playerKeyRing.UseKey(requiredColor);
@@ -54,19 +73,5 @@ public class KeyholeBlock : MonoBehaviour
         {
             connectedGate.OpenGate();
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = true;
-            playerKeyRing = collision.GetComponent<PlayerKeyRing>();
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player")) { isPlayerNear = false; }
     }
 }
