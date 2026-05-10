@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Zárt kapuk kinyitását és állapotát vezérlő osztály (pl. kulcs vagy nyomólap hatására).
-/// </summary>
 public class GateController : MonoBehaviour
 {
     private Coroutine currentRoutine;
@@ -11,15 +8,19 @@ public class GateController : MonoBehaviour
     public void OpenGate()
     {
         if (!gameObject.activeInHierarchy) return;
-
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 90)));
+    }
+
+    public void SetOpenInstant()
+    {
+        if (currentRoutine != null) StopCoroutine(currentRoutine);
+        transform.rotation = Quaternion.Euler(0, 0, 90);
     }
 
     public void CloseGate()
     {
         if (!gameObject.activeInHierarchy) return;
-
         if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(RotateTo(Quaternion.Euler(0, 0, 0)));
     }

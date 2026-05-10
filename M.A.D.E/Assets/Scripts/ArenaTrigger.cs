@@ -28,14 +28,14 @@ public class ArenaTrigger : MonoBehaviour
             if (moveScript != null)
             {
                 moveScript.jumpForce = bossAreaJumpForce;
-                Debug.Log("Aréna mód: Gravitáció és Ugróerõ megnövelve!");
+                Debug.Log("Arena mod: Gravitacio es Ugroero megnovelve!");
             }
 
             if (bossScript != null)
             {
                 
                 bossScript.enabled = true;
-                Debug.Log("Boss harc elindítva!");
+                Debug.Log("Boss harc elinditva!");
             }
 
             gameObject.SetActive(false); 

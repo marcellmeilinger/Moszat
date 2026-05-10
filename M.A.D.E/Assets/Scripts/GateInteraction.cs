@@ -2,29 +2,27 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-/// <summary>
-/// Kezeli a kapukkal való interakciót. Ellenőrzi az érmék számát, 
-/// kezeli a nyitási animációt és a következő szintre lépést az IInteractable interfészen keresztül.
-/// </summary>
 public class GateInteraction : MonoBehaviour, IInteractable
 {
     [Header("Gate Settings")]
     public int requiredCoins = 100;
-
+    public string uniqueID; 
     [Header("UI Feedback")]
     public TextMeshProUGUI feedbackText;
     public float textDisplayTime = 3f;
 
     private Animator anim;
-
-    /// <summary>
-    /// Jelzi, hogy a kapu meg lett-e már nyitva.
-    /// </summary>
     public bool isOpened { get; private set; } = false;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+
+        if (uniqueID != "" && SaveManager.Instance != null && SaveManager.Instance.data.openedIDs.Contains(uniqueID))
+        {
+            isOpened = true;
+            if (anim != null) anim.SetTrigger("Open");
+        }
 
         if (feedbackText != null)
         {
@@ -32,31 +30,30 @@ public class GateInteraction : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>
-    /// Az interakció logikája. A PlayerInteraction rendszer hívja meg az 'E' gomb lenyomásakor.
-    /// </summary>
     public void Interact()
     {
         if (!isOpened)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player == null) return;
+            PlayerWallet playerWallet = FindObjectOfType<PlayerWallet>();
+            if (playerWallet == null) return;
 
-            PlayerWallet playerWallet = player.GetComponent<PlayerWallet>();
-
-            if (playerWallet != null)
+            if (playerWallet.currentCoins >= requiredCoins)
             {
-                if (playerWallet.currentCoins >= requiredCoins)
+                anim.SetTrigger("Open");
+                isOpened = true;
+
+                if (uniqueID != "" && SaveManager.Instance != null)
                 {
-                    anim.SetTrigger("Open");
-                    isOpened = true;
-                    ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
+                    SaveManager.Instance.data.openedIDs.Add(uniqueID);
+                    SaveManager.Instance.SaveGame();
                 }
-                else
-                {
-                    int missingCoins = requiredCoins - playerWallet.currentCoins;
-                    ShowFeedback("<sprite=0>" + missingCoins);
-                }
+
+                ShowFeedback("The gate has opened!\nPress 'E' again to enter.");
+            }
+            else
+            {
+                int missingCoins = requiredCoins - playerWallet.currentCoins;
+                ShowFeedback("Missing coins: <sprite=0>" + missingCoins);
             }
         }
         else
@@ -75,7 +72,6 @@ public class GateInteraction : MonoBehaviour, IInteractable
             StopAllCoroutines();
             StartCoroutine(DisplayText(message));
         }
-        Debug.Log(message);
     }
 
     IEnumerator DisplayText(string message)
@@ -85,19 +81,10 @@ public class GateInteraction : MonoBehaviour, IInteractable
         feedbackText.text = "";
     }
 
-    /// <summary>
-    /// A környezeti felirat, ami interakció előtt megjelenik.
-    /// </summary>
     public string GetDescription()
     {
-        return isOpened ? "Enter Next Level" : "Open Gate";
+        return isOpened ? "Enter Next Level" : "Open Gate (" + requiredCoins + " Coins)";
     }
 
-    /// <summary>
-    /// Meghatározza, hogy a kapu érzékelhető-e az interakciós rendszer számára.
-    /// </summary>
-    public bool CanInteract()
-    {
-        return true;
-    }
+    public bool CanInteract() => true;
 }

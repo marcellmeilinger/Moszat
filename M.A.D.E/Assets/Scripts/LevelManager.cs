@@ -75,6 +75,40 @@ public class LevelManager : MonoBehaviour
     public void AddDamageDealt(float amount) => totalDamageDealt += amount;
     public void AddDamageTaken(float amount) => totalDamageTaken += amount;
 
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+
+        if (SaveManager.Instance != null)
+        {
+            SaveManager.Instance.data.playerPosX = -9999f;
+            SaveManager.Instance.SaveGame();
+        }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void NextLevel()
+    {
+        Time.timeScale = 1f;
+
+        WarriorHealth playerHealth = FindObjectOfType<WarriorHealth>();
+        if (playerHealth != null && SaveManager.Instance != null)
+        {
+            SaveManager.Instance.data.hp = playerHealth.currentHealth;
+            SaveManager.Instance.data.currentLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+            SaveManager.Instance.data.isMidLevelSave = false;
+            SaveManager.Instance.data.playerPosX = -9999f;
+            SaveManager.Instance.data.playerPosY = -9999f;
+
+            SaveManager.Instance.hasSaveData = true;
+            SaveManager.Instance.SaveGame();
+        }
+
+        StartCoroutine(FadeAndLoadNextLevel());
+    }
+
     public void FinishLevel()
     {
         levelFinished = true;
@@ -90,27 +124,7 @@ public class LevelManager : MonoBehaviour
         if (levelEndPanel != null) levelEndPanel.SetActive(true);
     }
 
-    public void RestartLevel()
-    {
-        Time.timeScale = 1f;
-
-        WarriorHealth.savedHealth = -1;
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void NextLevel()
-    {
-        Time.timeScale = 1f;
-
-        WarriorHealth playerHealth = FindObjectOfType<WarriorHealth>();
-        if (playerHealth != null && !playerHealth.IsDead())
-        {
-            playerHealth.SaveHealthForNextScene();
-        }
-
-        StartCoroutine(FadeAndLoadNextLevel());
-    }
+   
 
     IEnumerator FadeAndLoadNextLevel()
     {

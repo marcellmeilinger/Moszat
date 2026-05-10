@@ -23,7 +23,7 @@ public class PoisonPotion : MonoBehaviour
         if (warriorHealth != null)
         {
             warriorHealth.TakeDamage(damageAmount);
-            Debug.Log("Lda csapda! - " + damageAmount + " HP");
+            Debug.Log("Lada csapda! - " + damageAmount + " HP");
         }
 
         Destroy(gameObject);

@@ -6,7 +6,7 @@ using System.Collections;
 /// </summary>
 public class DamagePowerUp : MonoBehaviour
 {
-    [Header("Status (To another developer)")]
+    [Header("Status")]
     public int currentBonusDamage = 0;
     public bool isPowerUpActive = false;
 
@@ -27,7 +27,7 @@ public class DamagePowerUp : MonoBehaviour
 
         if (auraEffect != null) auraEffect.SetActive(true);
 
-        Debug.Log($"POWERUP AKTV! +{amount} Sebzs");
+        Debug.Log($"Power Up aktiv! +{amount} sebzes");
 
         yield return new WaitForSeconds(duration);
 
@@ -36,6 +36,6 @@ public class DamagePowerUp : MonoBehaviour
 
         if (auraEffect != null) auraEffect.SetActive(false);
 
-        Debug.Log("PowerUp has expired.");
+        Debug.Log("Power Up lejart.");
     }
 }

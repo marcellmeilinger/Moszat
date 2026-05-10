@@ -13,7 +13,16 @@ public class PlayerKeyRing : MonoBehaviour
     public enum KeyColor { Orange, Green }
 
     [SerializeField] private List<KeyColor> collectedKeys = new List<KeyColor>();
-
+    void Start()
+    {
+        if (SaveManager.Instance != null)
+        {
+            collectedKeys.Clear();
+            foreach (string k in SaveManager.Instance.data.collectedKeys)
+                if (System.Enum.TryParse(k, out KeyColor color)) collectedKeys.Add(color);
+            if (KeyUIManager.Instance != null) KeyUIManager.Instance.UpdateKeyDisplay(collectedKeys);
+        }
+    }
     /// <summary>
     /// Új kulcs hozzáadása a kulcskarikához, majd a HUD frissítése.
     /// </summary>
@@ -21,26 +30,23 @@ public class PlayerKeyRing : MonoBehaviour
     public void AddKey(KeyColor color)
     {
         collectedKeys.Add(color);
-        if (KeyUIManager.Instance != null)
+        if (SaveManager.Instance != null && !SaveManager.Instance.data.collectedKeys.Contains(color.ToString()))
         {
-            KeyUIManager.Instance.UpdateKeyDisplay(collectedKeys);
+            SaveManager.Instance.data.collectedKeys.Add(color.ToString());
+            SaveManager.Instance.SaveGame();
         }
+        if (KeyUIManager.Instance != null) KeyUIManager.Instance.UpdateKeyDisplay(collectedKeys);
     }
 
-    public bool HasKey(KeyColor color)
-    {
-        return collectedKeys.Contains(color);
-    }
+    public bool HasKey(KeyColor color) => collectedKeys.Contains(color);
 
     public void UseKey(KeyColor color)
     {
         if (collectedKeys.Contains(color))
         {
             collectedKeys.Remove(color);
-            if (KeyUIManager.Instance != null)
-            {
-                KeyUIManager.Instance.UpdateKeyDisplay(collectedKeys);
-            }
+            if (SaveManager.Instance != null) { SaveManager.Instance.data.collectedKeys.Remove(color.ToString()); SaveManager.Instance.SaveGame(); }
+            if (KeyUIManager.Instance != null) KeyUIManager.Instance.UpdateKeyDisplay(collectedKeys);
         }
     }
 }

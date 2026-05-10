@@ -4,10 +4,26 @@ public class KeyholeBlock : MonoBehaviour
 {
     public PlayerKeyRing.KeyColor requiredColor;
     public GateController connectedGate;
+    public string uniqueID;
 
     private bool isPlayerNear = false;
     private bool isUsed = false;
     private PlayerKeyRing playerKeyRing;
+
+    void Start()
+    {
+        if (SaveManager.Instance != null && !string.IsNullOrEmpty(uniqueID))
+        {
+            if (SaveManager.Instance.data.openedIDs.Contains(uniqueID))
+            {
+                isUsed = true;
+                if (connectedGate != null)
+                {
+                    connectedGate.SetOpenInstant();
+                }
+            }
+        }
+    }
 
     void Update()
     {
@@ -24,6 +40,15 @@ public class KeyholeBlock : MonoBehaviour
     {
         isUsed = true;
         playerKeyRing.UseKey(requiredColor);
+
+        if (SaveManager.Instance != null && !string.IsNullOrEmpty(uniqueID))
+        {
+            if (!SaveManager.Instance.data.openedIDs.Contains(uniqueID))
+            {
+                SaveManager.Instance.data.openedIDs.Add(uniqueID);
+                SaveManager.Instance.SaveGame();
+            }
+        }
 
         if (connectedGate != null)
         {
@@ -42,9 +67,6 @@ public class KeyholeBlock : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-        }
+        if (collision.CompareTag("Player")) { isPlayerNear = false; }
     }
 }

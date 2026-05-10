@@ -939,6 +939,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PickupOrangeKey
       objectReference: {fileID: 0}
+    - target: {fileID: 8039936560351309696, guid: b11fb709cabb11f41b3079378a0e5c5c, type: 3}
+      propertyPath: uniqueID
+      value: Level3_key2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1423,6 +1427,10 @@ PrefabInstance:
       value: GoldenChest 1 (10)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -1705,6 +1713,10 @@ PrefabInstance:
     - target: {fileID: 887514087380682642, guid: 8097410b77a9fa54484fb320c03e2347, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2102327466315431888, guid: 8097410b77a9fa54484fb320c03e2347, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy9
       objectReference: {fileID: 0}
     - target: {fileID: 2102327466315431888, guid: 8097410b77a9fa54484fb320c03e2347, type: 3}
       propertyPath: arenaWall
@@ -2386,6 +2398,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1107612470}
     m_Modifications:
+    - target: {fileID: 257338675137984778, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy7
+      objectReference: {fileID: 0}
     - target: {fileID: 3324635567121411258, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
       propertyPath: m_Name
       value: soldier2 1 1 (2)
@@ -2528,6 +2544,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1107612470}
     m_Modifications:
+    - target: {fileID: 257338675137984778, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy8
+      objectReference: {fileID: 0}
     - target: {fileID: 3324635567121411258, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
       propertyPath: m_Name
       value: soldier2 1 1 (3)
@@ -2802,6 +2822,10 @@ PrefabInstance:
       value: GoldenChest 1 (4)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -2863,6 +2887,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1107612470}
     m_Modifications:
+    - target: {fileID: 257338675137984778, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy1
+      objectReference: {fileID: 0}
     - target: {fileID: 3324635567121411258, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
       propertyPath: m_Name
       value: soldier2 1 1
@@ -3078,6 +3106,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6035880593711594082, guid: 56b24358bd621d148b03b1689ed52cfb, type: 3}
+      propertyPath: uniqueID
+      value: Level3_greenkeyhole
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035880593711594082, guid: 56b24358bd621d148b03b1689ed52cfb, type: 3}
       propertyPath: connectedGate
       value: 
       objectReference: {fileID: 157121402}
@@ -3200,6 +3232,10 @@ PrefabInstance:
     - target: {fileID: 2887399366420748766, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: obstacleLayer.m_Bits
       value: 320
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654916277301707810, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy4
       objectReference: {fileID: 0}
     - target: {fileID: 5703178021661018791, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: m_Pivot.x
@@ -3329,6 +3365,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest3
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -3521,6 +3561,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 815910788}
     m_Modifications:
+    - target: {fileID: 472758652371872723, guid: d31ea480c205fe54f88f93841c5112fc, type: 3}
+      propertyPath: uniqueID
+      value: Leve3_crate1
+      objectReference: {fileID: 0}
     - target: {fileID: 4058109391492248606, guid: d31ea480c205fe54f88f93841c5112fc, type: 3}
       propertyPath: m_Name
       value: Pushable Crate
@@ -3628,6 +3672,10 @@ PrefabInstance:
       value: GoldenChest 1 (8)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -3689,6 +3737,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 815910788}
     m_Modifications:
+    - target: {fileID: 2268039195440664449, guid: 0aae4acae1e82e64381754cd7c4491f8, type: 3}
+      propertyPath: uniqueID
+      value: Level3_key1
+      objectReference: {fileID: 0}
     - target: {fileID: 5399525316301657880, guid: 0aae4acae1e82e64381754cd7c4491f8, type: 3}
       propertyPath: m_Name
       value: PickupGreenKey
@@ -3792,6 +3844,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1925039054261872388, guid: 629b7e3c7ebe89045a0ae18ef76876c3, type: 3}
+      propertyPath: uniqueID
+      value: Level3_orangekeyhole
+      objectReference: {fileID: 0}
+    - target: {fileID: 1925039054261872388, guid: 629b7e3c7ebe89045a0ae18ef76876c3, type: 3}
       propertyPath: connectedGate
       value: 
       objectReference: {fileID: 1253855529}
@@ -3820,6 +3876,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest2
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -3914,6 +3974,10 @@ PrefabInstance:
     - target: {fileID: 2887399366420748766, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: obstacleLayer.m_Bits
       value: 320
+      objectReference: {fileID: 0}
+    - target: {fileID: 5654916277301707810, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy2
       objectReference: {fileID: 0}
     - target: {fileID: 5703178021661018791, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: m_Pivot.x
@@ -4184,6 +4248,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest1
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -4566,6 +4634,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest4
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -4974,6 +5046,10 @@ PrefabInstance:
       propertyPath: obstacleLayer.m_Bits
       value: 320
       objectReference: {fileID: 0}
+    - target: {fileID: 5654916277301707810, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy5
+      objectReference: {fileID: 0}
     - target: {fileID: 5703178021661018791, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5158,6 +5234,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1 (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest8
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -52984,6 +53064,10 @@ PrefabInstance:
       propertyPath: obstacleLayer.m_Bits
       value: 320
       objectReference: {fileID: 0}
+    - target: {fileID: 5654916277301707810, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy6
+      objectReference: {fileID: 0}
     - target: {fileID: 5703178021661018791, guid: 0ad05ce6a052b68429903e9c8a275ba3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -53170,6 +53254,10 @@ PrefabInstance:
       value: GoldenChest 1 (6)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -53231,6 +53319,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1107612470}
     m_Modifications:
+    - target: {fileID: 257338675137984778, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
+      propertyPath: uniqueID
+      value: Level3_enemy3
+      objectReference: {fileID: 0}
     - target: {fileID: 3324635567121411258, guid: 7cb1e54fd8892da4ea9b088cb5337d6c, type: 3}
       propertyPath: m_Name
       value: soldier2 1 1 (1)
@@ -54138,6 +54230,10 @@ PrefabInstance:
       value: GoldenChest 1 (7)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -54266,6 +54362,10 @@ PrefabInstance:
       value: GoldenChest 1 (5)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level3_chest11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4178108595895065112, guid: 9ae990446de1f76428e60d3c71440cec, type: 3}
@@ -54374,6 +54474,10 @@ PrefabInstance:
     - target: {fileID: 7177825144937474866, guid: df566b97316c6604e96e1181118dd556, type: 3}
       propertyPath: m_Name
       value: PortcullisGate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334668785637834329, guid: df566b97316c6604e96e1181118dd556, type: 3}
+      propertyPath: uniqueID
+      value: Level3_gate1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -54516,7 +54620,7 @@ PrefabInstance:
       objectReference: {fileID: 178265034}
     - target: {fileID: 7387062172978006258, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitGame
+      value: QuitToMainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 9148985999103438744, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

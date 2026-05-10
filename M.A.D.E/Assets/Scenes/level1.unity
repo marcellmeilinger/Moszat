@@ -721,6 +721,10 @@ PrefabInstance:
       value: 101.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
       value: 
       objectReference: {fileID: 310355566}
@@ -1342,6 +1346,10 @@ PrefabInstance:
       value: GoldenChest 1 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level1_chest1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4178108595895065112, guid: 9ae990446de1f76428e60d3c71440cec, type: 3}
@@ -1495,6 +1503,10 @@ PrefabInstance:
     - target: {fileID: 3405599539712278691, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: m_Name
       value: GoldenChest 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level1_chest2
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
@@ -1949,6 +1961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
   itemName: Coin
   value: 20
+  uniqueID: Level1_coin5
 --- !u!1001 &284371174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2184,6 +2197,10 @@ PrefabInstance:
     - target: {fileID: 5326002597705026589, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 101.899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy1
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
@@ -2563,6 +2580,10 @@ PrefabInstance:
       value: 101.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
       value: 
       objectReference: {fileID: 62277406}
@@ -2759,31 +2780,39 @@ PrefabInstance:
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[12].m_Data
       value: 
-      objectReference: {fileID: 511756479, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[19].m_Data
       value: 
-      objectReference: {fileID: -1510705326, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+      objectReference: {fileID: 511756479, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[34].m_Data
       value: 
-      objectReference: {fileID: 1892006572, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+      objectReference: {fileID: -1510705326, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[43].m_Data
       value: 
-      objectReference: {fileID: -1872998437, guid: 5fe5454ec8605de43809133b020d1b69, type: 3}
+      objectReference: {fileID: 1892006572, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[44].m_Data
       value: 
-      objectReference: {fileID: -8292312247121785769, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+      objectReference: {fileID: -1872998437, guid: 5fe5454ec8605de43809133b020d1b69, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[45].m_Data
       value: 
+      objectReference: {fileID: -8292312247121785769, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[48].m_Data
+      value: 
       objectReference: {fileID: -4858993238434676519, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
+    - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[49].m_Data
+      value: 
+      objectReference: {fileID: 6553786546769284172, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[53].m_Data
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: -8830748653819333967, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[56].m_Data
       value: 
@@ -2829,8 +2858,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
-      propertyPath: m_TileSpriteArray.Array.data[53].m_RefCount
+      propertyPath: m_TileSpriteArray.Array.data[12].m_RefCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
+      propertyPath: m_TileSpriteArray.Array.data[53].m_RefCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_TileSpriteArray.Array.data[54].m_RefCount
@@ -2897,28 +2930,36 @@ PrefabInstance:
       value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
+      propertyPath: m_Tiles.Array.data[1171].second.m_TileSpriteIndex
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
+      propertyPath: m_Tiles.Array.data[1186].second.m_TileSpriteIndex
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1394].second.m_TileSpriteIndex
-      value: 45
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1491].second.m_TileSpriteIndex
-      value: 44
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1756].second.m_TileSpriteIndex
-      value: 43
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1775].second.m_TileSpriteIndex
-      value: 34
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1776].second.m_TileSpriteIndex
-      value: 19
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1791].second.m_TileSpriteIndex
-      value: 12
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2214859777713245462, guid: 84fec01b282f0964284b21c4c128fd74, type: 3}
       propertyPath: m_Tiles.Array.data[1818].second.m_TileSpriteIndex
@@ -10173,6 +10214,10 @@ PrefabInstance:
       value: 101.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
       value: 
       objectReference: {fileID: 1700538575}
@@ -10351,6 +10396,10 @@ PrefabInstance:
       value: GoldenChest 1 (3)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level1_chest4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -10491,6 +10540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
   itemName: Coin
   value: 20
+  uniqueID: Level1_coin4
 --- !u!4 &444925282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3175967384765263863, guid: ce756df0805241049bea216c69c783fe, type: 3}
@@ -11429,6 +11479,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -958955223
       objectReference: {fileID: 0}
+    - target: {fileID: 4038385026089014924, guid: 373c78cfce2143d46887eb15d1fc4069, type: 3}
+      propertyPath: uniqueID
+      value: Leve1_crate2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11769,6 +11823,10 @@ PrefabInstance:
       value: 101.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
       value: 
       objectReference: {fileID: 959068411}
@@ -11912,6 +11970,10 @@ PrefabInstance:
     - target: {fileID: 417700043359184784, guid: d31ea480c205fe54f88f93841c5112fc, type: 3}
       propertyPath: m_Constraints
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 472758652371872723, guid: d31ea480c205fe54f88f93841c5112fc, type: 3}
+      propertyPath: uniqueID
+      value: Leve1_crate1
       objectReference: {fileID: 0}
     - target: {fileID: 4058109391492248606, guid: d31ea480c205fe54f88f93841c5112fc, type: 3}
       propertyPath: m_Name
@@ -12086,6 +12148,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3563446208594631855, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4882891399866385255, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -12104,7 +12170,7 @@ PrefabInstance:
       objectReference: {fileID: 1495851611}
     - target: {fileID: 7387062172978006258, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: QuitGame
+      value: QuitToMainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 9148985999103438744, guid: 381f0e4956c5bd447bd92b9518eac5ad, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -12554,6 +12620,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1248713}
     m_Modifications:
+    - target: {fileID: 3948343462893865763, guid: 5f81acd0aee6fd448a5dd23ea9cb5769, type: 3}
+      propertyPath: uniqueID
+      value: Level1_chest3
+      objectReference: {fileID: 0}
     - target: {fileID: 3948343462893865763, guid: 5f81acd0aee6fd448a5dd23ea9cb5769, type: 3}
       propertyPath: lootPrefab
       value: 
@@ -13296,6 +13366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
   itemName: Coin
   value: 20
+  uniqueID: Level1_coin3
 --- !u!1001 &1356219525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13391,6 +13462,10 @@ PrefabInstance:
     - target: {fileID: 1133571379990568680, guid: f34465a7d07f6064e83788b1de6d679f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823158412680530169, guid: f34465a7d07f6064e83788b1de6d679f, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy7
       objectReference: {fileID: 0}
     - target: {fileID: 1986681740897514650, guid: f34465a7d07f6064e83788b1de6d679f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13691,6 +13766,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1823158412680530169, guid: f34465a7d07f6064e83788b1de6d679f, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823158412680530169, guid: f34465a7d07f6064e83788b1de6d679f, type: 3}
       propertyPath: maxHealth
       value: 60
       objectReference: {fileID: 0}
@@ -13964,6 +14043,7 @@ MonoBehaviour:
   buttonContainer: {fileID: 0}
   settingsPanel: {fileID: 0}
   fullStartCanvas: {fileID: 0}
+  continueButton: {fileID: 0}
   introManager: {fileID: 0}
   mainMixer: {fileID: 0}
   volumeSlider: {fileID: 0}
@@ -14589,6 +14669,10 @@ PrefabInstance:
       value: 101.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
+      propertyPath: uniqueID
+      value: Level1_enemy8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463605804196745105, guid: fdbf068a540803346a021b207fe97208, type: 3}
       propertyPath: fillImage
       value: 
       objectReference: {fileID: 506208956}
@@ -15098,6 +15182,10 @@ PrefabInstance:
       value: GoldenChest 1 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
+      propertyPath: uniqueID
+      value: Level1_chest5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684640706543112191, guid: 46804110b29dbb9449f68a3f7d585580, type: 3}
       propertyPath: lootPrefab
       value: 
       objectReference: {fileID: 4820388490598569758, guid: 18e81ba5f28f9574aa69b0daf406ab60, type: 3}
@@ -15583,6 +15671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
   itemName: Coin
   value: 20
+  uniqueID: Level1_coin1
 --- !u!4 &2022141202 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3175967384765263863, guid: ce756df0805241049bea216c69c783fe, type: 3}
@@ -16078,6 +16167,10 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3802304947257296796, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
+      propertyPath: uniqueID
+      value: Level1_gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802304947257296796, guid: 1cc25ff634e57124fae5de90be1ceae7, type: 3}
       propertyPath: requiredCoins
       value: 100
       objectReference: {fileID: 0}
@@ -16287,6 +16380,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1248713}
     m_Modifications:
+    - target: {fileID: 42862310559269283, guid: aa3de24d1c03a0846b516e7188c6b39d, type: 3}
+      propertyPath: uniqueID
+      value: Level1_coin2
+      objectReference: {fileID: 0}
     - target: {fileID: 3620332907345580890, guid: aa3de24d1c03a0846b516e7188c6b39d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -54.59058
